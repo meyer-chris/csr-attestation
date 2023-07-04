@@ -4,8 +4,8 @@
 
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
-Intended status: Standards Track                             3 July 2023
-Expires: 4 January 2024
+Intended status: Standards Track                             4 July 2023
+Expires: 5 January 2024
 
 
          Use of Attestation with Certification Signing Requests
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 January 2024.
+   This Internet-Draft will expire on 5 January 2024.
 
 Copyright Notice
 
@@ -106,7 +106,7 @@ Table of Contents
    Remote attestation allows a relying party, the Registration Authority
    or the Certification Authority, to learn about the security posture
    of a verifier, which in the context of this specification is a device
-   transmitting a certificate signing request using the newly defined
+   transmitting a certification request using the newly defined
    attestation extension.
 
    As outlined in RFC 9334 [RFC9334], a verifier collects claims from
@@ -159,22 +159,22 @@ Table of Contents
    logical role that may be included in the RA/CA product.  In this case
    the interaction between the relying party and the verifier are local.
 
-                                    .-------------.
-                                    |             | Compare Evidence
-                                    |   Verifier  | against
-                                    |             | policy
-                                    '--------+----'
-                                         ^   |
-                                Evidence |   | Attestation
-                                         |   | Result
-                                         |   v
-       .------------.               .----|----------.
-       |            +-------------->|---'           | Compare Attestation
-       |  Attester  |   Evidence    | Relying       | Result against
-       |            |   in CSR      | Party (RA/CA) | policy
-       '------------'               '---------------'
+                                 .-------------.
+                                 |             | Compare Evidence
+                                 |   Verifier  | against
+                                 |             | policy
+                                 '--------+----'
+                                      ^   |
+                             Evidence |   | Attestation
+                                      |   | Result
+                                      |   v
+    .------------.               .----|----------.
+    |            +-------------->|---'           | Compare Attestation
+    |  Attester  |   Evidence    | Relying       | Result against
+    |            |   in CSR      | Party (RA/CA) | policy
+    '------------'               '---------------'
 
-                        Figure 1: Architecture
+                           Figure 1: Architecture
 
    As discussed in RFC 9334 different security and privacy aspects need
    to be considered.  For example, evidence may need to be protected
@@ -193,16 +193,16 @@ Table of Contents
 
 4.1.  Object Identifiers
 
-      -- Root of IETF's PKIX OID tree
-      id-pkix OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
-           dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
+   -- Root of IETF's PKIX OID tree
+   id-pkix OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+        dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
 
-      -- S/Mime attributes - can be used here.
-      id-aa OBJECT IDENTIFIER ::= {iso(1) member-body(2) usa(840)
-           rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) attributes(2)}
+   -- S/Mime attributes - can be used here.
+   id-aa OBJECT IDENTIFIER ::= {iso(1) member-body(2) usa(840)
+        rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) attributes(2)}
 
-      -- Branch for attestation statement types
-      id-ata OBJECT IDENTIFIER ::= { id-pkix (TBD1) }
+   -- Branch for attestation statement types
+   id-ata OBJECT IDENTIFIER ::= { id-pkix (TBD1) }
 
 4.2.  CertificateChoice
 
@@ -211,9 +211,8 @@ Table of Contents
 
    CertificateChoice ::=
       CHOICE {
-         cert Certificate, -- typical X.509 cert
-         opaqueCert    [0] IMPLICIT OCTET STRING, -- Format implicitly agreed upon
-                                                           -- by sender and receiver
+         cert Certificate,
+         opaqueCert    [0] IMPLICIT OCTET STRING,
          typedCert     [1] IMPLICIT TypedCert,
          typedFlatCert [2] IMPLICIT TypedFlatCert
       }
@@ -233,28 +232,28 @@ Table of Contents
    intended the content field include data for at least one public key
    formatted as a SubjectPublicKeyInfo (see [RFC5912]).
 
-   TYPED-CERT ::= TYPE-IDENTIFIER -- basically an object id and a matching ASN1
-                                  -- structure encoded as a sequence
-   CertType ::= TYPED-CERT.&id
+  TYPED-CERT ::= TYPE-IDENTIFIER
 
-   TypedCert ::= SEQUENCE {
-                 certType     TYPED-CERT.&id({TypedCertSet}),
-                 content     TYPED-CERT.&Type ({TypedCertSet}{@certType})
-             }
+  CertType ::= TYPED-CERT.&id
 
-   TypedCertSet TYPED-CERT ::= {
-                ... -- Empty for now,
-                }
+  TypedCert ::= SEQUENCE {
+                certType     TYPED-CERT.&id({TypedCertSet}),
+                content     TYPED-CERT.&Type ({TypedCertSet}{@certType})
+            }
+
+  TypedCertSet TYPED-CERT ::= {
+               ... -- Empty for now,
+               }
 
    "TypedFlatCert" is a certificate that does not have a valid ASN.1
    encoding.  Think compact or implicit certificates as might be used
    with smart cards.  certType indicates the format of the data in the
    certBody field, and ideally refers to a published specification.
 
-      TypedFlatCert ::= SEQUENCE {
-          certType OBJECT IDENTIFIER,
-          certBody OCTET STRING
-      }
+   TypedFlatCert ::= SEQUENCE {
+       certType OBJECT IDENTIFIER,
+       certBody OCTET STRING
+   }
 
 4.3.  AttestAttribute
 
@@ -262,12 +261,12 @@ Table of Contents
    typed as ATTRIBUTE.  This attribute definition contains one or more
    attestation statements of a type "AttestStatement".
 
-      id-aa-attestStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
+   id-aa-attestStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
 
-      AttestAttribute ATTRIBUTE ::= {
-        TYPE AttestStatement
-        IDENTIFIED BY id-aa-attestStatement
-      }
+   AttestAttribute ATTRIBUTE ::= {
+     TYPE AttestStatement
+     IDENTIFIED BY id-aa-attestStatement
+   }
 
 4.4.  AttestCertsAttribute
 
@@ -279,13 +278,13 @@ Table of Contents
    elements should chain that data back to an agreed upon root of trust
    for the attestation.
 
-      id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
+   id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
 
-      attestCertsAttribute ATTRIBUTE ::= {
-        TYPE SEQUENCE OF CertificateChoice
-        COUNTS MAX 1
-        IDENTIFIED BY id-aa-attestChainCerts
-      }
+   attestCertsAttribute ATTRIBUTE ::= {
+     TYPE SEQUENCE OF CertificateChoice
+     COUNTS MAX 1
+     IDENTIFIED BY id-aa-attestChainCerts
+   }
 
 4.5.  AttestStatement
 
@@ -294,31 +293,31 @@ Table of Contents
    controlled by the value of the "type" field, similar to an Attribute
    definition.
 
-   ATTEST-STATEMENT ::= CLASS {
-     &id                 OBJECT IDENTIFIER UNIQUE,
-     &Type,                  -- NOT optional
-     &algidPresent       ParamOptions DEFAULT absent,
-     &sigPresent         ParamOptions DEFAULT absent,
-     &ancillaryPresent   ParamOptions DEFAULT absent,
-     &sigType            DEFAULT OCTET STRING
-     &ancillaryType      DEFAULT OCTET STRING
+ATTEST-STATEMENT ::= CLASS {
+  &id                 OBJECT IDENTIFIER UNIQUE,
+  &Type,                  -- NOT optional
+  &algidPresent       ParamOptions DEFAULT absent,
+  &sigPresent         ParamOptions DEFAULT absent,
+  &ancillaryPresent   ParamOptions DEFAULT absent,
+  &sigType            DEFAULT OCTET STRING
+  &ancillaryType      DEFAULT OCTET STRING
 
-   } WITH SYNTAX {
-     TYPE  &Type
-     IDENTIFIED BY &id
-     [ALGID IS &algidPresent]
-     [SIGNATURE [TYPE &sigType] IS &sigPresent]
-     [ANCILLARY [TYPE &ancillaryType] IS &ancillaryPresent]
-   }
+} WITH SYNTAX {
+  TYPE  &Type
+  IDENTIFIED BY &id
+  [ALGID IS &algidPresent]
+  [SIGNATURE [TYPE &sigType] IS &sigPresent]
+  [ANCILLARY [TYPE &ancillaryType] IS &ancillaryPresent]
+}
 
-   AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
-     {
-       type          ATTEST-STATEMENT.&id({IOSet}),
-       value         ATTEST-STATEMENT.&Type({IOSet}{@type}),
-       algId         [0] IMPLICIT  AlgorithmIdentifier OPTIONAL,
-       signature     [1] ATTEST-STATEMENT.&sigType OPTIONAL -- NOT implicit
-       ancillaryData [2] ATTEST-STATEMENT.&ancillaryType OPTIONAL
-     }
+AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
+  {
+    type          ATTEST-STATEMENT.&id({IOSet}),
+    value         ATTEST-STATEMENT.&Type({IOSet}{@type}),
+    algId         [0] IMPLICIT  AlgorithmIdentifier OPTIONAL,
+    signature     [1] ATTEST-STATEMENT.&sigType OPTIONAL -- NOT implicit
+    ancillaryData [2] ATTEST-STATEMENT.&ancillaryType OPTIONAL
+  }
 
    Depending on whether the "value" field contains an entire signed
    attestation, or only the toBeSigned portion, the algId field may or
@@ -334,17 +333,17 @@ Table of Contents
    ASN.1 type.  Opaque signature types SHOULD specify the use of sub-
    typed OCTET STRING.  For example:
 
-      MyOpaqueSignature ::= OCTET STRING
+   MyOpaqueSignature ::= OCTET STRING
 
    If possible, the ATTEST-STATEMENT SHOULD specify an un-wrapped
    representation of a signature, rather than an OCTET STRING or BIT
    STRING wrapped ASN.1 structure.  I.e., by specifying ECDSA-Sig-Value
    from PKIXAlgs-2009 (see [RFC5912]) to encode an ECDSA signature.
 
-      ECDSA-Sig-Value ::= SEQUENCE {
-        r  INTEGER,
-        s  INTEGER
-      }
+   ECDSA-Sig-Value ::= SEQUENCE {
+     r  INTEGER,
+     s  INTEGER
+   }
 
    The ancillaryData field contains data provided externally to the
    attestation engine,and/or data that may be needed to relate the
@@ -490,23 +489,23 @@ B.1.  Simple Attestation Example
    to define an ATTEST-STATEMENT for an opaque HSM vendor specific
    atterstation model.
 
-      -- This OCTET STRING is not like any other OCTET STRING
-      -- Please see https://example.com/simple-attest.txt,
-      -- Structure labled "Mike's simple attest" for the
-      -- structure of this field and how to verify the attestation
+   -- This OCTET STRING is not like any other OCTET STRING
+   -- Please see https://example.com/simple-attest.txt,
+   -- Structure labled "Mike's simple attest" for the
+   -- structure of this field and how to verify the attestation
 
-      MikesSimpleAttestData ::= OCTET STRING
+   MikesSimpleAttestData ::= OCTET STRING
 
-      mikesSimpleAttestOid OBJECT IDENTIFIER ::= { id-mikes-root 1 }
+   mikesSimpleAttestOid OBJECT IDENTIFIER ::= { id-mikes-root 1 }
 
-      MikesSimpleAttest ATTEST-STATEMENT ::= {
-        TYPE MikesSimpleAttestData
-        IDENTIFIED BY mikesSimpleAttestOid
-        -- These are all implied
-        -- ALGID IS absent
-        -- SIGNATURE is absent
-        -- ANCILLARY is absent
-      }
+   MikesSimpleAttest ATTEST-STATEMENT ::= {
+     TYPE MikesSimpleAttestData
+     IDENTIFIED BY mikesSimpleAttestOid
+     -- These are all implied
+     -- ALGID IS absent
+     -- SIGNATURE is absent
+     -- ANCILLARY is absent
+   }
 
 B.2.  Example TPM V2.0 Attestation Attribute - Non Normative
 
@@ -517,64 +516,64 @@ B.2.  Example TPM V2.0 Attestation Attribute - Non Normative
    give an example of how to write an ATTEST-STATEMENT definition and
    module.
 
-   -- IMPORT these.
-   -- PKI normal form for an ECDSA signature
-   ECDSA-Sig-Value ::= SEQUENCE {
-     r INTEGER,
-     s INTEGER
-     }
+-- IMPORT these.
+-- PKI normal form for an ECDSA signature
+ECDSA-Sig-Value ::= SEQUENCE {
+  r INTEGER,
+  s INTEGER
+  }
 
-   -- Octet string of size n/8 where n is the
-   -- bit size of the public modulus
-   RSASignature ::= OCTET STRING
+-- Octet string of size n/8 where n is the
+-- bit size of the public modulus
+RSASignature ::= OCTET STRING
 
-   -- One or the other of these depending on the value in TPMT_SIGNATURE
+-- One or the other of these depending on the value in TPMT_SIGNATURE
 
-   TpmSignature CHOICE ::= {
-     ecSig [0] IMPLICIT ECDSA-Sig-Value,
-     rsaSig [1] IMPLICIT RSASignature
-     }
+TpmSignature CHOICE ::= {
+  ecSig [0] IMPLICIT ECDSA-Sig-Value,
+  rsaSig [1] IMPLICIT RSASignature
+  }
 
-   -- The TPM form of the public key being attested.
-   -- Needed to verify the attestation - this is the TPMT_PUBLIC structure.
-   TpmtPublic ::= OCTET STRING
+-- The TPM form of the public key being attested.
+-- Needed to verify the attestation - this is the TPMT_PUBLIC structure.
+TpmtPublic ::= OCTET STRING
 
-   -- The TPMS_ATTEST structure as defined in TPM2.0
-   -- Unwrapped from the TPM2B_ATTEST provided
-   -- by the TPM2_Certify command.
-   TpmsAttest ::= OCTET STRING
+-- The TPMS_ATTEST structure as defined in TPM2.0
+-- Unwrapped from the TPM2B_ATTEST provided
+-- by the TPM2_Certify command.
+TpmsAttest ::= OCTET STRING
 
-   -- The qualifying data provided to a TPM2_Certify call, may be absent
-   -- This is the contents of data field of the TPM2B_DATA structure.
-   QualifyingData ::= OCTET STRING
+-- The qualifying data provided to a TPM2_Certify call, may be absent
+-- This is the contents of data field of the TPM2B_DATA structure.
+QualifyingData ::= OCTET STRING
 
-   TpmAncillary ::= SEQUENCE {
-      toBeAttestedPublic TpmtPublic,
-      qualifyingData QualifyingData OPTIONAL
-      }
+TpmAncillary ::= SEQUENCE {
+   toBeAttestedPublic TpmtPublic,
+   qualifyingData QualifyingData OPTIONAL
+   }
 
-   -- This represents a maximally unwrapped TPM V2.0 attestation.  The
-   -- output of TPM2_Certify is a TPM2B_ATTEST and a TPMT_SIGNATURE.
-   -- The former is unwrapped into a TPMS_ATTEST and the latter is
-   -- decomposed to provide the contents of the algId and signature fields.
+-- This represents a maximally unwrapped TPM V2.0 attestation.  The
+-- output of TPM2_Certify is a TPM2B_ATTEST and a TPMT_SIGNATURE.
+-- The former is unwrapped into a TPMS_ATTEST and the latter is
+-- decomposed to provide the contents of the algId and signature fields.
 
-   --
-   -- This attestation statement can be verified by:
-   -- Signature siggy = Signature.getInstance (stmt.algId);
-   -- siggy.init (attestPublicKey, VERIFY);
-   -- siggy.update ((short)stmt.value.length) // todo: big or little endian
-   -- siggy.update (stmt.value.data)
-   -- bool verified = siggy.verify (getSigData(stmt.signature)); //
-   unwrap the signature
-   --
+--
+-- This attestation statement can be verified by:
+-- Signature siggy = Signature.getInstance (stmt.algId);
+-- siggy.init (attestPublicKey, VERIFY);
+-- siggy.update ((short)stmt.value.length) // todo: big or little endian
+-- siggy.update (stmt.value.data)
+-- bool verified = siggy.verify (getSigData(stmt.signature)); //
+unwrap the signature
+--
 
-   TpmV2AttestStatement ATTEST STATEMENT ::= {
-      TYPE TpmsAttest
-      IDENTIFIED BY id-ata-tpmv20-1
-      ALGID IS present
-      SIGNATURE TYPE TpmSignature IS present
-      ANCILLARY TYPE TpmAncillary IS present
-      }
+TpmV2AttestStatement ATTEST STATEMENT ::= {
+   TYPE TpmsAttest
+   IDENTIFIED BY id-ata-tpmv20-1
+   ALGID IS present
+   SIGNATURE TYPE TpmSignature IS present
+   ANCILLARY TYPE TpmAncillary IS present
+   }
 
    This attestation is the result of executing a TPM2_Certify command
    over a TPM key.  See [TPM20] for more details.
