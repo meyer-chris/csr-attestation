@@ -276,7 +276,7 @@ Table of Contents
    the SEQUENCE SHOULD contain the object that contains the public key
    needed to directly validate the attestAttribute.  The remaining
    elements should chain that data back to an agreed upon root of trust
-   for the attestation.
+   for attestations.
 
    id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
 

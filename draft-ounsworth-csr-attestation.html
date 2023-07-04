@@ -21,9 +21,10 @@ attestation information to a Registration Authority or to a Certification
 Authority are described. 
     " name="description">
 <meta content="xml2rfc 3.17.4" name="generator">
-<meta content="next generation" name="keyword">
-<meta content="unicorn" name="keyword">
-<meta content="sparkling distributed ledger" name="keyword">
+<meta content="PKI" name="keyword">
+<meta content="PKCS#10" name="keyword">
+<meta content="Attestation" name="keyword">
+<meta content="Certification Signing Requests" name="keyword">
 <meta content="draft-ounsworth-csr-attestation-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.17.4
@@ -1466,7 +1467,7 @@ contained in an attestAttribute.  By convention, the first element of
 the SEQUENCE <span class="bcp14">SHOULD</span> contain the object that contains the public key
 needed to directly validate the attestAttribute.  The remaining
 elements should chain that data back to an agreed upon root of trust
-for the attestation.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+for attestations.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.4-2">
 <pre>
 id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
