@@ -1309,13 +1309,17 @@ verifier, and relying party.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-3-1"><a href="#fig-arch" class="auto internal xref">Figure 1</a> shows the high-level communication pattern of the passport
 model where the attester transmits the evidence in the CSR to the RA
 and the CA. The verifier processes the received evidence and computes
-an attestation result, which is the processed by the RA/CA prior to the
-certificate issuance. Note that the verifier is a logical role that may
-be included in the RA/CA product. In this case the interaction between
-the relying party and the verifier are local.<a href="#section-3-1" class="pilcrow">¶</a></p>
+an attestation result, which is then processed by the RA/CA prior to the
+certificate issuance.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">Note that the verifier is a logical role that may be included in the
+RA/CA product. In this case the interaction between the relying party
+and the verifier are local. The verifier functionality can, however,
+also be kept separate from the RA/CA functionality. For example,
+security concerns may require parsers of evidence formats to be separated
+from the core CA functionality.<a href="#section-3-2" class="pilcrow">¶</a></p>
 <span id="name-architecture-2"></span><div id="fig-arch">
 <figure id="figure-1">
-        <div class="alignLeft art-text artwork" id="section-3-2.1">
+        <div class="alignLeft art-text artwork" id="section-3-3.1">
 <pre>
                               .-------------.
                               |             | Compare Evidence
@@ -1337,7 +1341,7 @@ the relying party and the verifier are local.<a href="#section-3-1" class="pilcr
 <a href="#name-architecture-2" class="selfRef">Architecture</a>
         </figcaption></figure>
 </div>
-<p id="section-3-3">As discussed in RFC 9334 different security and privacy aspects need to be
+<p id="section-3-4">As discussed in RFC 9334 different security and privacy aspects need to be
 considered. For example, evidence may need to be protected against replay and
 Section 10 of RFC 9334 lists approach for offering freshness. There are also
 concerns about the exposure of persistent identifiers by utilizing attestation
@@ -1347,7 +1351,7 @@ This aspect is described in Section 12 of RFC 9334. Most of these aspects are,
 however, outside the scope of this specification but relevant for use with a
 given attestation technology. The focus of this specification is on the
 transport of evidence from the attester to the relying party via existing
-certification request messages.<a href="#section-3-3" class="pilcrow">¶</a></p>
+certification request messages.<a href="#section-3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="asn1-elements">
@@ -1565,10 +1569,10 @@ examples.<a href="#section-4.5-8" class="pilcrow">¶</a></p>
       <h2 id="name-iana-considerations">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-5-1">The IANA is requested to open one new registrie, allocate a value
+<p id="section-5-1">The IANA is requested to open one new registry, allocate a value
 from the "SMI Security for PKIX Module Identifier" registry for the
-included ASN.1 module, and allocate values from "SMI Security for S/
-MIME Attributes" to identify two Attributes defined within.<a href="#section-5-1" class="pilcrow">¶</a></p>
+included ASN.1 module, and allocate values from "SMI Security for
+S/MIME Attributes" to identify two Attributes defined within.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <div id="object-identifier-allocations">
 <section id="section-5.1">
         <h3 id="name-object-identifier-allocatio">
@@ -1661,29 +1665,38 @@ Document must specify an ATTEST-STATEMENT definition to which this Object Identi
       <h2 id="name-security-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-6-1">The attributes and structures defined in this document are primarily
-meant to be used as additional Attributes for a PKCS10 Certification
-Signing Request (CSR).  As such, it's up to the receiving/relying
-party to place as much or as little trust in the contents of these
-attributes as necessary to satisfy its own policies.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">A relying party will need either a specification defining how an
-attestation type was formed and how to validate that type, or a
-trusted method of verifying the attestation.  In the former case, a
-relying party should consider the information available from any
-certificate chain covering the attesting key when deciding to accept
-the attestation.<a href="#section-6-2" class="pilcrow">¶</a></p>
-<p id="section-6-3">Most attestations will need to provide a method to convert the
-attested key representation into the equivalent SubjectPublicKey info
-structure and the attested key <span class="bcp14">MUST</span> be compared for equivalence to
-the public key provided in the CSR before accepting the attestation.<a href="#section-6-3" class="pilcrow">¶</a></p>
-<p id="section-6-4">The relying party, as always, is responsible for setting the rules
-for what it will accept.  The presence of an AttestAttribute is not
-required by any current standard, but such attribute may provide the
-relying party with additional assurance as a prerequisite to issuing
-certificates or other credentials.  That acceptance criteria is out
-of scope for this document.  Whether to require an AttestAttribute or
-its contents in any specific use case is out-of-scope for this
-document.<a href="#section-6-4" class="pilcrow">¶</a></p>
+<p id="section-6-1">The attestation evidence communicated in the attributes and
+structures defined in this document are meant to be used in
+a PKCS10 Certification Signing Request (CSR). It is up to the
+verifier and to the relying party (RA/CA) to place as much or
+as little trust in this information as dictated by policies.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">This document defines the transport of evidence of different formats
+in a CSR. Some of these attestation formats are based on standards
+while others are proprietary formats. A verifier will need to understand
+these formats for matching the received values against policies.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">Policies drive the processing of evidence at the verifier and other
+policies influence the decision making at the relying party when
+evaluating the attestation result. The relying party is ultimately
+responsible for making a decision of what attestation-related
+information in the CSR it will accept. The presence of the attributes
+defined in this specification provide the relying party with additional
+assurance about attester. Policies used at the verifier and the relying
+party are implementation dependent and out of scope for this document.
+Whether to require the use of the attestation-related attributes in the
+CSR is out-of-scope for this document.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-4">Evidence generated by the attestation needs to be fresh to provide
+value to the verifier since the configuration on the device may change
+over time. Section 10 of <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> discusses different approaches for
+providing freshness, including a nonce-based approach, the use of timestamps
+and an epoch-based technique.  The use of nonces requires an extra message
+exchange via the relying party and the use of timestamps requires
+synchronized clocks. Epochs also require communication. Constraints in
+certain deployment environments may make these of these techniques
+impossible. Hence, whether to require the use one of these
+freshness techniques is out-of-scope for this document. Developers
+and operators need to analyse the impact of replayed evidence.
+The distribution of nonces via certificate management protocols, some of
+which embed CSRs, is possible but out-of-scope for this document.<a href="#section-6-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <section id="section-7">
