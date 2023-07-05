@@ -4,8 +4,8 @@
 
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
-Intended status: Standards Track                             4 July 2023
-Expires: 5 January 2024
+Intended status: Standards Track                             5 July 2023
+Expires: 6 January 2024
 
 
          Use of Attestation with Certification Signing Requests
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 January 2024.
+   This Internet-Draft will expire on 6 January 2024.
 
 Copyright Notice
 
@@ -97,7 +97,7 @@ Table of Contents
    Appendix A.  Acknowledgments
    Appendix B.  Examples
      B.1.  Simple Attestation Example
-     B.2.  Example TPM V2.0 Attestation Attribute - Non Normative
+     B.2.  Example TPM V2.0 Attestation Attribute - Non-Normative
    Appendix C.  ASN.1 Module for Attestation
    Author's Address
 
@@ -118,13 +118,13 @@ Table of Contents
    specification thereby tries to be technology agnostic with regards to
    the transport of the produced signed claims.
 
-   RFC 9334 uses the term “evidence” for the information that is
+   RFC 9334 uses the term "evidence" for information that is
    communicated by the verifier with remote parties.  Since the
-   information produced by the device can neither be trusted and often
-   not even verified directly by the relying party an additional role
-   with the verifier is introduced.  The verifier has knowledge to
-   verify the evidence, has information about what devices run what
-   firmware and software, etc.
+   information produced by the device can not be trusted and often not
+   even verified directly by the relying party an additional role is
+   introduced: the verifier.  The verifier has knowledge about the
+   expected firmware versions and hardware configuration.  This
+   information is called endorsements and reference values in RFC 9334.
 
    This document creates two ATTRIBUTE/Attribute definitions.  The first
    Attribute may be used to carry a set of certificates or public keys
@@ -134,7 +134,10 @@ Table of Contents
 
    With these extensions a Certification Authority (CA) has additional
    information about whether to issuer a certificate and what
-   information to populate into the certificate.
+   information to populate into the certificate.  The scope of this
+   document is, however, limited to the transport of evidence via a CSR.
+   A supplementary document will describe how evidence is carried in an
+   X.509 certificate for attesting hardware security modules (HSMs).
 
 2.  Conventions and Definitions
 
@@ -495,7 +498,18 @@ AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
 
 Appendix A.  Acknowledgments
 
-   Add your name here.
+   This specification is the work of a design team created by the chairs
+   of the LAMPS working group ().  The following persons, in no specific
+   order, contributed to the work: Richard Kettlewell, Chris Trufan,
+   Bruno Couillard, Jean-Pierre Fiset, Sander Temme, Jethro Beekman,
+   Zsolt Rózsahegyi, Ferenc Pető, Mike Agrenius Kushner, Tomas
+   Gustavsson, Dieter Bong, Christomer Meyer, Michael StJohns, Carl
+   Wallace, Michael Ricardson, Tomofumi Okubo, Olivier Couillard, John
+   Gray, Eric Amador, Johnson Darren, Herman Slatman, Tiru Reddy, Thomas
+   Fossati, Corey Bonnel, Argenius Kushner, James Hagborg.
+
+   We would like to specifically thank Mike StJohns for his work on an
+   earlier version of this draft.
 
 Appendix B.  Examples
 
@@ -524,7 +538,7 @@ B.1.  Simple Attestation Example
      -- ANCILLARY is absent
    }
 
-B.2.  Example TPM V2.0 Attestation Attribute - Non Normative
+B.2.  Example TPM V2.0 Attestation Attribute - Non-Normative
 
    What follows is a fragment of an ASN.1 module that might be used to
    define an attestation statment attribute to carry a TPM V2.0 key
