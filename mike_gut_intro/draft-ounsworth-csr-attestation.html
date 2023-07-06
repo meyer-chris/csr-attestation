@@ -1293,12 +1293,17 @@ Attribute may be used to carry a set of certificates or public keys that
 may be necessary to validate evidence. The second Attribute carries a
 structure that may be used to carry key attestation statements, signatures
 and related data.<a href="#section-1-6" class="pilcrow">¶</a></p>
-<p id="section-1-7">With these attributes, an RA or CA has additional
+<p id="section-1-7">A CSR may contain one or more attestations, for example a key attestation
+asserting the storage properties of the private key as well as a platform
+attestation asserting the firmware version and other general properties
+of the device, or multiple key attestations signed by certificate chains
+on different cryptographic algorithms.<a href="#section-1-7" class="pilcrow">¶</a></p>
+<p id="section-1-8">With these attributes, an RA or CA has additional
 information about whether to issuer a certificate and what information
 to populate into the certificate. The scope of this document is, however,
 limited to the transport of evidence via a CSR. A supplementary document
 will describe how evidence is carried in an X.509 certificate for attesting
-hardware security modules (HSMs).<a href="#section-1-7" class="pilcrow">¶</a></p>
+hardware security modules (HSMs).<a href="#section-1-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1473,6 +1478,12 @@ AttestAttribute ATTRIBUTE ::= {
 }
 </pre><a href="#section-4.3-2" class="pilcrow">¶</a>
 </div>
+<p id="section-4.3-3">A CSR <span class="bcp14">MAY</span> contain one or more instance of <code>AttestAttribute</code> to allow,
+for example a key attestation
+asserting the storage properties of the private key as well as a platform
+attestation asserting the firmware version and other general properties
+of the device, or multiple key attestations signed by certificate chains
+on different cryptographic algorithms.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="attestcertsattribute">
@@ -1482,21 +1493,25 @@ AttestAttribute ATTRIBUTE ::= {
         </h3>
 <p id="section-4.4-1">The "AttestCertsAttribute" contains a sequence of certificates that
 may be needed to validate the contents of an attestation statement
-contained in an attestAttribute.  By convention, the first element of
-the SEQUENCE <span class="bcp14">SHOULD</span> contain the object that contains the public key
-needed to directly validate the attestAttribute.  The remaining
-elements should chain that data back to an agreed upon root of trust
-for attestations.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.4-2">
+contained in an attestAttribute. The set of certificates should contain
+the object that contains the public key needed to directly validate the
+AttestAttribute.  The remaining elements should chain that data back to
+an agreed upon root of trust for attestations. No order is implied, it is
+the Verifier's responsibility to perform the appropriate certificate path building.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">A CSR <span class="bcp14">MUST</span> contain at most 1 <code>AttestCertsAttribute</code>. In the case where
+the CSR contains multiple instances of <code>AttestAttribute</code> representing
+multiple attestations, all necessary certificates <span class="bcp14">MUST</span> be contained in
+the same instance of <code>AttestCertsAttribute</code>.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.4-3">
 <pre>
 id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
 
-attestCertsAttribute ATTRIBUTE ::= {
-  TYPE SEQUENCE OF CertificateChoice
+AttestCertsAttribute ATTRIBUTE ::= {
+  TYPE SET OF CertificateChoice
   COUNTS MAX 1
   IDENTIFIED BY id-aa-attestChainCerts
 }
-</pre><a href="#section-4.4-2" class="pilcrow">¶</a>
+</pre><a href="#section-4.4-3" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
