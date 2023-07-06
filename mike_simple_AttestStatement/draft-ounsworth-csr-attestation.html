@@ -1622,18 +1622,10 @@ attestCertsAttribute ATTRIBUTE ::= {
   IDENTIFIED BY id-aa-attestChainCerts
 }
 
-ATTEST-STATEMENT ::= CLASS {
-  &amp;id                 OBJECT IDENTIFIER UNIQUE,
-  &amp;Type,                  -- NOT optional
-} WITH SYNTAX {
-  TYPE  &amp;Type
-  IDENTIFIED BY &amp;id
-}
-
-AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
+AttestStatement ::= SEQUENCE
   {
-    type          ATTEST-STATEMENT.&amp;id({IOSet}),
-    value         ATTEST-STATEMENT.&amp;Type({IOSet}{@type})
+    type   OBJECT IDENTIFIER,
+    value  OCTET STRING
   }
 
 END
