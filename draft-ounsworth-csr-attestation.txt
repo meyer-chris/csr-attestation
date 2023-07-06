@@ -319,7 +319,7 @@ Table of Contents
    AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
      {
        type          ATTEST-STATEMENT.&id({IOSet}),
-       value         ATTEST-STATEMENT.&Type({IOSet}{@type}),
+       value         ATTEST-STATEMENT.&Type({IOSet}{@type})
      }
 
    ~~~ BEGIN ENDOTE ~~~
@@ -345,6 +345,12 @@ DEFINITIONS IMPLICIT TAGS ::= BEGIN
 EXPORTS ALL;
 
 IMPORTS
+
+Certificate
+  FROM PKCS-9
+    { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
+      modules(0) pkcs-9(1) };
+
 
 
 -- Root of IETF's PKIX OID tree
@@ -412,7 +418,7 @@ ATTEST-STATEMENT ::= CLASS {
 AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
   {
     type          ATTEST-STATEMENT.&id({IOSet}),
-    value         ATTEST-STATEMENT.&Type({IOSet}{@type}),
+    value         ATTEST-STATEMENT.&Type({IOSet}{@type})
   }
 
 END

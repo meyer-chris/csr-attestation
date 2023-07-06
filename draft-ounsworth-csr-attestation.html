@@ -1522,7 +1522,7 @@ ATTEST-STATEMENT ::= CLASS {
 AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
   {
     type          ATTEST-STATEMENT.&amp;id({IOSet}),
-    value         ATTEST-STATEMENT.&amp;Type({IOSet}{@type}),
+    value         ATTEST-STATEMENT.&amp;Type({IOSet}{@type})
   }
 </pre><a href="#section-4.5-2" class="pilcrow">¶</a>
 </div>
@@ -1558,6 +1558,12 @@ DEFINITIONS IMPLICIT TAGS ::= BEGIN
 EXPORTS ALL;
 
 IMPORTS
+
+Certificate
+  FROM PKCS-9
+    { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
+      modules(0) pkcs-9(1) };
+
 
 
 -- Root of IETF's PKIX OID tree
@@ -1625,7 +1631,7 @@ ATTEST-STATEMENT ::= CLASS {
 AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
   {
     type          ATTEST-STATEMENT.&amp;id({IOSet}),
-    value         ATTEST-STATEMENT.&amp;Type({IOSet}{@type}),
+    value         ATTEST-STATEMENT.&amp;Type({IOSet}{@type})
   }
 
 END
