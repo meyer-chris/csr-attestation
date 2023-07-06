@@ -1245,10 +1245,10 @@ Authority are described.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
-                <p id="section-toc.1-1.10.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-simple-attestation-example" class="internal xref">Simple Attestation Example</a></p>
+                <p id="section-toc.1-1.10.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-psa-attestation-in-csr" class="internal xref">PSA Attestation in CSR</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
-                <p id="section-toc.1-1.10.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-example-tpm-v20-attestation" class="internal xref">Example TPM V2.0 Attestation Attribute - Non-Normative</a></p>
+                <p id="section-toc.1-1.10.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-tpm-v20-attestation-in-csr" class="internal xref">TPM V2.0 Attestation in CSR</a></p>
 </li>
             </ul>
 </li>
@@ -1828,13 +1828,13 @@ which embed CSRs, is possible but out-of-scope for this document.<a href="#secti
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="I-D.tschofenig-rats-psa-token">[I-D.tschofenig-rats-psa-token]</dt>
+        <dd>
+<span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Frost, S.</span>, <span class="refAuthor">Brossard, M.</span>, <span class="refAuthor">Shaw, A. L.</span>, and <span class="refAuthor">T. Fossati</span>, <span class="refTitle">"Arm's Platform Security Architecture (PSA) Attestation Token"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-tschofenig-rats-psa-token-12</span>, <time datetime="2023-07-05" class="refDate">5 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-tschofenig-rats-psa-token-12">https://datatracker.ietf.org/doc/html/draft-tschofenig-rats-psa-token-12</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2986">[RFC2986]</dt>
         <dd>
 <span class="refAuthor">Nystrom, M.</span> and <span class="refAuthor">B. Kaliski</span>, <span class="refTitle">"PKCS #10: Certification Request Syntax Specification Version 1.7"</span>, <span class="seriesInfo">RFC 2986</span>, <span class="seriesInfo">DOI 10.17487/RFC2986</span>, <time datetime="2000-11" class="refDate">November 2000</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2986">https://www.rfc-editor.org/rfc/rfc2986</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC5280">[RFC5280]</dt>
-        <dd>
-<span class="refAuthor">Cooper, D.</span>, <span class="refAuthor">Santesson, S.</span>, <span class="refAuthor">Farrell, S.</span>, <span class="refAuthor">Boeyen, S.</span>, <span class="refAuthor">Housley, R.</span>, and <span class="refAuthor">W. Polk</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile"</span>, <span class="seriesInfo">RFC 5280</span>, <span class="seriesInfo">DOI 10.17487/RFC5280</span>, <time datetime="2008-05" class="refDate">May 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5280">https://www.rfc-editor.org/rfc/rfc5280</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="TPM20">[TPM20]</dt>
       <dd>
@@ -1865,135 +1865,24 @@ version of this draft.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
       <h2 id="name-examples">
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
       </h2>
-<div id="simple-attestation-example">
+<p id="appendix-B-1">This section provides two non-normative examples for embedding evidence
+in in CSRs. The first example embeds the Arm Platform Security Architecture
+tokens, which offers platform attestation, into the CSR. The second example
+conveys TPM v2.0 attestation information in the CSR.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<div id="psa-attestation-in-csr">
 <section id="appendix-B.1">
-        <h3 id="name-simple-attestation-example">
-<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-simple-attestation-example" class="section-name selfRef">Simple Attestation Example</a>
+        <h3 id="name-psa-attestation-in-csr">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-psa-attestation-in-csr" class="section-name selfRef">PSA Attestation in CSR</a>
         </h3>
-<p id="appendix-B.1-1">This is a fragment of ASN.1 meant to demonstrate an absolute minimal
-definition of an ATTEST-STATEMENT.  A similar fragment could be used
-to define an ATTEST-STATEMENT for an opaque HSM vendor specific
-atterstation model.<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-B.1-2">
-<pre>
--- This OCTET STRING is not like any other OCTET STRING
--- Please see https://example.com/simple-attest.txt,
--- Structure labled "Mike's simple attest" for the
--- structure of this field and how to verify the attestation
-
-MikesSimpleAttestData ::= OCTET STRING
-
-mikesSimpleAttestOid OBJECT IDENTIFIER ::= { id-mikes-root 1 }
-
-MikesSimpleAttest ATTEST-STATEMENT ::= {
-  TYPE MikesSimpleAttestData
-  IDENTIFIED BY mikesSimpleAttestOid
-  -- These are all implied
-  -- ALGID IS absent
-  -- SIGNATURE is absent
-  -- ANCILLARY is absent
-}
-</pre><a href="#appendix-B.1-2" class="pilcrow">¶</a>
-</div>
+<p id="appendix-B.1-1">TBD. Example based on <span>[<a href="#I-D.tschofenig-rats-psa-token" class="cite xref">I-D.tschofenig-rats-psa-token</a>]</span>.<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="example-tpm-v20-attestation-attribute-non-normative">
+<div id="tpm-v20-attestation-in-csr">
 <section id="appendix-B.2">
-        <h3 id="name-example-tpm-v20-attestation">
-<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-example-tpm-v20-attestation" class="section-name selfRef">Example TPM V2.0 Attestation Attribute - Non-Normative</a>
+        <h3 id="name-tpm-v20-attestation-in-csr">
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-tpm-v20-attestation-in-csr" class="section-name selfRef">TPM V2.0 Attestation in CSR</a>
         </h3>
-<p id="appendix-B.2-1">What follows is a fragment of an ASN.1 module that might be used to
-   define an attestation statment attribute to carry a TPM V2.0 key
-   attestation - i.e., the output of the TPM2_Certify command.  This is
-   an example and NOT a registered definition.  It's provided simply to
-   give an example of how to write an ATTEST-STATEMENT definition and
-   module.<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-B.2-2">
-<pre>
--- IMPORT these.
--- PKI normal form for an ECDSA signature
-ECDSA-Sig-Value ::= SEQUENCE {
-  r INTEGER,
-  s INTEGER
-  }
-
--- Octet string of size n/8 where n is the
--- bit size of the public modulus
-RSASignature ::= OCTET STRING
-
--- One or the other of these depending on the value in TPMT_SIGNATURE
-
-TpmSignature CHOICE ::= {
-  ecSig [0] IMPLICIT ECDSA-Sig-Value,
-  rsaSig [1] IMPLICIT RSASignature
-  }
-
--- The TPM form of the public key being attested.
--- Needed to verify the attestation - this is the TPMT_PUBLIC structure.
-TpmtPublic ::= OCTET STRING
-
--- The TPMS_ATTEST structure as defined in TPM2.0
--- Unwrapped from the TPM2B_ATTEST provided
--- by the TPM2_Certify command.
-TpmsAttest ::= OCTET STRING
-
--- The qualifying data provided to a TPM2_Certify call, may be absent
--- This is the contents of data field of the TPM2B_DATA structure.
-QualifyingData ::= OCTET STRING
-
-TpmAncillary ::= SEQUENCE {
-   toBeAttestedPublic TpmtPublic,
-   qualifyingData QualifyingData OPTIONAL
-   }
-
--- This represents a maximally unwrapped TPM V2.0 attestation.  The
--- output of TPM2_Certify is a TPM2B_ATTEST and a TPMT_SIGNATURE.
--- The former is unwrapped into a TPMS_ATTEST and the latter is
--- decomposed to provide the contents of the algId and signature fields.
-
---
--- This attestation statement can be verified by:
--- Signature siggy = Signature.getInstance (stmt.algId);
--- siggy.init (attestPublicKey, VERIFY);
--- siggy.update ((short)stmt.value.length) // todo: big or little endian
--- siggy.update (stmt.value.data)
--- bool verified = siggy.verify (getSigData(stmt.signature)); //
-unwrap the signature
---
-
-TpmV2AttestStatement ATTEST STATEMENT ::= {
-   TYPE TpmsAttest
-   IDENTIFIED BY id-ata-tpmv20-1
-   ALGID IS present
-   SIGNATURE TYPE TpmSignature IS present
-   ANCILLARY TYPE TpmAncillary IS present
-   }
-</pre><a href="#appendix-B.2-2" class="pilcrow">¶</a>
-</div>
-<p id="appendix-B.2-3">This attestation is the result of executing a TPM2_Certify command
-   over a TPM key.  See <span>[<a href="#TPM20" class="cite xref">TPM20</a>]</span> for more details.<a href="#appendix-B.2-3" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-4">The data portion of the value field encoded as OCTET STRING is the
-   attestationData from the TPM2B_ATTEST produced by the TPM.  In other
-   words, strip off the TPM2B_ATTEST "size" field and place the
-   TPMS_ATTEST encoded structure in the OCTET STRING data field.<a href="#appendix-B.2-4" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-5">The algId is derived from the "sigAlg" field of the TPMT_SIGNATURE
-   structure.<a href="#appendix-B.2-5" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-6">The signature field is a TpmSignature, created by transforming the
-   TPMU_SIGNATURE field to the appropriate structure given the signature
-   type.<a href="#appendix-B.2-6" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-7">The ancillary field contains a structure with the TPMT_PUBLIC
-   structure that contains the TPM's format of the key to be attested.
-   The attestation statement data contains a hash of this structure, and
-   not the key itself, so the hash of this structure needs to be
-   compared to the value in the attestation attestation statement.  If
-   that passes, the key needs to be transformed into a PKIX style key
-   and compared to the key in the certificate signing request to
-   complete the attestation verification.<a href="#appendix-B.2-7" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-8">The ancillary field also contains an optional OCTET STRING which is
-   used if the TPM2_Certify command is called with a non-zero length
-   "qualifyingData" argument to contain that data.<a href="#appendix-B.2-8" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-9">An AttestCertChain attribute <span class="bcp14">MUST</span> be present if this attribute is
-   used as part of a certificate signing request.<a href="#appendix-B.2-9" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-1">TBD: Example based on <span>[<a href="#TPM20" class="cite xref">TPM20</a>]</span>.<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
