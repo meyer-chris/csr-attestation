@@ -5,8 +5,8 @@
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                           H. Tschofenig
-Expires: 6 January 2024                                      Arm Limited
-                                                             5 July 2023
+Expires: 7 January 2024                                          Siemens
+                                                             6 July 2023
 
 
          Use of Attestation with Certification Signing Requests
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 January 2024.
+   This Internet-Draft will expire on 7 January 2024.
 
 Copyright Notice
 
@@ -151,8 +151,7 @@ Table of Contents
        certificate chains rooted in a device manufacture trust anchor
        and the leaf certificate being on the device in question.
 
-   2.  An attestation statement containing Evidence which can be encoded
-       into an ASN.1 OCTET STRING.
+   2.  An attestation statement containing Evidence.
 
    This document creates two ATTRIBUTE/Attribute definitions.  The first
    Attribute may be used to carry a set of certificates or public keys
@@ -691,5 +690,5 @@ Authors' Addresses
 
 
    Hannes Tschofenig
-   Arm Limited
+   Siemens
    Email: Hannes.Tschofenig@gmx.net
