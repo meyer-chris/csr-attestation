@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-07-04T01:05:33.121266+00:00",
+  "timestamp": "2023-07-06T01:06:09.023994+00:00",
   "repo": "lamps-wg/csr-attestation",
   "labels": [
     {
@@ -50,5 +50,66 @@
     }
   ],
   "issues": [],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOJ3IIN85UwbJb",
+      "title": "Mike rats terms",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/1",
+      "state": "OPEN",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Tweaked intro to (hopefully) line up with RATS terminology](https://github.com/lamps-wg/csr-attestation/commit/4ffe0f026c5f6446bb20cb617e60d2a072c171d8)",
+      "createdAt": "2023-07-05T23:49:38Z",
+      "updatedAt": "2023-07-05T23:49:39Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "2c5bceeb90e2f70c35592f05e7949b5c71d3a6ed",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "mike_rats_terms",
+      "headRefOid": "4ffe0f026c5f6446bb20cb617e60d2a072c171d8",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOJ3IIN85UwfDr",
+      "title": "Mike gut intro",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/2",
+      "state": "OPEN",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I removed the duplication between the #Introduction and the #Architecture sections.",
+      "createdAt": "2023-07-06T00:09:22Z",
+      "updatedAt": "2023-07-06T00:59:30Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "23d908d3e7d11f4e04e8c1877ba772245e405b10",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "mike_gut_intro",
+      "headRefOid": "0313b8c9b75cc2ef70f47a3ee72555656376bd69",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I propose that this PR supercede (and replace) #1.",
+          "createdAt": "2023-07-06T00:09:50Z",
+          "updatedAt": "2023-07-06T00:09:50Z"
+        }
+      ],
+      "reviews": []
+    }
+  ]
 }
