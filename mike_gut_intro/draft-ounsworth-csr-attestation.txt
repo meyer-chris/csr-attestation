@@ -5,7 +5,7 @@
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                           H. Tschofenig
-Expires: 7 January 2024                                      Arm Limited
+Expires: 7 January 2024                                          Siemens
                                                              6 July 2023
 
 
@@ -83,18 +83,19 @@ Table of Contents
      4.3.  AttestAttribute
      4.4.  AttestCertsAttribute
      4.5.  AttestStatement
-   5.  IANA Considerations
-     5.1.  Object Identifier Allocations
-       5.1.1.  Module Registration - SMI Security for PKIX Module
+   5.  ASN.1 Module
+   6.  IANA Considerations
+     6.1.  Object Identifier Allocations
+       6.1.1.  Module Registration - SMI Security for PKIX Module
                Identifer
-       5.1.2.  Object Identifier Registrations - SMI Security for S/
+       6.1.2.  Object Identifier Registrations - SMI Security for S/
                MIME Attributes
-       5.1.3.  "SMI Security for PKIX Attestation Statement Formats"
+       6.1.3.  "SMI Security for PKIX Attestation Statement Formats"
                Registry
-   6.  Security Considerations
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
+   7.  Security Considerations
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Appendix A.  Acknowledgments
    Appendix B.  Examples
      B.1.  Simple Attestation Example
@@ -131,12 +132,10 @@ Table of Contents
    the following components:
 
    1.  A set of certificates typically containing one or more
-       certificate chains rooted in one or more device manufacture trust
-       anchors, and the leaf certificate(s) which certify keys on device
-       in question which are used for signing attestation statements.
+       certificate chains rooted in a device manufacture trust anchor
+       and the leaf certificate being on the device in question.
 
-   2.  An attestation statement containing Evidence which can be encoded
-       into an ASN.1 OCTET STRING.
+   2.  An attestation statement containing Evidence.
 
    This document creates two ATTRIBUTE/Attribute definitions.  The first
    Attribute may be used to carry a set of certificates or public keys
@@ -172,18 +171,19 @@ Table of Contents
 
 3.  Architecture
 
-   Figure 1 shows the high-level communication pattern of the passport
-   model where the attester transmits the evidence in the CSR to the RA
-   and the CA.  The verifier processes the received evidence and
-   computes an attestation result, which is then processed by the RA/CA
-   prior to the certificate issuance.
+   Figure 1 shows the high-level communication pattern of the RATS
+   passport model where the attester transmits the evidence in the CSR
+   to the RA and the CA.  The verifier processes the received evidence
+   and computes an attestation result, which is then processed by the
+   RA/CA prior to the certificate issuance.
 
    Note that the verifier is a logical role that may be included in the
-   RA/CA product.  In this case the interaction between the relying
-   party and the verifier are local.  The verifier functionality can,
-   however, also be kept separate from the RA/CA functionality.  For
-   example, security concerns may require parsers of evidence formats to
-   be separated from the core CA functionality.
+   RA/CA product.  In this case the Relying Party and Verifier collapse
+   into a single entity.  The verifier functionality can, however, also
+   be kept separate from the RA/CA functionality, such as a utility or
+   library provided by the device manufacturer.  For example, security
+   concerns may require parsers of evidence formats to be logically or
+   physically separated from the core CA functionality.
 
                                  .-------------.
                                  |             | Compare Evidence
@@ -195,25 +195,27 @@ Table of Contents
                                       |   | Result
                                       |   v
     .------------.               .----|----------.
-    |            +-------------->|---'           | Compare Attestation
+    |            +-------------->|----'           | Compare Attestation
     |  Attester  |   Evidence    | Relying       | Result against
     |            |   in CSR      | Party (RA/CA) | policy
     '------------'               '---------------'
 
                            Figure 1: Architecture
 
-   As discussed in RFC 9334 different security and privacy aspects need
+   As discussed in RFC 9334, different security and privacy aspects need
    to be considered.  For example, evidence may need to be protected
    against replay and Section 10 of RFC 9334 lists approach for offering
    freshness.  There are also concerns about the exposure of persistent
    identifiers by utilizing attestation technology, which are discussed
    in Section 11 of RFC 9334.  Finally, the keying material used by the
-   attester need to be protected against unauthorized access.  This
-   aspect is described in Section 12 of RFC 9334.  Most of these aspects
-   are, however, outside the scope of this specification but relevant
-   for use with a given attestation technology.  The focus of this
-   specification is on the transport of evidence from the attester to
-   the relying party via existing certification request messages.
+   attester need to be protected against unauthorized access, and
+   against signing arbitrary content that originated from outside the
+   device.  This aspect is described in Section 12 of RFC 9334.  Most of
+   these aspects are, however, outside the scope of this specification
+   but relevant for use with a given attestation technology.  The focus
+   of this specification is on the transport of evidence from the
+   attester to the relying party via existing certification request
+   messages.
 
 4.  ASN.1 Elements
 
@@ -332,85 +334,139 @@ Table of Contents
    controlled by the value of the "type" field, similar to an Attribute
    definition.
 
+   ATTEST-STATEMENT ::= CLASS {
+     &id                 OBJECT IDENTIFIER UNIQUE,
+     &Type,                  -- NOT optional
+   } WITH SYNTAX {
+     TYPE  &Type
+     IDENTIFIED BY &id
+   }
+
+   AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
+     {
+       type          ATTEST-STATEMENT.&id({IOSet}),
+       value         ATTEST-STATEMENT.&Type({IOSet}{@type})
+     }
+
+   ~~~ BEGIN ENDOTE ~~~
+
+   Any reason not to simplify this down? :
+
+   AttestStatement ::= SEQUENCE
+     {
+       type   OBJECT IDENTIFIER,
+       value  OCTET STRING
+     }
+
+   ~~~ END EDNOTE ~~~
+
+5.  ASN.1 Module
+
+CSR-ATTESTATION-2023
+           {iso(1) identified-organization(3) dod(6) internet(1) security(5)
+       mechanisms(5) pkix(7) id-mod(0) id-mod-pkix-attest-01(TBDMOD)}
+
+DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+EXPORTS ALL;
+
+IMPORTS
+
+Certificate
+  FROM PKCS-9
+    { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
+      modules(0) pkcs-9(1) };
+
+
+
+-- Root of IETF's PKIX OID tree
+id-pkix OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+     dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
+
+-- S/Mime attributes - can be used here.
+id-aa OBJECT IDENTIFIER ::= {iso(1) member-body(2) usa(840)
+     rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) attributes(2)}
+
+-- Branch for attestation statement types
+id-ata OBJECT IDENTIFIER ::= { id-pkix (TBD1) }
+
+
+CertificateChoice ::=
+   CHOICE {
+      cert Certificate,
+      opaqueCert    [0] IMPLICIT OCTET STRING,
+      typedCert     [1] IMPLICIT TypedCert,
+      typedFlatCert [2] IMPLICIT TypedFlatCert
+   }
+
+TYPED-CERT ::= TYPE-IDENTIFIER
+
+CertType ::= TYPED-CERT.&id
+
+TypedCert ::= SEQUENCE {
+              certType     TYPED-CERT.&id({TypedCertSet}),
+              content     TYPED-CERT.&Type ({TypedCertSet}{@certType})
+          }
+
+TypedCertSet TYPED-CERT ::= {
+             ... -- Empty for now,
+             }
+
+TypedFlatCert ::= SEQUENCE {
+    certType OBJECT IDENTIFIER,
+    certBody OCTET STRING
+}
+
+
+id-aa-attestStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
+
+AttestAttribute ATTRIBUTE ::= {
+  TYPE AttestStatement
+  IDENTIFIED BY id-aa-attestStatement
+}
+
+id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
+
+attestCertsAttribute ATTRIBUTE ::= {
+  TYPE SEQUENCE OF CertificateChoice
+  COUNTS MAX 1
+  IDENTIFIED BY id-aa-attestChainCerts
+}
+
 ATTEST-STATEMENT ::= CLASS {
   &id                 OBJECT IDENTIFIER UNIQUE,
   &Type,                  -- NOT optional
-  &algidPresent       ParamOptions DEFAULT absent,
-  &sigPresent         ParamOptions DEFAULT absent,
-  &ancillaryPresent   ParamOptions DEFAULT absent,
-  &sigType            DEFAULT OCTET STRING
-  &ancillaryType      DEFAULT OCTET STRING
-
 } WITH SYNTAX {
   TYPE  &Type
   IDENTIFIED BY &id
-  [ALGID IS &algidPresent]
-  [SIGNATURE [TYPE &sigType] IS &sigPresent]
-  [ANCILLARY [TYPE &ancillaryType] IS &ancillaryPresent]
 }
 
 AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
   {
     type          ATTEST-STATEMENT.&id({IOSet}),
-    value         ATTEST-STATEMENT.&Type({IOSet}{@type}),
-    algId         [0] IMPLICIT  AlgorithmIdentifier OPTIONAL,
-    signature     [1] ATTEST-STATEMENT.&sigType OPTIONAL -- NOT implicit
-    ancillaryData [2] ATTEST-STATEMENT.&ancillaryType OPTIONAL
+    value         ATTEST-STATEMENT.&Type({IOSet}{@type})
   }
 
-   Depending on whether the "value" field contains an entire signed
-   attestation, or only the toBeSigned portion, the algId field may or
-   may not be present.  If present it contains the AlgorithmIdentifier
-   of the signature algorithm used to sign the attestation statement.
-   If absent, either the value field contains an indication of the
-   signature algorithm, or the signature algorithm is fixed for that
-   specific type of AttestStatement.
+END
 
-   Similarly for the "signature" field, if the "value" field contains
-   only the toBeSigned portion of the attestation statement, this field
-   SHOULD be present.  The "signature" field may by typed as any valid
-   ASN.1 type.  Opaque signature types SHOULD specify the use of sub-
-   typed OCTET STRING.  For example:
-
-   MyOpaqueSignature ::= OCTET STRING
-
-   If possible, the ATTEST-STATEMENT SHOULD specify an un-wrapped
-   representation of a signature, rather than an OCTET STRING or BIT
-   STRING wrapped ASN.1 structure.  I.e., by specifying ECDSA-Sig-Value
-   from PKIXAlgs-2009 (see [RFC5912]) to encode an ECDSA signature.
-
-   ECDSA-Sig-Value ::= SEQUENCE {
-     r  INTEGER,
-     s  INTEGER
-   }
-
-   The ancillaryData field contains data provided externally to the
-   attestation engine,and/or data that may be needed to relate the
-   attestation to other PKIX elements.  The format or content of the
-   externally provided data is not under the control of the attestation
-   engine.  For example, this field might contain a freshness nonce
-   generated by the relying party, a signed time stamp, or even a hash
-   of protocol data or nonce data.  See below for a few different
-   examples.
-
-5.  IANA Considerations
+6.  IANA Considerations
 
    The IANA is requested to open one new registry, allocate a value from
    the "SMI Security for PKIX Module Identifier" registry for the
    included ASN.1 module, and allocate values from "SMI Security for S/
    MIME Attributes" to identify two Attributes defined within.
 
-5.1.  Object Identifier Allocations
+6.1.  Object Identifier Allocations
 
-5.1.1.  Module Registration - SMI Security for PKIX Module Identifer
+6.1.1.  Module Registration - SMI Security for PKIX Module Identifer
 
    *  Decimal: IANA Assigned - Replace TBDMOD
 
-   *  Description: Attest-2023 - id-mod-pkix-attest-01
+   *  Description: CSR-ATTESTATION-2023 - id-mod-pkix-attest-01
 
    *  References: This Document
 
-5.1.2.  Object Identifier Registrations - SMI Security for S/MIME
+6.1.2.  Object Identifier Registrations - SMI Security for S/MIME
         Attributes
 
    *  Attest Statement
@@ -429,7 +485,7 @@ AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
 
       -  References: This Document
 
-5.1.3.  "SMI Security for PKIX Attestation Statement Formats" Registry
+6.1.3.  "SMI Security for PKIX Attestation Statement Formats" Registry
 
    Please open up a registry for Attestation Statement Formats within
    the SMI-numbers registry, allocating an assignment from id-pkix ("SMI
@@ -455,7 +511,7 @@ AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
 
    *  References: RFC or other document
 
-6.  Security Considerations
+7.  Security Considerations
 
    The attestation evidence communicated in the attributes and
    structures defined in this document are meant to be used in a PKCS10
@@ -496,9 +552,9 @@ AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
    certificate management protocols, some of which embed CSRs, is
    possible but out-of-scope for this document.
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -519,7 +575,7 @@ AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
               Architecture", RFC 9334, DOI 10.17487/RFC9334, January
               2023, <https://www.rfc-editor.org/rfc/rfc9334>.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
               Request Syntax Specification Version 1.7", RFC 2986,
@@ -694,5 +750,5 @@ Authors' Addresses
 
 
    Hannes Tschofenig
-   Arm Limited
+   Siemens
    Email: Hannes.Tschofenig@gmx.net
