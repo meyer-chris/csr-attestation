@@ -1357,7 +1357,7 @@ or physically separated from the core CA functionality.<a href="#section-3-2" cl
                                    |   | Result
                                    |   v
  .------------.               .----|----------.
- |            +--------------&gt;|----'           | Compare Attestation
+ |            +--------------&gt;|----'          | Compare Attestation
  |  Attester  |   Evidence    | Relying       | Result against
  |            |   in CSR      | Party (RA/CA) | policy
  '------------'               '---------------'
@@ -1533,33 +1533,13 @@ controlled by the value of the "type" field, similar to an Attribute
 definition.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.5-2">
 <pre>
-ATTEST-STATEMENT ::= CLASS {
-  &amp;id                 OBJECT IDENTIFIER UNIQUE,
-  &amp;Type,                  -- NOT optional
-} WITH SYNTAX {
-  TYPE  &amp;Type
-  IDENTIFIED BY &amp;id
-}
-
-AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
-  {
-    type          ATTEST-STATEMENT.&amp;id({IOSet}),
-    value         ATTEST-STATEMENT.&amp;Type({IOSet}{@type})
-  }
-</pre><a href="#section-4.5-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.5-3">~~~ BEGIN ENDOTE ~~~<a href="#section-4.5-3" class="pilcrow">¶</a></p>
-<p id="section-4.5-4">Any reason not to simplify this down? :<a href="#section-4.5-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.5-5">
-<pre>
 AttestStatement ::= SEQUENCE
   {
     type   OBJECT IDENTIFIER,
     value  OCTET STRING
   }
-</pre><a href="#section-4.5-5" class="pilcrow">¶</a>
+</pre><a href="#section-4.5-2" class="pilcrow">¶</a>
 </div>
-<p id="section-4.5-6">~~~ END EDNOTE ~~~<a href="#section-4.5-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1642,18 +1622,10 @@ attestCertsAttribute ATTRIBUTE ::= {
   IDENTIFIED BY id-aa-attestChainCerts
 }
 
-ATTEST-STATEMENT ::= CLASS {
-  &amp;id                 OBJECT IDENTIFIER UNIQUE,
-  &amp;Type,                  -- NOT optional
-} WITH SYNTAX {
-  TYPE  &amp;Type
-  IDENTIFIED BY &amp;id
-}
-
-AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
+AttestStatement ::= SEQUENCE
   {
-    type          ATTEST-STATEMENT.&amp;id({IOSet}),
-    value         ATTEST-STATEMENT.&amp;Type({IOSet}{@type})
+    type   OBJECT IDENTIFIER,
+    value  OCTET STRING
   }
 
 END
