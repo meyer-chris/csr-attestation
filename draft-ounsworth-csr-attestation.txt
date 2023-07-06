@@ -4,8 +4,9 @@
 
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
-Intended status: Standards Track                             5 July 2023
-Expires: 6 January 2024
+Intended status: Standards Track                           H. Tschofenig
+Expires: 7 January 2024                                      Arm Limited
+                                                             6 July 2023
 
 
          Use of Attestation with Certification Signing Requests
@@ -55,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 January 2024.
+   This Internet-Draft will expire on 7 January 2024.
 
 Copyright Notice
 
@@ -99,24 +100,26 @@ Table of Contents
      B.1.  Simple Attestation Example
      B.2.  Example TPM V2.0 Attestation Attribute - Non-Normative
    Appendix C.  ASN.1 Module for Attestation
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
-   Remote attestation allows a relying party, the Registration Authority
-   or the Certification Authority, to learn about the security posture
-   of a verifier, which in the context of this specification is a device
-   transmitting a certification request using the newly defined
-   attestation extension.
+   At the time that it is requesting a certificate from a Certification
+   Authority, a PKI end entity may wish to provide evidence of the
+   security properties of the environment in which the private key is
+   stored to be verified by a relying party such as the Registration
+   Authority or the Certificate Authority.  This specification provides
+   a newly defined attestation attribute for carrying remote
+   attestations in PKCS#10 Certification Requests [RFC2986].
 
-   As outlined in RFC 9334 [RFC9334], a verifier collects claims from
-   its target environment and gets those claims signed by the attesting
-   environment.  The details of what claims are collected, how they are
-   signed and what formats for serialization are used vary with a given
-   attestation technology.  At the time of writing several standardized
-   and proprietary attestation technologies are in use.  This
-   specification thereby tries to be technology agnostic with regards to
-   the transport of the produced signed claims.
+   As outlined in the RATS Architecture [RFC9334], a verifier collects
+   claims from its target environment and gets those claims signed by
+   the attesting environment.  The details of what claims are collected,
+   how they are signed and what formats for serialization are used vary
+   with a given attestation technology.  At the time of writing, several
+   standardized and proprietary attestation technologies are in use.
+   This specification thereby tries to be technology agnostic with
+   regards to the transport of the produced signed claims.
 
    RFC 9334 uses the term "evidence" for information that is
    communicated by the verifier with remote parties.  Since the
@@ -154,18 +157,19 @@ Table of Contents
 
 3.  Architecture
 
-   Figure 1 shows the high-level communication pattern of the passport
-   model where the attester transmits the evidence in the CSR to the RA
-   and the CA.  The verifier processes the received evidence and
-   computes an attestation result, which is then processed by the RA/CA
-   prior to the certificate issuance.
+   Figure 1 shows the high-level communication pattern of the RATS
+   passport model where the attester transmits the evidence in the CSR
+   to the RA and the CA.  The verifier processes the received evidence
+   and computes an attestation result, which is then processed by the
+   RA/CA prior to the certificate issuance.
 
    Note that the verifier is a logical role that may be included in the
-   RA/CA product.  In this case the interaction between the relying
-   party and the verifier are local.  The verifier functionality can,
-   however, also be kept separate from the RA/CA functionality.  For
-   example, security concerns may require parsers of evidence formats to
-   be separated from the core CA functionality.
+   RA/CA product.  In this case the Relying Party and Verifier collapse
+   into a single entity.  The verifier functionality can, however, also
+   be kept separate from the RA/CA functionality, such as a utility or
+   library provided by the device manufacturer.  For example, security
+   concerns may require parsers of evidence formats to be logically or
+   physically separated from the core CA functionality.
 
                                  .-------------.
                                  |             | Compare Evidence
@@ -177,25 +181,27 @@ Table of Contents
                                       |   | Result
                                       |   v
     .------------.               .----|----------.
-    |            +-------------->|---'           | Compare Attestation
+    |            +-------------->|----'           | Compare Attestation
     |  Attester  |   Evidence    | Relying       | Result against
     |            |   in CSR      | Party (RA/CA) | policy
     '------------'               '---------------'
 
                            Figure 1: Architecture
 
-   As discussed in RFC 9334 different security and privacy aspects need
+   As discussed in RFC 9334, different security and privacy aspects need
    to be considered.  For example, evidence may need to be protected
    against replay and Section 10 of RFC 9334 lists approach for offering
    freshness.  There are also concerns about the exposure of persistent
    identifiers by utilizing attestation technology, which are discussed
    in Section 11 of RFC 9334.  Finally, the keying material used by the
-   attester need to be protected against unauthorized access.  This
-   aspect is described in Section 12 of RFC 9334.  Most of these aspects
-   are, however, outside the scope of this specification but relevant
-   for use with a given attestation technology.  The focus of this
-   specification is on the transport of evidence from the attester to
-   the relying party via existing certification request messages.
+   attester need to be protected against unauthorized access, and
+   against signing arbitrary content that originated from outside the
+   device.  This aspect is described in Section 12 of RFC 9334.  Most of
+   these aspects are, however, outside the scope of this specification
+   but relevant for use with a given attestation technology.  The focus
+   of this specification is on the transport of evidence from the
+   attester to the relying party via existing certification request
+   messages.
 
 4.  ASN.1 Elements
 
@@ -490,6 +496,11 @@ AttestStatement { ATTEST-STATEMENT:IOSet}  ::= SEQUENCE
 
 7.2.  Informative References
 
+   [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
+              Request Syntax Specification Version 1.7", RFC 2986,
+              DOI 10.17487/RFC2986, November 2000,
+              <https://www.rfc-editor.org/rfc/rfc2986>.
+
    [TPM20]    Trusted Computing Group, "Trusted Platform Module Library
               Specification, Family 2.0, Level 00, Revision 01.59",
               November 2019,
@@ -641,7 +652,7 @@ Appendix C.  ASN.1 Module for Attestation
 
    TBD.
 
-Author's Address
+Authors' Addresses
 
    Mike Ounsworth
    Entrust Limited
@@ -649,3 +660,8 @@ Author's Address
    Ottawa, Ontario  K2K 3G5
    Canada
    Email: mike.ounsworth@entrust.com
+
+
+   Hannes Tschofenig
+   Arm Limited
+   Email: Hannes.Tschofenig@gmx.net
