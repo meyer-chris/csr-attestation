@@ -83,7 +83,6 @@ Table of Contents
      4.3.  AttestAttribute
      4.4.  AttestStatement
      4.5.  AttestCertsAttribute
-     4.6.  AttestStatement
    5.  IANA Considerations
      5.1.  Object Identifier Allocations
        5.1.1.  Module Registration - SMI Security for PKIX Module
@@ -337,19 +336,6 @@ Table of Contents
      COUNTS MAX 1
      IDENTIFIED BY id-aa-attestChainCerts
    }
-
-4.6.  AttestStatement
-
-   An AttestStatement is an object of class ATTEST-STATEMENT encoded as
-   a sequence fields, of which the type of the "value" field is
-   controlled by the value of the "type" field, similar to an Attribute
-   definition.
-
-   AttestStatement ::= SEQUENCE
-     {
-       type   OBJECT IDENTIFIER,
-       value  OCTET STRING
-     }
 
 5.  IANA Considerations
 
