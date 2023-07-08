@@ -5,8 +5,8 @@
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                           H. Tschofenig
-Expires: 8 January 2024                                          Siemens
-                                                             7 July 2023
+Expires: 9 January 2024                                          Siemens
+                                                             8 July 2023
 
 
          Use of Attestation with Certification Signing Requests
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 January 2024.
+   This Internet-Draft will expire on 9 January 2024.
 
 Copyright Notice
 
@@ -259,7 +259,7 @@ Table of Contents
 
    AttestStatement ::= SEQUENCE {
      type   OBJECT IDENTIFIER,
-     value  OCTET STRING
+     value  ANY
    }
 
 4.4.  AttestCertsAttribute
@@ -721,7 +721,7 @@ attestCertsAttribute ATTRIBUTE ::= {
 AttestStatement ::= SEQUENCE
   {
     type   OBJECT IDENTIFIER,
-    value  OCTET STRING
+    value  ANY
   }
 
 END
