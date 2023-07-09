@@ -5,8 +5,8 @@
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                           H. Tschofenig
-Expires: 7 January 2024                                          Siemens
-                                                             6 July 2023
+Expires: 10 January 2024                                         Siemens
+                                                             9 July 2023
 
 
          Use of Attestation with Certification Signing Requests
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 January 2024.
+   This Internet-Draft will expire on 10 January 2024.
 
 Copyright Notice
 
@@ -79,28 +79,27 @@ Table of Contents
    3.  Architecture
    4.  ASN.1 Elements
      4.1.  Object Identifiers
-     4.2.  CertificateChoice
-     4.3.  AttestAttribute
+     4.2.  AttestAttribute
+     4.3.  AttestStatement
      4.4.  AttestCertsAttribute
-     4.5.  AttestStatement
-   5.  ASN.1 Module
-   6.  IANA Considerations
-     6.1.  Object Identifier Allocations
-       6.1.1.  Module Registration - SMI Security for PKIX Module
+     4.5.  CertificateChoice
+   5.  IANA Considerations
+     5.1.  Object Identifier Allocations
+       5.1.1.  Module Registration - SMI Security for PKIX Module
                Identifer
-       6.1.2.  Object Identifier Registrations - SMI Security for S/
+       5.1.2.  Object Identifier Registrations - SMI Security for S/
                MIME Attributes
-       6.1.3.  "SMI Security for PKIX Attestation Statement Formats"
+       5.1.3.  "SMI Security for PKIX Attestation Statement Formats"
                Registry
-   7.  Security Considerations
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
-   Appendix A.  Acknowledgments
-   Appendix B.  Examples
-     B.1.  TPM V2.0 Attestation in CSR
-     B.2.  PSA Attestation in CSR
-   Appendix C.  ASN.1 Module for Attestation
+   6.  Security Considerations
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
+   Appendix A.  Examples
+     A.1.  TPM V2.0 Attestation in CSR
+     A.2.  PSA Attestation in CSR
+   Appendix B.  ASN.1 Module
+   Appendix C.  Acknowledgments
    Authors' Addresses
 
 1.  Introduction
@@ -150,11 +149,11 @@ Table of Contents
    signed by certificate chains on different cryptographic algorithms.
 
    With these attributes, an RA or CA has additional information about
-   whether to issuer a certificate and what information to populate into
+   whether to issue a certificate and what information to populate into
    the certificate.  The scope of this document is, however, limited to
-   the transport of evidence via a CSR.  A supplementary document will
-   describe how evidence is carried in an X.509 certificate for
-   attesting hardware security modules (HSMs).
+   the transport of evidence via a CSR.  The exact format of the
+   attestation data being carried is defined in various standard and
+   proprietary specifications.
 
 2.  Conventions and Definitions
 
@@ -232,7 +231,62 @@ Table of Contents
    -- Branch for attestation statement types
    id-ata OBJECT IDENTIFIER ::= { id-pkix (TBD1) }
 
-4.2.  CertificateChoice
+4.2.  AttestAttribute
+
+   By definition, Attributes within a Certification Signing Request are
+   typed as ATTRIBUTE.  This attribute definition contains one or more
+   attestation statements of a type "AttestStatement".
+
+   id-aa-attestStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
+
+   AttestAttribute ATTRIBUTE ::= {
+     TYPE AttestStatement
+     IDENTIFIED BY id-aa-attestStatement
+   }
+
+   A CSR MAY contain one or more instance of AttestAttribute to allow,
+   for example a key attestation asserting the storage properties of the
+   private key as well as a platform attestation asserting the firmware
+   version and other general properties of the device, or multiple key
+   attestations signed by certificate chains on different cryptographic
+   algorithms.
+
+4.3.  AttestStatement
+
+   An AttestStatement is a simple type-value pair encoded as a sequence,
+   of which the type of the "value" field is controlled by the value of
+   the "type" field, similar to an Attribute definition.
+
+   AttestStatement ::= SEQUENCE {
+     type   OBJECT IDENTIFIER,
+     value  ANY
+   }
+
+4.4.  AttestCertsAttribute
+
+   The "AttestCertsAttribute" contains a set of certificates that may be
+   needed to validate the contents of an attestation statement contained
+   in an attestAttribute.  The set of certificates should contain the
+   object that contains the public key needed to directly validate the
+   AttestAttribute.  The remaining elements should chain that data back
+   to an agreed upon root of trust for attestations.  No order is
+   implied, it is the Verifier's responsibility to perform the
+   appropriate certificate path building.
+
+   A CSR MUST only contain exactly one AttestCertsAttribute.  In the
+   case where the CSR contains multiple instances of AttestAttribute
+   representing multiple attestations, all necessary certificates MUST
+   be contained in the same instance of AttestCertsAttribute.
+
+   id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
+
+   AttestCertsAttribute ATTRIBUTE ::= {
+     TYPE SET OF CertificateChoice
+     COUNTS MAX 1
+     IDENTIFIED BY id-aa-attestChainCerts
+   }
+
+4.5.  CertificateChoice
 
    This is an ASN.1 CHOICE construct used to represent an encoding of a
    broad variety of certificate types.
@@ -283,154 +337,16 @@ Table of Contents
        certBody OCTET STRING
    }
 
-4.3.  AttestAttribute
-
-   By definition, Attributes within a Certification Signing Request are
-   typed as ATTRIBUTE.  This attribute definition contains one or more
-   attestation statements of a type "AttestStatement".
-
-   id-aa-attestStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
-
-   AttestAttribute ATTRIBUTE ::= {
-     TYPE AttestStatement
-     IDENTIFIED BY id-aa-attestStatement
-   }
-
-   A CSR MAY contain one or more instance of AttestAttribute to allow,
-   for example a key attestation asserting the storage properties of the
-   private key as well as a platform attestation asserting the firmware
-   version and other general properties of the device, or multiple key
-   attestations signed by certificate chains on different cryptographic
-   algorithms.
-
-4.4.  AttestCertsAttribute
-
-   The "AttestCertsAttribute" contains a sequence of certificates that
-   may be needed to validate the contents of an attestation statement
-   contained in an attestAttribute.  The set of certificates should
-   contain the object that contains the public key needed to directly
-   validate the AttestAttribute.  The remaining elements should chain
-   that data back to an agreed upon root of trust for attestations.  No
-   order is implied, it is the Verifier's responsibility to perform the
-   appropriate certificate path building.
-
-   A CSR MUST contain at most 1 AttestCertsAttribute.  In the case where
-   the CSR contains multiple instances of AttestAttribute representing
-   multiple attestations, all necessary certificates MUST be contained
-   in the same instance of AttestCertsAttribute.
-
-   id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
-
-   AttestCertsAttribute ATTRIBUTE ::= {
-     TYPE SET OF CertificateChoice
-     COUNTS MAX 1
-     IDENTIFIED BY id-aa-attestChainCerts
-   }
-
-4.5.  AttestStatement
-
-   An AttestStatement is an object of class ATTEST-STATEMENT encoded as
-   a sequence fields, of which the type of the "value" field is
-   controlled by the value of the "type" field, similar to an Attribute
-   definition.
-
-   AttestStatement ::= SEQUENCE
-     {
-       type   OBJECT IDENTIFIER,
-       value  OCTET STRING
-     }
-
-5.  ASN.1 Module
-
-CSR-ATTESTATION-2023
-           {iso(1) identified-organization(3) dod(6) internet(1) security(5)
-       mechanisms(5) pkix(7) id-mod(0) id-mod-pkix-attest-01(TBDMOD)}
-
-DEFINITIONS IMPLICIT TAGS ::= BEGIN
-
-EXPORTS ALL;
-
-IMPORTS
-
-Certificate
-  FROM PKCS-9
-    { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
-      modules(0) pkcs-9(1) };
-
-
-
--- Root of IETF's PKIX OID tree
-id-pkix OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
-     dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
-
--- S/Mime attributes - can be used here.
-id-aa OBJECT IDENTIFIER ::= {iso(1) member-body(2) usa(840)
-     rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) attributes(2)}
-
--- Branch for attestation statement types
-id-ata OBJECT IDENTIFIER ::= { id-pkix (TBD1) }
-
-
-CertificateChoice ::=
-   CHOICE {
-      cert Certificate,
-      opaqueCert    [0] IMPLICIT OCTET STRING,
-      typedCert     [1] IMPLICIT TypedCert,
-      typedFlatCert [2] IMPLICIT TypedFlatCert
-   }
-
-TYPED-CERT ::= TYPE-IDENTIFIER
-
-CertType ::= TYPED-CERT.&id
-
-TypedCert ::= SEQUENCE {
-              certType     TYPED-CERT.&id({TypedCertSet}),
-              content     TYPED-CERT.&Type ({TypedCertSet}{@certType})
-          }
-
-TypedCertSet TYPED-CERT ::= {
-             ... -- Empty for now,
-             }
-
-TypedFlatCert ::= SEQUENCE {
-    certType OBJECT IDENTIFIER,
-    certBody OCTET STRING
-}
-
-
-id-aa-attestStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
-
-AttestAttribute ATTRIBUTE ::= {
-  TYPE AttestStatement
-  IDENTIFIED BY id-aa-attestStatement
-}
-
-id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
-
-attestCertsAttribute ATTRIBUTE ::= {
-  TYPE SEQUENCE OF CertificateChoice
-  COUNTS MAX 1
-  IDENTIFIED BY id-aa-attestChainCerts
-}
-
-AttestStatement ::= SEQUENCE
-  {
-    type   OBJECT IDENTIFIER,
-    value  OCTET STRING
-  }
-
-END
-
-6.  IANA Considerations
+5.  IANA Considerations
 
    The IANA is requested to open one new registry, allocate a value from
    the "SMI Security for PKIX Module Identifier" registry for the
    included ASN.1 module, and allocate values from "SMI Security for S/
    MIME Attributes" to identify two Attributes defined within.
 
-6.1.  Object Identifier Allocations
+5.1.  Object Identifier Allocations
 
-6.1.1.  Module Registration - SMI Security for PKIX Module Identifer
+5.1.1.  Module Registration - SMI Security for PKIX Module Identifer
 
    *  Decimal: IANA Assigned - Replace TBDMOD
 
@@ -438,7 +354,7 @@ END
 
    *  References: This Document
 
-6.1.2.  Object Identifier Registrations - SMI Security for S/MIME
+5.1.2.  Object Identifier Registrations - SMI Security for S/MIME
         Attributes
 
    *  Attest Statement
@@ -457,7 +373,7 @@ END
 
       -  References: This Document
 
-6.1.3.  "SMI Security for PKIX Attestation Statement Formats" Registry
+5.1.3.  "SMI Security for PKIX Attestation Statement Formats" Registry
 
    Please open up a registry for Attestation Statement Formats within
    the SMI-numbers registry, allocating an assignment from id-pkix ("SMI
@@ -483,7 +399,7 @@ END
 
    *  References: RFC or other document
 
-7.  Security Considerations
+6.  Security Considerations
 
    The attestation evidence communicated in the attributes and
    structures defined in this document are meant to be used in a PKCS10
@@ -509,24 +425,28 @@ END
    attestation-related attributes in the CSR is out-of-scope for this
    document.
 
-   Evidence generated by the attestation needs to be fresh to provide
-   value to the verifier since the configuration on the device may
-   change over time.  Section 10 of [RFC9334] discusses different
+   Evidence generated by the attestation generally needs to be fresh to
+   provide value to the verifier since the configuration on the device
+   may change over time.  Section 10 of [RFC9334] discusses different
    approaches for providing freshness, including a nonce-based approach,
    the use of timestamps and an epoch-based technique.  The use of
    nonces requires an extra message exchange via the relying party and
    the use of timestamps requires synchronized clocks.  Epochs also
-   require communication.  Constraints in certain deployment
-   environments may make these of these techniques impossible.  Hence,
-   whether to require the use one of these freshness techniques is out-
-   of-scope for this document.  Developers and operators need to analyse
-   the impact of replayed evidence.  The distribution of nonces via
-   certificate management protocols, some of which embed CSRs, is
-   possible but out-of-scope for this document.
+   require communication.  The definition of "fresh" is somewhat
+   ambiguous in the context of CSRs, especially considering that non-
+   automated certificate enrollments are often asyncronous, and
+   considering the common practice of re-using the same CSR for multiple
+   certificate renewals across the lifetime of a key.  "Freshness"
+   typically implies both asserting that the data was generated at a
+   certain point-in-time, as well as providing non-replayability.
+   Developers, operators, and designers of protocols which embed
+   attestation-carrying-CSRs need to consider what notion of freshness
+   is appropriate and available in-context; thus the issue of freshness
+   is out-of-scope for this document.
 
-8.  References
+7.  References
 
-8.1.  Normative References
+7.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -547,7 +467,7 @@ END
               Architecture", RFC 9334, DOI 10.17487/RFC9334, January
               2023, <https://www.rfc-editor.org/rfc/rfc9334>.
 
-8.2.  Informative References
+7.2.  Informative References
 
    [I-D.tschofenig-rats-psa-token]
               Tschofenig, H., Frost, S., Brossard, M., Shaw, A. L., and
@@ -568,22 +488,7 @@ END
               <https://trustedcomputinggroup.org/resource/tpm-library-
               specification/>.
 
-Appendix A.  Acknowledgments
-
-   This specification is the work of a design team created by the chairs
-   of the LAMPS working group ().  The following persons, in no specific
-   order, contributed to the work: Richard Kettlewell, Chris Trufan,
-   Bruno Couillard, Jean-Pierre Fiset, Sander Temme, Jethro Beekman,
-   Zsolt Rózsahegyi, Ferenc Pető, Mike Agrenius Kushner, Tomas
-   Gustavsson, Dieter Bong, Christomer Meyer, Michael StJohns, Carl
-   Wallace, Michael Ricardson, Tomofumi Okubo, Olivier Couillard, John
-   Gray, Eric Amador, Johnson Darren, Herman Slatman, Tiru Reddy, Thomas
-   Fossati, Corey Bonnel, Argenius Kushner, James Hagborg.
-
-   We would like to specifically thank Mike StJohns for his work on an
-   earlier version of this draft.
-
-Appendix B.  Examples
+Appendix A.  Examples
 
    This section provides two non-normative examples for embedding
    evidence in in CSRs.  The first example conveys Arm Platform Security
@@ -591,7 +496,7 @@ Appendix B.  Examples
    The second example embeds the TPM v2.0 attestation information in the
    CSR.
 
-B.1.  TPM V2.0 Attestation in CSR
+A.1.  TPM V2.0 Attestation in CSR
 
    The following example illustrates a CSR with a signed TPM Quote based
    on [TPM20].  The Platform Configuration Registers (PCRs) are fixed-
@@ -662,7 +567,7 @@ B.1.  TPM V2.0 Attestation in CSR
 
               Figure 2: CSR with embedded TPM V2.0 Attestation
 
-B.2.  PSA Attestation in CSR
+A.2.  PSA Attestation in CSR
 
    The example shown in Figure 3 illustrates how platform attestation is
    conveyed in a CSR.  The content of the evidence in this example is
@@ -740,9 +645,101 @@ B.2.  PSA Attestation in CSR
 
    *  Lifecycle state information.
 
-Appendix C.  ASN.1 Module for Attestation
+Appendix B.  ASN.1 Module
 
-   TBD.
+CSR-ATTESTATION-2023
+           {iso(1) identified-organization(3) dod(6) internet(1) security(5)
+       mechanisms(5) pkix(7) id-mod(0) id-mod-pkix-attest-01(TBDMOD)}
+
+DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+EXPORTS ALL;
+
+IMPORTS
+
+Certificate
+  FROM PKCS-9
+    { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
+      modules(0) pkcs-9(1) };
+
+
+
+-- Root of IETF's PKIX OID tree
+id-pkix OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+     dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
+
+-- S/Mime attributes - can be used here.
+id-aa OBJECT IDENTIFIER ::= {iso(1) member-body(2) usa(840)
+     rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) attributes(2)}
+
+-- Branch for attestation statement types
+id-ata OBJECT IDENTIFIER ::= { id-pkix (TBD1) }
+
+
+CertificateChoice ::=
+   CHOICE {
+      cert Certificate,
+      opaqueCert    [0] IMPLICIT OCTET STRING,
+      typedCert     [1] IMPLICIT TypedCert,
+      typedFlatCert [2] IMPLICIT TypedFlatCert
+   }
+
+TYPED-CERT ::= TYPE-IDENTIFIER
+
+CertType ::= TYPED-CERT.&id
+
+TypedCert ::= SEQUENCE {
+              certType     TYPED-CERT.&id({TypedCertSet}),
+              content     TYPED-CERT.&Type ({TypedCertSet}{@certType})
+          }
+
+TypedCertSet TYPED-CERT ::= {
+             ... -- Empty for now,
+             }
+
+TypedFlatCert ::= SEQUENCE {
+    certType OBJECT IDENTIFIER,
+    certBody OCTET STRING
+}
+
+
+id-aa-attestStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
+
+AttestAttribute ATTRIBUTE ::= {
+  TYPE AttestStatement
+  IDENTIFIED BY id-aa-attestStatement
+}
+
+id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
+
+attestCertsAttribute ATTRIBUTE ::= {
+  TYPE SEQUENCE OF CertificateChoice
+  COUNTS MAX 1
+  IDENTIFIED BY id-aa-attestChainCerts
+}
+
+AttestStatement ::= SEQUENCE
+  {
+    type   OBJECT IDENTIFIER,
+    value  ANY
+  }
+
+END
+
+Appendix C.  Acknowledgments
+
+   This specification is the work of a design team created by the chairs
+   of the LAMPS working group.  The following persons, in no specific
+   order, contributed to the work: Richard Kettlewell, Chris Trufan,
+   Bruno Couillard, Jean-Pierre Fiset, Sander Temme, Jethro Beekman,
+   Zsolt Rózsahegyi, Ferenc Pető, Mike Agrenius Kushner, Tomas
+   Gustavsson, Dieter Bong, Christomer Meyer, Michael StJohns, Carl
+   Wallace, Michael Ricardson, Tomofumi Okubo, Olivier Couillard, John
+   Gray, Eric Amador, Johnson Darren, Herman Slatman, Tiru Reddy, Thomas
+   Fossati, Corey Bonnel, Argenius Kushner, James Hagborg.
+
+   We would like to specifically thank Mike StJohns for his work on an
+   earlier version of this draft.
 
 Authors' Addresses
 
