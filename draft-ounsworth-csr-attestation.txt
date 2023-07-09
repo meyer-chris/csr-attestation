@@ -5,8 +5,8 @@
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                           H. Tschofenig
-Expires: 9 January 2024                                          Siemens
-                                                             8 July 2023
+Expires: 10 January 2024                                         Siemens
+                                                             9 July 2023
 
 
          Use of Attestation with Certification Signing Requests
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 January 2024.
+   This Internet-Draft will expire on 10 January 2024.
 
 Copyright Notice
 
@@ -733,7 +733,7 @@ Appendix C.  Acknowledgments
    order, contributed to the work: Richard Kettlewell, Chris Trufan,
    Bruno Couillard, Jean-Pierre Fiset, Sander Temme, Jethro Beekman,
    Zsolt Rózsahegyi, Ferenc Pető, Mike Agrenius Kushner, Tomas
-   Gustavsson, Dieter Bong, Christomer Meyer, Michael StJohns, Carl
+   Gustavsson, Dieter Bong, Christopher Meyer, Michael StJohns, Carl
    Wallace, Michael Ricardson, Tomofumi Okubo, Olivier Couillard, John
    Gray, Eric Amador, Johnson Darren, Herman Slatman, Tiru Reddy, Thomas
    Fossati, Corey Bonnel, Argenius Kushner, James Hagborg.
