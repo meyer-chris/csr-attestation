@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-07-09T01:09:43.543486+00:00",
+  "timestamp": "2023-07-11T00:58:21.768440+00:00",
   "repo": "lamps-wg/csr-attestation",
   "labels": [
     {
@@ -49,7 +49,48 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 10,
+      "id": "I_kwDOJ3IIN85rBFQ2",
+      "title": "# of instances of AttestCertsAttribute",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/10",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> >>\r\n> >>     A CSR MUST contain at most 1 AttestCertsAttribute. In the case where the CSR contains multiple instances of AttestAttribute representing multiple attestations, all necessary certificates MUST be contained in the same instance of AttestCertsAttribute.\r\n> >>\r\n> >>  \r\n> >>\r\n> >> Perhaps to make the wording easier, shall we change the description to \u201cA CSR MUST only contain  exactly one AttestCertsAttribute\u201d?\r\n> >\r\n> > Sounds like a good idea.\r\n> \r\n> It's only a good idea if you ignore:\r\n> \r\n> > [[MO]] But a CSR can also contain zero instances of AttestCertsAttribute, for example if you know that the RP already knows your public key then you have no need to transmit any certs. Alternatively, maybe there exists an Attestation format where the certs are buried inside the AttestStatement.\r\n> > [[MO]] I could change the wording to \u201cA CSR MUST contain 0 or 1 instances of AttestCertsAttribute\u201d if that is clearer?\r\n> \r\n> Given that you can't have less than zero instances of an attribute in a CSR, \"at most one\" is the same as \"zero or one\".   I wouldn't object to a change to zero or one, but I would to \"exactly one\".  If you always require exactly one, you will most likely be duplicating information that's available in the body of the actual attestation statement included in the AttestAttribute (cf Webauthn attestation formats).\r\n> \r\n> Mike",
+      "createdAt": "2023-07-09T15:20:42Z",
+      "updatedAt": "2023-07-09T20:34:28Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I was coming here to open the same issue.\r\n\r\nTasks:\r\n1. Re-word \"at most one\" to \"zero or one\".\r\n2. Add text making it clear that the AttestCertsAttribute is optional and SHOULD be omitted if there are no certs to be carried, for example if the attestation key is already known to the verifier, or if the attestation statement format being carried already includes the cert chain, as is the case with WebAuthn -- see [WebAuthn-2 s. 8.2](https://www.w3.org/TR/webauthn-2/#sctn-packed-attestation).",
+          "createdAt": "2023-07-09T20:32:49Z",
+          "updatedAt": "2023-07-09T20:34:28Z"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "I_kwDOJ3IIN85rBGmp",
+      "title": "Re-use of RATS\u2019s Conceptual Messages Wrapper (CMW)",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/11",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Remark from Thomas:\r\n\r\n> It looks very much like RATS\u2019s CMW [1], except CMW builds on media types rather than OIDs to provide the typing information (and therefore does not need bootstrapping and maintenance of yet another IANA registry).\r\n>  \r\n> IMO it\u2019d be better if we could converge on one only encap format.  Not only to avoid unnecessary duplication, but also because from the point of view of the RA/CA an AttestStatement is just a byte string that needs to be forwarded to their trusted attestation Verifier.  The RA/CA does not need to know which type of attestation statement it\u2019s dealing with, as long as it knows that it\u2019s a blob that the attestation Verifier will make sense of.\r\n> \r\n> [1] https://datatracker.ietf.org/doc/html/draft-ftbs-rats-msg-wrap-03#section-3.1\r\n\r\n\r\nProposal from Russ:\r\n> \r\n> PKIXAttestIdentifier ::= CHOICE {\r\n>    coap-content-format INTEGER (0..65535),\r\n>    media-type IA5String }\r\n> \r\n> CMOptions ::= ENUMERATED {\r\n>    reference-values,\r\n>    endorsements,\r\n>    evidence,\r\n>    attestation-results }\r\n> \r\n>   PKIX-ATTESTATION ::= CLASS {\r\n>       &id  PKIXAttestIdentifier UNIQUE,\r\n>       &AttestType,\r\n>       &cm CMOptions OPTIONAL\r\n>   } WITH SYNTAX {\r\n>       TYPE &AttestType IDENTIFIED BY &id [FOR &cm]\r\n>   }\r\n> \r\n>   PKIXAttestation{PKIX-ATTESTATION:PKIXAttestSet} ::= SEQUENCE {\r\n>       attestID      PKIX-ATTESTATION.&id({PKIXAttestSet}),\r\n>       attestType    CMOptions OPTIONAL,\r\n>       attestValue   PKIX-ATTESTATION.&AttestType({PKIXAttestSet}{@attestID})\r\n>   }\r\n> \r\n> PKIXAttestSet PKIX-ATTESTATION ::= { ... }\r\n> \r\n\r\nSuggestion from Thomas:\r\n\r\n> I'd be more radical and just put the CMW as-is into an OCTET STRING.",
+      "createdAt": "2023-07-09T15:35:43Z",
+      "updatedAt": "2023-07-09T15:35:43Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": [
     {
       "number": 1,
@@ -268,6 +309,96 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 8,
+      "id": "PR_kwDOJ3IIN85VAk7e",
+      "title": "Fixed Christopher's name",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/8",
+      "state": "MERGED",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-07-09T07:55:14Z",
+      "updatedAt": "2023-07-09T16:24:17Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "413c31b4750ab7b74ba4f1140da0bfe42a6938ae",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "hannestschofenig-patch-1",
+      "headRefOid": "be225980fec8e66bbc0e7b734a747c34869ebcff",
+      "closedAt": "2023-07-09T16:24:16Z",
+      "mergedAt": "2023-07-09T16:24:16Z",
+      "mergedBy": "mcr",
+      "mergeCommit": {
+        "oid": "d31f435414efd82045472df6d07c9c78c6792717"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ3IIN85ap5Fa",
+          "commit": {
+            "abbreviatedOid": "be22598"
+          },
+          "author": "mcr",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-07-09T16:24:05Z",
+          "updatedAt": "2023-07-09T16:24:05Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOJ3IIN85VAln6",
+      "title": "One AttestCertsAttribute only",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/9",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-07-09T08:08:07Z",
+      "updatedAt": "2023-07-09T16:24:37Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "413c31b4750ab7b74ba4f1140da0bfe42a6938ae",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "hannestschofenig-patch-2",
+      "headRefOid": "269cf29711159a3a4e75fa57a6b2058f5d571a33",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Depends on the outcome of this issue #9 ",
+          "createdAt": "2023-07-09T15:21:08Z",
+          "updatedAt": "2023-07-09T15:21:08Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ3IIN85ap5GV",
+          "commit": {
+            "abbreviatedOid": "269cf29"
+          },
+          "author": "mcr",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-07-09T16:24:37Z",
+          "updatedAt": "2023-07-09T16:24:37Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
