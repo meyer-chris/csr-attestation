@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-07-11T00:58:21.768440+00:00",
+  "timestamp": "2023-07-13T01:05:28.706327+00:00",
   "repo": "lamps-wg/csr-attestation",
   "labels": [
     {
@@ -89,6 +89,117 @@
       "updatedAt": "2023-07-09T15:35:43Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 13,
+      "id": "I_kwDOJ3IIN85rOnET",
+      "title": "rename the document to contain \"lamps\"",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/13",
+      "state": "CLOSED",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "From\r\n\r\n> draft-ounsworth-csr-attestation\r\n\r\nto\r\n\r\n> draft-ounsworth-lamps-csr-attestation/",
+      "createdAt": "2023-07-11T13:50:17Z",
+      "updatedAt": "2023-07-11T16:04:20Z",
+      "closedAt": "2023-07-11T16:04:20Z",
+      "comments": [
+        {
+          "author": "mcr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Don't bother now.  It will renamed when it is adopted.",
+          "createdAt": "2023-07-11T16:04:20Z",
+          "updatedAt": "2023-07-11T16:04:20Z"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "I_kwDOJ3IIN85rOnwr",
+      "title": "Start each sentence on a new line",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/14",
+      "state": "OPEN",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This improves readability of changes in the .md when looking at diffs.",
+      "createdAt": "2023-07-11T13:51:46Z",
+      "updatedAt": "2023-07-11T13:51:46Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 15,
+      "id": "I_kwDOJ3IIN85rPVi7",
+      "title": "Freshness \"out-of-scope\" vs \"not required\"",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/15",
+      "state": "OPEN",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Since the document discusses it, it is by definition, in-scope.\r\n\r\nPerhaps change the paragraph to say \"is not required\", or \"is left up to the discretion of protocol designers and implementors\" or something similar.\r\n\r\nThe whole paragraph about freshness probably needs a re-write for consistency since it currently reads like it was written by two authors (which it was).",
+      "createdAt": "2023-07-11T15:20:33Z",
+      "updatedAt": "2023-07-12T11:11:55Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "carl-wallace",
+          "authorAssociation": "NONE",
+          "body": "I don't think \"not required\" is what you want here but your second option seems fine. Maybe something like \"while this specification does not impose any freshness requirements, an attestation format or certificate management protocol may impose freshness requirements\".",
+          "createdAt": "2023-07-12T11:11:54Z",
+          "updatedAt": "2023-07-12T11:11:54Z"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "I_kwDOJ3IIN85rQx1L",
+      "title": "Stand-alone use of the term \"attestation\"",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/16",
+      "state": "OPEN",
+      "author": "henkbirkholz",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "NIST decided support this definition:\r\n\r\nhttps://www.nist.gov/itl/executive-order-improving-nations-cybersecurity/software-supply-chain-security-guidance-2\r\n\r\nUsing the term `attestation` in abstracts or titles becomes increasingly misleading. Maybe start with remote attestation and also use other less ambiguous terms or qualified terms from the beginning - even in the abstract.",
+      "createdAt": "2023-07-11T18:46:13Z",
+      "updatedAt": "2023-07-11T19:07:09Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 18,
+      "id": "I_kwDOJ3IIN85rQ0yG",
+      "title": "What's a CSR?",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/18",
+      "state": "OPEN",
+      "author": "henkbirkholz",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "In this context, https://www.rfc-editor.org/materials/abbrev.expansion.txt expands CSR to Certificate Signing Request(s) and not Certification Signing Requests. For consistence, I'd also recommend to expand CA to Certificate Authority.",
+      "createdAt": "2023-07-11T18:51:42Z",
+      "updatedAt": "2023-07-12T18:39:20Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "NONE",
+          "body": "And yes, I am aware of RFC 2986 and that it specifies `CertificationRequest` for PKCS#10. RFC 2986 also does not define CSR. Some terminology cleanup by summarizing that and then provide the reader with clear guidance on what means what can only be beneficial, I think.",
+          "createdAt": "2023-07-11T18:59:32Z",
+          "updatedAt": "2023-07-11T19:03:09Z"
+        },
+        {
+          "author": "mcr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Only CA=> Certification Authority. Not the other words you used.",
+          "createdAt": "2023-07-12T18:39:20Z",
+          "updatedAt": "2023-07-12T18:39:20Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -397,6 +508,119 @@
           "createdAt": "2023-07-09T16:24:37Z",
           "updatedAt": "2023-07-09T16:24:37Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDOJ3IIN85VNHu7",
+      "title": "Mcr editorial 01",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/12",
+      "state": "OPEN",
+      "author": "mcr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Break up some long sentences.\r\nTweak some 9334 terminology usage.\r\n",
+      "createdAt": "2023-07-11T13:45:25Z",
+      "updatedAt": "2023-07-11T13:45:26Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "d31f435414efd82045472df6d07c9c78c6792717",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "mcr-editorial-01",
+      "headRefOid": "038bb01017b7d57f49cfb2e86ebe32db2dde2762",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 17,
+      "id": "PR_kwDOJ3IIN85VPIbv",
+      "title": "fixes #16",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/17",
+      "state": "OPEN",
+      "author": "henkbirkholz",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "A exemplary proposal in the form of an abstract re-write",
+      "createdAt": "2023-07-11T18:49:55Z",
+      "updatedAt": "2023-07-12T18:36:57Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "d31f435414efd82045472df6d07c9c78c6792717",
+      "headRepository": "henkbirkholz/csr-attestation",
+      "headRefName": "main",
+      "headRefOid": "70dfd02d370a0106363c59960a4aebf756f10d32",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ3IIN85a5Xai",
+          "commit": {
+            "abbreviatedOid": "2e0a905"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-11T19:00:58Z",
+          "updatedAt": "2023-07-11T19:00:58Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "```suggestion\r\nBelievable claims about a device or device's components, such as hardware security modules, can help to improve the assessment of its security posture.\r\n```",
+              "createdAt": "2023-07-11T19:00:58Z",
+              "updatedAt": "2023-07-11T19:00:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85a5Xg4",
+          "commit": {
+            "abbreviatedOid": "0591af4"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-11T19:01:16Z",
+          "updatedAt": "2023-07-11T19:01:17Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "```suggestion\r\nBelievable claims about a device or a device's components, such as hardware security modules, can help to improve the assessment of its security posture.\r\n```",
+              "createdAt": "2023-07-11T19:01:17Z",
+              "updatedAt": "2023-07-11T19:01:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85bBJGJ",
+          "commit": {
+            "abbreviatedOid": "70dfd02"
+          },
+          "author": "mcr",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-12T18:36:56Z",
+          "updatedAt": "2023-07-12T18:36:57Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "```suggestion\r\nBelievable claims about a the protections afforded to a private key, such as the protections provided by hardware security modules, can help to improve the assessment of the security posture for the private key.\r\n```",
+              "createdAt": "2023-07-12T18:36:56Z",
+              "updatedAt": "2023-07-12T18:36:57Z"
+            }
+          ]
         }
       ]
     }
