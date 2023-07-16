@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-07-13T01:05:28.706327+00:00",
+  "timestamp": "2023-07-16T01:12:27.322807+00:00",
   "repo": "lamps-wg/csr-attestation",
   "labels": [
     {
@@ -182,7 +182,7 @@
       "labels": [],
       "body": "In this context, https://www.rfc-editor.org/materials/abbrev.expansion.txt expands CSR to Certificate Signing Request(s) and not Certification Signing Requests. For consistence, I'd also recommend to expand CA to Certificate Authority.",
       "createdAt": "2023-07-11T18:51:42Z",
-      "updatedAt": "2023-07-12T18:39:20Z",
+      "updatedAt": "2023-07-13T10:03:22Z",
       "closedAt": null,
       "comments": [
         {
@@ -198,6 +198,20 @@
           "body": "Only CA=> Certification Authority. Not the other words you used.",
           "createdAt": "2023-07-12T18:39:20Z",
           "updatedAt": "2023-07-12T18:39:20Z"
+        },
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "NONE",
+          "body": "So you think \"Certification Signing Requests\" is a real term that you use today? Did you look at RFCed's abbrev list?",
+          "createdAt": "2023-07-13T09:56:54Z",
+          "updatedAt": "2023-07-13T09:56:54Z"
+        },
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "NONE",
+          "body": "RFC 4949 expands CA to \"Certification Authority\"\r\nRFCed expands CA to \"Certification Authority\" or \"Certificate Authority\"\r\n\r\nSo => Certification Authority\r\n\r\nRFC 4949 does not contain CSR\r\nRFCed expands CSR to \"Certificate Signing Request\"\r\n\r\nWould you like to redefine the RFCed listed (aka you can just write it in an I-D and do not have to expand it ever) meaning?",
+          "createdAt": "2023-07-13T10:03:22Z",
+          "updatedAt": "2023-07-13T10:03:22Z"
         }
       ]
     }
@@ -523,7 +537,7 @@
       "labels": [],
       "body": "Break up some long sentences.\r\nTweak some 9334 terminology usage.\r\n",
       "createdAt": "2023-07-11T13:45:25Z",
-      "updatedAt": "2023-07-11T13:45:26Z",
+      "updatedAt": "2023-07-14T09:46:16Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "main",
       "baseRefOid": "d31f435414efd82045472df6d07c9c78c6792717",
@@ -535,7 +549,28 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ3IIN85bMbsE",
+          "commit": {
+            "abbreviatedOid": "038bb01"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-14T09:46:15Z",
+          "updatedAt": "2023-07-14T09:46:15Z",
+          "comments": [
+            {
+              "originalPosition": 3,
+              "body": "```suggestion\r\nAuthority (CA), a PKI end entity may wish to provide evidence of the security\r\n```",
+              "createdAt": "2023-07-14T09:46:15Z",
+              "updatedAt": "2023-07-14T09:46:16Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 17,
@@ -549,13 +584,13 @@
       "labels": [],
       "body": "A exemplary proposal in the form of an abstract re-write",
       "createdAt": "2023-07-11T18:49:55Z",
-      "updatedAt": "2023-07-12T18:36:57Z",
+      "updatedAt": "2023-07-13T09:55:25Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "main",
       "baseRefOid": "d31f435414efd82045472df6d07c9c78c6792717",
       "headRepository": "henkbirkholz/csr-attestation",
       "headRefName": "main",
-      "headRefOid": "70dfd02d370a0106363c59960a4aebf756f10d32",
+      "headRefOid": "88328fa27e44804fbe2c02ddd32b0fd29f77f845",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -619,6 +654,46 @@
               "body": "```suggestion\r\nBelievable claims about a the protections afforded to a private key, such as the protections provided by hardware security modules, can help to improve the assessment of the security posture for the private key.\r\n```",
               "createdAt": "2023-07-12T18:36:56Z",
               "updatedAt": "2023-07-12T18:36:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85bFHUs",
+          "commit": {
+            "abbreviatedOid": "e2ef918"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-13T09:54:26Z",
+          "updatedAt": "2023-07-13T09:54:26Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "```suggestion\r\nBelievable claims about a the protections afforded to a private key, such as the protected capabilites provided by hardware security modules, can help to improve the assessment of the security posture for the private key.\r\n```",
+              "createdAt": "2023-07-13T09:54:26Z",
+              "updatedAt": "2023-07-13T09:54:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85bFHqu",
+          "commit": {
+            "abbreviatedOid": "f1d612a"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-13T09:55:18Z",
+          "updatedAt": "2023-07-13T09:55:18Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "```suggestion\r\nBelievable claims about the protections afforded to a private key, such as the protected capabilities provided by hardware security modules, can help to improve the assessment of the security posture for the private key.\r\n```",
+              "createdAt": "2023-07-13T09:55:18Z",
+              "updatedAt": "2023-07-13T09:55:18Z"
             }
           ]
         }
