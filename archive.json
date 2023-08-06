@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-07-20T00:57:55.655936+00:00",
+  "timestamp": "2023-08-06T00:47:47.396477+00:00",
   "repo": "lamps-wg/csr-attestation",
   "labels": [
     {
@@ -86,7 +86,7 @@
       "labels": [],
       "body": "Remark from Thomas:\r\n\r\n> It looks very much like RATS\u2019s CMW [1], except CMW builds on media types rather than OIDs to provide the typing information (and therefore does not need bootstrapping and maintenance of yet another IANA registry).\r\n>  \r\n> IMO it\u2019d be better if we could converge on one only encap format.  Not only to avoid unnecessary duplication, but also because from the point of view of the RA/CA an AttestStatement is just a byte string that needs to be forwarded to their trusted attestation Verifier.  The RA/CA does not need to know which type of attestation statement it\u2019s dealing with, as long as it knows that it\u2019s a blob that the attestation Verifier will make sense of.\r\n> \r\n> [1] https://datatracker.ietf.org/doc/html/draft-ftbs-rats-msg-wrap-03#section-3.1\r\n\r\n\r\nProposal from Russ:\r\n> \r\n> PKIXAttestIdentifier ::= CHOICE {\r\n>    coap-content-format INTEGER (0..65535),\r\n>    media-type IA5String }\r\n> \r\n> CMOptions ::= ENUMERATED {\r\n>    reference-values,\r\n>    endorsements,\r\n>    evidence,\r\n>    attestation-results }\r\n> \r\n>   PKIX-ATTESTATION ::= CLASS {\r\n>       &id  PKIXAttestIdentifier UNIQUE,\r\n>       &AttestType,\r\n>       &cm CMOptions OPTIONAL\r\n>   } WITH SYNTAX {\r\n>       TYPE &AttestType IDENTIFIED BY &id [FOR &cm]\r\n>   }\r\n> \r\n>   PKIXAttestation{PKIX-ATTESTATION:PKIXAttestSet} ::= SEQUENCE {\r\n>       attestID      PKIX-ATTESTATION.&id({PKIXAttestSet}),\r\n>       attestType    CMOptions OPTIONAL,\r\n>       attestValue   PKIX-ATTESTATION.&AttestType({PKIXAttestSet}{@attestID})\r\n>   }\r\n> \r\n> PKIXAttestSet PKIX-ATTESTATION ::= { ... }\r\n> \r\n\r\nSuggestion from Thomas:\r\n\r\n> I'd be more radical and just put the CMW as-is into an OCTET STRING.",
       "createdAt": "2023-07-09T15:35:43Z",
-      "updatedAt": "2023-07-17T17:01:55Z",
+      "updatedAt": "2023-08-03T20:18:07Z",
       "closedAt": null,
       "comments": [
         {
@@ -106,9 +106,9 @@
         {
           "author": "nedmsmith",
           "authorAssociation": "NONE",
-          "body": "> We should respond to this on-list. The core question here is whether LAMPS / CSR should be specifying encodings other than ASN.1.\r\n\r\nWhat is the rationale for redefining something that is already defined but doesn't use ASN.1 as the data definition language?",
+          "body": "> We should respond to this on-list. The core question here is whether LAMPS / CSR should be specifying encodings other than ASN.1.\r\n\r\nWhat is the rationale for redefining something that is already defined but doesn't use ASN.1 as the data definition language?\r\n\r\nI makes sense to consider the constraints of the environments that are creating the CSR structures and their capabilities. HSMs that already support ASN.1/DER likely will object to some other encoding (e.g., CBOR), but environments that are already capable of CBOR may object to ASN.1/DER etc. Given there are use cases for CSRs originating from various environments such as DICE Protection Environment (DPE), SPDM Responders, and embedded uControllers (but not HSMs). Given there can be layers of compute that may issue a CSR, the CSR draft should be flexible toward accommodating industry evolution and trends rather than serve to constrain or limit such evolution.",
           "createdAt": "2023-07-17T17:01:55Z",
-          "updatedAt": "2023-07-17T17:01:55Z"
+          "updatedAt": "2023-08-03T20:18:07Z"
         }
       ]
     },
