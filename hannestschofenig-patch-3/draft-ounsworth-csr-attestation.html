@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>Use of Remote Attestation with Certification Signing Requests</title>
+<title>Use of Remote Attestation with Certificate Signing Requests</title>
 <meta content="Mike Ounsworth" name="author">
 <meta content="Hannes Tschofenig" name="author">
 <meta content="
@@ -26,7 +26,7 @@ Authority are described.
 <meta content="PKCS#10" name="keyword">
 <meta content="Attestation" name="keyword">
 <meta content="Evidence" name="keyword">
-<meta content="Certification Signing Requests" name="keyword">
+<meta content="Certificate Signing Requests" name="keyword">
 <meta content="draft-ounsworth-csr-attestation-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.17.5
@@ -1099,7 +1099,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </dd>
 </dl>
 </div>
-<h1 id="title">Use of Remote Attestation with Certification Signing Requests</h1>
+<h1 id="title">Use of Remote Attestation with Certificate Signing Requests</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">Utilizing information from a device or hardware security module about its posture
@@ -1270,7 +1270,7 @@ Authority, a PKI end entity may wish to provide evidence of the security
 properties of the environment in which the private key is stored to be verified
 by a relying party such as the Registration Authority or the Certificate
 Authority. This specification provides a newly defined evidence attribute
-for carrying evidence in PKCS#10 Certification Requests (CSR) <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
+for carrying evidence in PKCS#10 Certificate Requests (CSR) <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">As outlined in the RATS Architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>, an Attester (typically
 a device) produces evidence about a target environment. RFC 9334 does not
 define the term "attestation" but it is often referred as the
@@ -1635,7 +1635,7 @@ Document must specify an EVIDENCE-STATEMENT definition to which this Object Iden
       </h2>
 <p id="section-6-1">The evidence communicated in the attributes and
 structures defined in this document are meant to be used in
-a PKCS#10 Certification Signing Request (CSR). It is up to the
+a PKCS#10 Certificate Signing Request (CSR). It is up to the
 verifier and to the relying party (RA/CA) to place as much or
 as little trust in this information as dictated by policies.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <p id="section-6-2">This document defines the transport of evidence of different formats

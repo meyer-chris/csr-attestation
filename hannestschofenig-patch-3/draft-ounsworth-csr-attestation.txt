@@ -9,7 +9,7 @@ Expires: 18 February 2024                                        Siemens
                                                           17 August 2023
 
 
-     Use of Remote Attestation with Certification Signing Requests
+      Use of Remote Attestation with Certificate Signing Requests
                  draft-ounsworth-csr-attestation-latest
 
 Abstract
@@ -110,7 +110,7 @@ Table of Contents
    stored to be verified by a relying party such as the Registration
    Authority or the Certificate Authority.  This specification provides
    a newly defined evidence attribute for carrying evidence in PKCS#10
-   Certification Requests (CSR) [RFC2986].
+   Certificate Requests (CSR) [RFC2986].
 
    As outlined in the RATS Architecture [RFC9334], an Attester
    (typically a device) produces evidence about a target environment.
@@ -393,7 +393,7 @@ Table of Contents
 6.  Security Considerations
 
    The evidence communicated in the attributes and structures defined in
-   this document are meant to be used in a PKCS#10 Certification Signing
+   this document are meant to be used in a PKCS#10 Certificate Signing
    Request (CSR).  It is up to the verifier and to the relying party
    (RA/CA) to place as much or as little trust in this information as
    dictated by policies.
