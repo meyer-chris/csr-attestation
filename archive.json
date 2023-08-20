@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-08-06T00:47:47.396477+00:00",
+  "timestamp": "2023-08-20T00:44:00.990596+00:00",
   "repo": "lamps-wg/csr-attestation",
   "labels": [
     {
@@ -188,15 +188,15 @@
       "id": "I_kwDOJ3IIN85rQx1L",
       "title": "Stand-alone use of the term \"attestation\"",
       "url": "https://github.com/lamps-wg/csr-attestation/issues/16",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "henkbirkholz",
-      "authorAssociation": "NONE",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "NIST decided support this definition:\r\n\r\nhttps://www.nist.gov/itl/executive-order-improving-nations-cybersecurity/software-supply-chain-security-guidance-2\r\n\r\nUsing the term `attestation` in abstracts or titles becomes increasingly misleading. Maybe start with remote attestation and also use other less ambiguous terms or qualified terms from the beginning - even in the abstract.",
       "createdAt": "2023-07-11T18:46:13Z",
-      "updatedAt": "2023-07-11T19:07:09Z",
-      "closedAt": null,
+      "updatedAt": "2023-08-19T23:28:23Z",
+      "closedAt": "2023-08-19T23:28:23Z",
       "comments": []
     },
     {
@@ -558,24 +558,26 @@
       "id": "PR_kwDOJ3IIN85VAln6",
       "title": "One AttestCertsAttribute only",
       "url": "https://github.com/lamps-wg/csr-attestation/pull/9",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-07-09T08:08:07Z",
-      "updatedAt": "2023-07-09T16:24:37Z",
+      "updatedAt": "2023-08-19T22:43:17Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "main",
       "baseRefOid": "413c31b4750ab7b74ba4f1140da0bfe42a6938ae",
       "headRepository": "lamps-wg/csr-attestation",
       "headRefName": "hannestschofenig-patch-2",
-      "headRefOid": "269cf29711159a3a4e75fa57a6b2058f5d571a33",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "6c66925faecd85ebbb2106834f173c38b7fcddf4",
+      "closedAt": "2023-08-19T22:43:13Z",
+      "mergedAt": "2023-08-19T22:43:13Z",
+      "mergedBy": "ounsworth",
+      "mergeCommit": {
+        "oid": "22a24e720e82e5808d35bb5c2948937af189de41"
+      },
       "comments": [
         {
           "author": "hannestschofenig",
@@ -598,6 +600,19 @@
           "createdAt": "2023-07-09T16:24:37Z",
           "updatedAt": "2023-07-09T16:24:37Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85ehNe8",
+          "commit": {
+            "abbreviatedOid": "6c66925"
+          },
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-08-19T22:42:41Z",
+          "updatedAt": "2023-08-19T22:42:41Z",
+          "comments": []
         }
       ]
     },
@@ -606,24 +621,26 @@
       "id": "PR_kwDOJ3IIN85VNHu7",
       "title": "Mcr editorial 01",
       "url": "https://github.com/lamps-wg/csr-attestation/pull/12",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "mcr",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Break up some long sentences.\r\nTweak some 9334 terminology usage.\r\n",
       "createdAt": "2023-07-11T13:45:25Z",
-      "updatedAt": "2023-07-14T09:46:16Z",
+      "updatedAt": "2023-08-19T23:16:47Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "main",
       "baseRefOid": "d31f435414efd82045472df6d07c9c78c6792717",
       "headRepository": "lamps-wg/csr-attestation",
       "headRefName": "mcr-editorial-01",
-      "headRefOid": "038bb01017b7d57f49cfb2e86ebe32db2dde2762",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "7419993d4bf0b405d584db8bc3b9eb104d1bed17",
+      "closedAt": "2023-08-19T23:16:44Z",
+      "mergedAt": "2023-08-19T23:16:44Z",
+      "mergedBy": "ounsworth",
+      "mergeCommit": {
+        "oid": "28ffd7e226422a1e8b9244291cafcc57333aa5b6"
+      },
       "comments": [],
       "reviews": [
         {
@@ -632,7 +649,7 @@
             "abbreviatedOid": "038bb01"
           },
           "author": "henkbirkholz",
-          "authorAssociation": "NONE",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2023-07-14T09:46:15Z",
@@ -653,24 +670,26 @@
       "id": "PR_kwDOJ3IIN85VPIbv",
       "title": "fixes #16",
       "url": "https://github.com/lamps-wg/csr-attestation/pull/17",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "henkbirkholz",
-      "authorAssociation": "NONE",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "A exemplary proposal in the form of an abstract re-write",
       "createdAt": "2023-07-11T18:49:55Z",
-      "updatedAt": "2023-07-13T09:55:25Z",
+      "updatedAt": "2023-08-19T23:28:21Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "main",
       "baseRefOid": "d31f435414efd82045472df6d07c9c78c6792717",
       "headRepository": "henkbirkholz/csr-attestation",
       "headRefName": "main",
-      "headRefOid": "88328fa27e44804fbe2c02ddd32b0fd29f77f845",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "29cdc0bfc1900cd480ccf22874d02958103471d8",
+      "closedAt": "2023-08-19T23:28:21Z",
+      "mergedAt": "2023-08-19T23:28:21Z",
+      "mergedBy": "ounsworth",
+      "mergeCommit": {
+        "oid": "5ec639cafdbe629a3a4feb7acf4497bb35f39bd8"
+      },
       "comments": [],
       "reviews": [
         {
@@ -679,7 +698,7 @@
             "abbreviatedOid": "2e0a905"
           },
           "author": "henkbirkholz",
-          "authorAssociation": "NONE",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2023-07-11T19:00:58Z",
@@ -699,7 +718,7 @@
             "abbreviatedOid": "0591af4"
           },
           "author": "henkbirkholz",
-          "authorAssociation": "NONE",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2023-07-11T19:01:16Z",
@@ -739,7 +758,7 @@
             "abbreviatedOid": "e2ef918"
           },
           "author": "henkbirkholz",
-          "authorAssociation": "NONE",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2023-07-13T09:54:26Z",
@@ -759,7 +778,7 @@
             "abbreviatedOid": "f1d612a"
           },
           "author": "henkbirkholz",
-          "authorAssociation": "NONE",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2023-07-13T09:55:18Z",
@@ -770,6 +789,134 @@
               "body": "```suggestion\r\nBelievable claims about the protections afforded to a private key, such as the protected capabilities provided by hardware security modules, can help to improve the assessment of the security posture for the private key.\r\n```",
               "createdAt": "2023-07-13T09:55:18Z",
               "updatedAt": "2023-07-13T09:55:18Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "id": "PR_kwDOJ3IIN85YJ_vM",
+      "title": "Switch to Evidence Term",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/21",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-17T13:06:02Z",
+      "updatedAt": "2023-08-19T23:33:01Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "485fc0c144d1b8999e738ce8c4e017557217bf83",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "hannestschofenig-patch-3",
+      "headRefOid": "eb9abfadbad5d31c38f2a8f37df1e66dd79bd124",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "body": "As this PR touches issues #16 and #18, the first question that springs to my mind is:\r\n\r\nIs it always Evidence (which from case to case can be very high volume) or also the complementary RATS conceptual message that is the Attestation Result?",
+          "createdAt": "2023-08-17T13:51:50Z",
+          "updatedAt": "2023-08-17T13:51:50Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> As this PR touches issues #16 and #18, the first question that springs to my mind is:\r\n> \r\n> Is it always Evidence (which from case to case can be very high volume) or also the complementary RATS conceptual message that is the Attestation Result?\r\n\r\nAccording to Fig 1, it is the Evidence from the Attester. Interesting idea that the CSR could also carry an Attestation Result. But I'm struggling to imagine how that would work; for example an RA could not replace the Evidence with an Attestation Result without breaking the signature on the CSR.",
+          "createdAt": "2023-08-19T23:33:01Z",
+          "updatedAt": "2023-08-19T23:33:01Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 22,
+      "id": "PR_kwDOJ3IIN85YKcqE",
+      "title": "Interaction between Attesting and Target Environment",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/22",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-17T14:14:50Z",
+      "updatedAt": "2023-08-17T14:35:12Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "485fc0c144d1b8999e738ce8c4e017557217bf83",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "hannestschofenig-patch-4",
+      "headRefOid": "85e960b7fe239984a16223218eb48eb17e4ebe4d",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ3IIN85eVuVV",
+          "commit": {
+            "abbreviatedOid": "a98a974"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-17T14:24:39Z",
+          "updatedAt": "2023-08-17T14:24:39Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "#21 now uses \"Certificate Signing Requests\". Maybe:\r\n\r\n```suggestion\r\nA certificate signing request consists of a distinguished name, a public key,\r\n```",
+              "createdAt": "2023-08-17T14:24:39Z",
+              "updatedAt": "2023-08-17T14:24:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85eVxme",
+          "commit": {
+            "abbreviatedOid": "a98a974"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-17T14:30:50Z",
+          "updatedAt": "2023-08-17T14:30:50Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "PKCS#10 defines a message and it is called \"Certification Request\". This message has later been called \"Certificate Signing Request\".\r\n\r\nIn this paragraph I am referring to PKCS#10 -- maybe I should include a reference.",
+              "createdAt": "2023-08-17T14:30:50Z",
+              "updatedAt": "2023-08-17T14:30:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85eVz2_",
+          "commit": {
+            "abbreviatedOid": "a98a974"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-17T14:35:11Z",
+          "updatedAt": "2023-08-17T14:35:11Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "Correct, that is the ambiguity we have to resolve here, I think. But maybe not exactly here? Maybe somewhere earlier on - a quick recap of past evolution of terms and then an agreement on current use of terms in the document is the way to go?\r\n\r\n",
+              "createdAt": "2023-08-17T14:35:11Z",
+              "updatedAt": "2023-08-17T14:35:11Z"
             }
           ]
         }
