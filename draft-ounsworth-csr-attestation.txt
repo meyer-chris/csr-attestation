@@ -5,29 +5,40 @@
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                           H. Tschofenig
-Expires: 20 February 2024                                        Siemens
-                                                          19 August 2023
+Expires: 22 February 2024                                        Siemens
+                                                          21 August 2023
 
 
-         Use of Attestation with Certification Signing Requests
+      Use of Remote Attestation with Certificate Signing Requests
                  draft-ounsworth-csr-attestation-latest
 
 Abstract
 
-   Utilizing information from a device or hardware security module about
-   its posture can help to improve security of the overall system.
-   Information about the manufacturer of the hardware, the version of
-   the firmware running on this hardware and potentially about the
-   layers of software above the firmware, the presence of hardware
-   security functionality to protect keys and many more properties can
-   be made available to remote parties in a cryptographically secured
-   way.  This functionality is accomplished with attestation technology.
-
-   This document describes extensions to encode evidence produced by an
-   attester for inclusion in PKCS10 certificate signing requests.  More
-   specifically, two new ASN.1 Attribute definitions, and an ASN.1 CLASS
-   definition to convey attestation information to a Registration
-   Authority or to a Certification Authority are described.
+   A client requesting a certificate from a Certification Authority (CA)
+   may wish to offer believable claims about the protections afforded to
+   the corresponding private key, such as whether the private key
+   resides on a hardware securtiy model or trusted platform module, and
+   the protection capabilities provided by the hardware module.
+   Including this evidence along with the certificate request can help
+   to improve the assessment of the security posture for the private
+   key, and suitability of the submitted key to the requested
+   certificate profile.  These evidence claims can include information
+   about the hardware component's manufacturer, the version of installed
+   or running firmware, the version of software installed or running in
+   layers above the firmware, or the presence of hardware components
+   providing specific protection capabilities or shielded locations
+   (e.g., to protect keys).  Producing, conveying, and appraising such
+   believable claims is enabled via remote attestation procedures where
+   the device holding the private key takes on the role of an attester
+   and produces evidence that is made available to remote parties in a
+   cryptographically secured way.  This document describes two new
+   extensions to encode evidence produced by an attester for inclusion
+   in PKCS#10 or CRMF certificate signing requests: an ASN.1 Attribute
+   or Extension definition to convey a cryptographically-signed evidence
+   statement to a Registration Authority or to a Certification
+   Authority, and an ASN.1 Attribute or Extension to carry any
+   certificates necessary for validating the cryptographically-signed
+   evidence statement.
 
 About This Document
 
@@ -56,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 February 2024.
+   This Internet-Draft will expire on 22 February 2024.
 
 Copyright Notice
 
@@ -81,7 +92,7 @@ Table of Contents
      4.1.  Object Identifiers
      4.2.  AttestAttribute
      4.3.  AttestStatement
-     4.4.  AttestCertsAttribute
+     4.4.  EvidenceCertsAttribute
      4.5.  CertificateChoice
    5.  IANA Considerations
      5.1.  Object Identifier Allocations
@@ -89,15 +100,15 @@ Table of Contents
                Identifer
        5.1.2.  Object Identifier Registrations - SMI Security for S/
                MIME Attributes
-       5.1.3.  "SMI Security for PKIX Attestation Statement Formats"
+       5.1.3.  "SMI Security for PKIX Evidence Statement Formats"
                Registry
    6.  Security Considerations
    7.  References
      7.1.  Normative References
      7.2.  Informative References
    Appendix A.  Examples
-     A.1.  TPM V2.0 Attestation in CSR
-     A.2.  PSA Attestation in CSR
+     A.1.  TPM V2.0 Evidence in CSR
+     A.2.  Platform Security Architecture Attestation Token in CSR
    Appendix B.  ASN.1 Module
    Appendix C.  Acknowledgments
    Authors' Addresses
@@ -105,55 +116,58 @@ Table of Contents
 1.  Introduction
 
    At the time that it is requesting a certificate from a Certification
-   Authority, a PKI end entity may wish to provide evidence of the
+   Authority (CA), a PKI end entity may wish to provide evidence of the
    security properties of the environment in which the private key is
-   stored to be verified by a relying party such as the Registration
-   Authority or the Certificate Authority.  This specification provides
-   a newly defined attestation attribute for carrying remote
-   attestations in PKCS#10 Certification Requests (CSR) [RFC2986].
+   stored.  This evidence is to be verified by a relying party such as
+   the Registration Authority or the Certificate Authority as part of
+   validating an incoming certificate request against a given
+   certificate policy.  This specification provides a newly defined
+   evidence attribute for carrying evidence in Certificate Requests
+   (CSR) in either PKCS#10 [RFC2986] or Certificate Request Message
+   Format (CRMF) [RFC4211].
 
    As outlined in the RATS Architecture [RFC9334], an Attester
-   (typically a device) produces a signed collection of Evidence about
-   its running environment, often refered to as an "attestation".  A
-   Relying Party may consult that attestation in making policy decisions
-   about the trustworthiness of the entity being attested.  Section 3
-   overviews how the various roles in the RATS Archictecture map to a
-   certificate requester and a CA/RA.
+   (typically a device) produces a signed collection of evidence about
+   its running environment.  The term "attestation" is intentionally not
+   defined in RFC 9334, but it is often taken to mean the overall
+   process of producing and verifying evidence.  A Relying Party may
+   consult that evidence, or an attestation result produced by a
+   verifier who has checked the evidence, in making policy decisions
+   about the trustworthiness of the target environment being attested.
+   Section 3 overviews how the various roles in the RATS architecture
+   map to a certificate requester and a CA/RA.
 
-   At the time of writing, several standardized and proprietary
+   At the time of writing, several standard and several proprietary
    attestation technologies are in use.  This specification thereby
-   tries to be technology agnostic with regards to the transport of the
+   tries to be technology-agnostic with regards to the transport of the
    produced signed claims.
 
-   This document is concerned only about the transport of an
-   attesttation inside a CSR and makes minimal assumptions about its
-   content or format.  We assume that an attestation can be broken into
-   the following components:
-
-   1.  A set of certificates typically containing one or more
-       certificate chains rooted in a device manufacture trust anchor
-       and the leaf certificate being on the device in question.
-
-   2.  An attestation statement containing Evidence.
+   This document is focused on the transport of evidence inside a CSR
+   and makes minimal assumptions about content or format of the
+   transported evidence.  We also enable conveyance of a set of
+   certificates used for validation of evidence.  These certificates
+   typically contain one or more certificate chains rooted in a device
+   manufacture trust anchor and the leaf certificate being on the device
+   in question; the latter is the Attestation Key that signs the
+   evidence statement.
 
    This document creates two ATTRIBUTE/Attribute definitions.  The first
    Attribute may be used to carry a set of certificates or public keys
    that may be necessary to validate evidence.  The second Attribute
-   carries a structure that may be used to carry key attestation
-   statements, signatures and related data.
+   carries a structure that may be used to carry evidence.
 
-   A CSR may contain one or more attestations, for example a key
-   attestation asserting the storage properties of the private key as
-   well as a platform attestation asserting the firmware version and
-   other general properties of the device, or multiple key attestations
-   signed by certificate chains on different cryptographic algorithms.
+   A CSR may contain one or more evidence, for example evidence
+   asserting the storage properties of the private key as well evidence
+   asserting the firmware version and other general properties of the
+   device, or evidence signed by certificate chains on different
+   cryptographic algorithms.
 
    With these attributes, an RA or CA has additional information about
    whether to issue a certificate and what information to populate into
    the certificate.  The scope of this document is, however, limited to
    the transport of evidence via a CSR.  The exact format of the
-   attestation data being carried is defined in various standard and
-   proprietary specifications.
+   evidence being carried is defined in various standard and proprietary
+   specifications.
 
 2.  Conventions and Definitions
 
@@ -226,30 +240,25 @@ Table of Contents
 
    -- S/Mime attributes - can be used here.
    id-aa OBJECT IDENTIFIER ::= {iso(1) member-body(2) usa(840)
-        rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) attributes(2)}
+       rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) attributes(2)}
 
-   -- Branch for attestation statement types
+   -- Branch for evidence types
    id-ata OBJECT IDENTIFIER ::= { id-pkix (TBD1) }
 
 4.2.  AttestAttribute
 
    By definition, Attributes within a Certification Signing Request are
    typed as ATTRIBUTE.  This attribute definition contains one or more
-   attestation statements of a type "AttestStatement".
+   evidence statements of a type "EvidenceStatement".
 
-   id-aa-attestStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
+   id-aa-evidenceStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
 
-   AttestAttribute ATTRIBUTE ::= {
-     TYPE AttestStatement
-     IDENTIFIED BY id-aa-attestStatement
+   EvidenceAttribute ATTRIBUTE ::= {
+     TYPE EvidencetStatement
+     IDENTIFIED BY id-aa-evidenceStatement
    }
 
-   A CSR MAY contain one or more instance of AttestAttribute to allow,
-   for example a key attestation asserting the storage properties of the
-   private key as well as a platform attestation asserting the firmware
-   version and other general properties of the device, or multiple key
-   attestations signed by certificate chains on different cryptographic
-   algorithms.
+   A CSR MAY contain one or more instance of EvidenceAttribute.
 
 4.3.  AttestStatement
 
@@ -262,28 +271,31 @@ Table of Contents
      value  ANY
    }
 
-4.4.  AttestCertsAttribute
+4.4.  EvidenceCertsAttribute
 
-   The "AttestCertsAttribute" contains a set of certificates that may be
-   needed to validate the contents of an attestation statement contained
-   in an attestAttribute.  The set of certificates should contain the
+   The "EvidenceCertsAttribute" contains a set of certificates that may
+   be needed to validate the contents of an evidence statement contained
+   in an evidenceAttribute.  The set of certificates should contain the
    object that contains the public key needed to directly validate the
-   AttestAttribute.  The remaining elements should chain that data back
-   to an agreed upon root of trust for attestations.  No order is
-   implied, it is the Verifier's responsibility to perform the
-   appropriate certificate path building.
+   EvidenceAttribute.  The remaining elements should chain that data
+   back to an agreed upon trust anchor used for attestation.  No order
+   is implied, it is the Verifier's responsibility to perform the
+   appropriate certification path construction.
 
-   A CSR MUST contain at most 1 AttestCertsAttribute.  In the case where
-   the CSR contains multiple instances of AttestAttribute representing
-   multiple attestations, all necessary certificates MUST be contained
-   in the same instance of AttestCertsAttribute.
+   A CSR MUST contain at zero or one EvidenceCertsAttribute.  In the
+   case where the CSR contains multiple instances of EvidenceAttribute
+   representing multiple evidence statements, all necessary certificates
+   MUST be contained in the same instance of EvidenceCertsAttribute.
+   AttestCertsAttribute MAY be omitted if there are no certificates to
+   convey, for example if they are already known to the verifier, or if
+   they are contained in the evidence statement.
 
-   id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
+   id-aa-evidenceChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
 
-   AttestCertsAttribute ATTRIBUTE ::= {
+   EvidenceCertsAttribute ATTRIBUTE ::= {
      TYPE SET OF CertificateChoice
      COUNTS MAX 1
-     IDENTIFIED BY id-aa-attestChainCerts
+     IDENTIFIED BY id-aa-evidenceChainCerts
    }
 
 4.5.  CertificateChoice
@@ -300,19 +312,19 @@ Table of Contents
       }
 
    "Certificate" is a standard X.509 certificate that MUST be compliant
-   with RFC5280.  Enforcement of this constraint is left to the relying
+
+   with RFC 5280.  Enforcement of this constraint is left to the relying
    parties.
 
-   "opaqueCert" should be used sparingly as it requires the receiving
-   party to implictly know its format.  It is encoded as an OCTET
-   STRING.
+   "opaqueCert" should be used sparingly as it requires the verifier to
+   implictly know its format.  It is encoded as an OCTET STRING.
 
    "TypedCert" is an ASN.1 construct that has the charateristics of a
    certificate, but is not encoded as an X.509 certificate.  The
-   certTypeField indicates how to interpret the certBody field.  While
-   it is possible to carry any type of data in this structure, it's
-   intended the content field include data for at least one public key
-   formatted as a SubjectPublicKeyInfo (see [RFC5912]).
+   certType Field (below) indicates how to interpret the certBody field.
+   While it is possible to carry any type of data in this structure,
+   it's intended the content field include data for at least one public
+   key formatted as a SubjectPublicKeyInfo (see [RFC5912]).
 
   TYPED-CERT ::= TYPE-IDENTIFIER
 
@@ -328,8 +340,8 @@ Table of Contents
                }
 
    "TypedFlatCert" is a certificate that does not have a valid ASN.1
-   encoding.  Think compact or implicit certificates as might be used
-   with smart cards.  certType indicates the format of the data in the
+   encoding.  These are often compact or implicit certificates used by
+   smart cards. certType indicates the format of the data in the
    certBody field, and ideally refers to a published specification.
 
    TypedFlatCert ::= SEQUENCE {
@@ -350,7 +362,7 @@ Table of Contents
 
    *  Decimal: IANA Assigned - Replace TBDMOD
 
-   *  Description: CSR-ATTESTATION-2023 - id-mod-pkix-attest-01
+   *  Description: CSR-EVIDENCE-2023 - id-mod-pkix-evidence-01
 
    *  References: This Document
 
@@ -361,7 +373,7 @@ Table of Contents
 
       -  Decimal: IANA Assigned - Replace TBDAA2
 
-      -  Description: id-aa-attestStatement
+      -  Description: id-aa-evidenceStatement
 
       -  References: This Document
 
@@ -369,14 +381,14 @@ Table of Contents
 
       -  Decimal: IANA Assigned - Replace TBDAA1
 
-      -  Description: id-aa-attestChainCerts
+      -  Description: id-aa-evidenceChainCerts
 
       -  References: This Document
 
-5.1.3.  "SMI Security for PKIX Attestation Statement Formats" Registry
+5.1.3.  "SMI Security for PKIX Evidence Statement Formats" Registry
 
-   Please open up a registry for Attestation Statement Formats within
-   the SMI-numbers registry, allocating an assignment from id-pkix ("SMI
+   Please open up a registry for evidence Statement Formats within the
+   SMI-numbers registry, allocating an assignment from id-pkix ("SMI
    Security for PKIX" Registry) for the purpose.
 
    *  Decimal: IANA Assigned - replace TBD1
@@ -388,7 +400,7 @@ Table of Contents
    *  Initial contents: None
 
    *  Registration Regime: Specification Required.  Document must
-      specify an ATTEST-STATEMENT definition to which this Object
+      specify an EVIDENCE-STATEMENT definition to which this Object
       Identifier shall be bound.
 
    Columns:
@@ -401,48 +413,55 @@ Table of Contents
 
 6.  Security Considerations
 
-   The attestation evidence communicated in the attributes and
-   structures defined in this document are meant to be used in a PKCS10
-   Certification Signing Request (CSR).  It is up to the verifier and to
-   the relying party (RA/CA) to place as much or as little trust in this
-   information as dictated by policies.
+   The evidence communicated in the attributes and structures defined in
+   this document are meant to be used in a PKCS#10 Certificate Signing
+   Request (CSR).  It is up to the verifier and to the relying party
+   (RA/CA) to place as much or as little trust in this information as
+   dictated by policies.
 
    This document defines the transport of evidence of different formats
-   in a CSR.  Some of these attestation formats are based on standards
+   in a CSR.  Some of these evidence formats are based on standards
    while others are proprietary formats.  A verifier will need to
    understand these formats for matching the received values against
    policies.
 
-   Policies drive the processing of evidence at the verifier and other
-   policies influence the decision making at the relying party when
-   evaluating the attestation result.  The relying party is ultimately
-   responsible for making a decision of what attestation-related
-   information in the CSR it will accept.  The presence of the
-   attributes defined in this specification provide the relying party
-   with additional assurance about attester.  Policies used at the
-   verifier and the relying party are implementation dependent and out
-   of scope for this document.  Whether to require the use of the
-   attestation-related attributes in the CSR is out-of-scope for this
-   document.
+   Policies drive the processing of evidence at the verifier: the
+   Verifier's Appraisal Policy for Evidence will often be specified by
+   the manufacturer of a hardware security module or specified by a
+   regulatory body such as the CA Browser Forum Code-Signing Baseline
+   Requirements [CSBR] which specifies certain properties, such as non-
+   exportability, which must be enabled for storing publicly-trusted
+   code-signing keys.
 
-   Evidence generated by the attestation generally needs to be fresh to
+   The relying party is ultimately responsible for making a decision of
+   what attestation-related information in the CSR it will accept.  The
+   presence of the attributes defined in this specification provide the
+   relying party with additional assurance about attester.  Policies
+   used at the verifier and the relying party are implementation
+   dependent and out of scope for this document.  Whether to require the
+   use of evidence in the CSR is out-of-scope for this document.
+
+   Evidence generated by an attester generally needs to be fresh to
    provide value to the verifier since the configuration on the device
    may change over time.  Section 10 of [RFC9334] discusses different
    approaches for providing freshness, including a nonce-based approach,
    the use of timestamps and an epoch-based technique.  The use of
    nonces requires an extra message exchange via the relying party and
    the use of timestamps requires synchronized clocks.  Epochs also
-   require communication.  The definition of "fresh" is somewhat
-   ambiguous in the context of CSRs, especially considering that non-
-   automated certificate enrollments are often asyncronous, and
-   considering the common practice of re-using the same CSR for multiple
-   certificate renewals across the lifetime of a key.  "Freshness"
-   typically implies both asserting that the data was generated at a
-   certain point-in-time, as well as providing non-replayability.
-   Developers, operators, and designers of protocols which embed
-   attestation-carrying-CSRs need to consider what notion of freshness
-   is appropriate and available in-context; thus the issue of freshness
-   is out-of-scope for this document.
+   require (unidirectional) communication.  None of these things are
+   practical when interacting with Hardware Security Modules (HSM).
+
+   The definition of "fresh" is somewhat ambiguous in the context of
+   CSRs, especially considering that non-automated certificate
+   enrollments are often asyncronous, and considering the common
+   practice of re-using the same CSR for multiple certificate renewals
+   across the lifetime of a key.  "Freshness" typically implies both
+   asserting that the data was generated at a certain point-in-time, as
+   well as providing non-replayability.  Developers, operators, and
+   designers of protocols which embed evidence-carrying-CSRs need to
+   consider what notion of freshness is appropriate and available in-
+   context; thus the issue of freshness is out-of-scope for this
+   document.
 
 7.  References
 
@@ -452,6 +471,11 @@ Table of Contents
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC4211]  Schaad, J., "Internet X.509 Public Key Infrastructure
+              Certificate Request Message Format (CRMF)", RFC 4211,
+              DOI 10.17487/RFC4211, September 2005,
+              <https://www.rfc-editor.org/rfc/rfc4211>.
 
    [RFC5912]  Hoffman, P. and J. Schaad, "New ASN.1 Modules for the
               Public Key Infrastructure Using X.509 (PKIX)", RFC 5912,
@@ -468,6 +492,11 @@ Table of Contents
               2023, <https://www.rfc-editor.org/rfc/rfc9334>.
 
 7.2.  Informative References
+
+   [CSBR]     CA/Browser Forum, "Baseline Requirements for Code-Signing
+              Certificates, v.3.3", June 2023, <https://cabforum.org/wp-
+              content/uploads/Baseline-Requirements-for-the-Issuance-
+              and-Management-of-Code-Signing.v3.3.pdf>.
 
    [I-D.tschofenig-rats-psa-token]
               Tschofenig, H., Frost, S., Brossard, M., Shaw, A. L., and
@@ -492,11 +521,11 @@ Appendix A.  Examples
 
    This section provides two non-normative examples for embedding
    evidence in in CSRs.  The first example conveys Arm Platform Security
-   Architecture tokens, which offers platform attestation, into the CSR.
-   The second example embeds the TPM v2.0 attestation information in the
-   CSR.
+   Architecture tokens, which provides claims about the used hardware
+   and software platform, into the CSR.  The second example embeds the
+   TPM v2.0 evidence in the CSR.
 
-A.1.  TPM V2.0 Attestation in CSR
+A.1.  TPM V2.0 Evidence in CSR
 
    The following example illustrates a CSR with a signed TPM Quote based
    on [TPM20].  The Platform Configuration Registers (PCRs) are fixed-
@@ -506,7 +535,7 @@ A.1.  TPM V2.0 Attestation in CSR
    digitially signed with an attestation key known to the hardware.
 
    Note: The information conveyed in the value field of the
-   AttestStatement structure may contain more information than the
+   EvidenceStatement structure may contain more information than the
    signed TPM Quote structure defined in the TPM v2.0 specification
    [TPM20], such as plaintext PCR values, the up-time, the event log,
    etc.  The detailed structure of such payload is, however, not defined
@@ -529,8 +558,8 @@ A.1.  TPM V2.0 Attestation in CSR
                    ASN1 OID: prime256v1
                    NIST CURVE: P-256
            Attributes:
-               AttestStatement
-                  type: TBD2 (identifying TPM V2.0 attestation)
+               EvidenceStatement
+                  type: TBD2 (identifying use of TPM V2.0)
                   value:
                        80:02:00:00:01:99:00:00:00:00:00:00:01:86:00:7e
                        ff:54:43:47:80:18:00:22:00:0b:76:71:0f:61:80:95
@@ -565,17 +594,15 @@ A.1.  TPM V2.0 Attestation in CSR
            8a:02:20:36:be:3d:71:93:5d:05:c3:ac:fa:a8:f3:e5:46:db:
            57:f9:23:ee:93:47:6d:d6:d3:4f:c2:b7:cc:0d:89:71:fe
 
-              Figure 2: CSR with embedded TPM V2.0 Attestation
+                        Figure 2: CSR with TPM V2.0
 
-A.2.  PSA Attestation in CSR
+A.2.  Platform Security Architecture Attestation Token in CSR
 
-   The example shown in Figure 3 illustrates how platform attestation is
-   conveyed in a CSR.  The content of the evidence in this example is
-   re-used from [I-D.tschofenig-rats-psa-token] and contains a digitally
-   signed Entity Attestation Token (EAT).
-
-   While the PSA token is digitally signed with an attestation private
-   key, it does not offer key attestation.
+   The example shown in Figure 3 illustrates how the Arm Platform
+   Security Architecture (PSA) Attestation Token is conveyed in a CSR.
+   The content of the evidence in this example is re-used from
+   [I-D.tschofenig-rats-psa-token] and contains an Entity Attestation
+   Token (EAT) digitally signed with an attestation private key.
 
    Certification Request:
        Data:
@@ -593,8 +620,8 @@ A.2.  PSA Attestation in CSR
                    ASN1 OID: prime256v1
                    NIST CURVE: P-256
            Attributes:
-               AttestStatement
-                  type: TBD1 (referring to PSA attestation)
+               EvidenceStatement
+                  type: TBD1 (referring to the PSA Attestation Token)
                   value: d2:84:43:a1:01:26:a0:59:01:3b:aa:19:01:09:78:
                          18:68:74:74:70:3a:2f:2f:61:72:6d:2e:63:6f:6d:
                          2f:70:73:61:2f:32:2e:30:2e:30:19:09:5a:1a:7f:
@@ -629,11 +656,11 @@ A.2.  PSA Attestation in CSR
            8a:02:20:36:be:3d:71:93:5d:05:c3:ac:fa:a8:f3:e5:46:db:
            57:f9:23:ee:93:47:6d:d6:d3:4f:c2:b7:cc:0d:89:71:fe
 
-                Figure 3: CSR with embedded PSA Attestation
+             Figure 3: CSR with embedded PSA Attestation Token
 
    The decoded evidence is shown in Appendix A of
-   [I-D.tschofenig-rats-psa-token], the shown attestation information,
-   provides the following information to an RA/CA:
+   [I-D.tschofenig-rats-psa-token], the shown evidence, provides the
+   following information to an RA/CA:
 
    *  Boot seed,
 
@@ -660,7 +687,13 @@ IMPORTS
 Certificate
   FROM PKCS-9
     { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
-      modules(0) pkcs-9(1) };
+      modules(0) pkcs-9(1) }
+
+EXTENSION, ATTRIBUTE
+    FROM PKIX-CommonTypes-2009 -- from [RFC5912]
+    { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+      mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }
+  ;
 
 
 
@@ -703,26 +736,46 @@ TypedFlatCert ::= SEQUENCE {
 }
 
 
-id-aa-attestStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
+id-aa-evidenceStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
 
-AttestAttribute ATTRIBUTE ::= {
-  TYPE AttestStatement
-  IDENTIFIED BY id-aa-attestStatement
+
+TODO -- run this through a compiler.
+
+-- For PKCS#10
+ext-evidence ATTRIBUTE ::= {
+  TYPE EvidenceStatement
+  IDENTIFIED BY id-aa-evidenceStatement
 }
 
-id-aa-attestChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
-
-attestCertsAttribute ATTRIBUTE ::= {
-  TYPE SEQUENCE OF CertificateChoice
-  COUNTS MAX 1
-  IDENTIFIED BY id-aa-attestChainCerts
+-- For CRMF
+ext-evidence EXTENSION ::= {
+  TYPE EvidenceStatement
+  IDENTIFIED BY id-aa-evidenceStatement
 }
 
-AttestStatement ::= SEQUENCE
+EvidenceStatement ::= SEQUENCE
   {
     type   OBJECT IDENTIFIER,
     value  ANY
   }
+
+
+id-aa-evidenceChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
+
+
+-- For PKCS#10
+evidenceCertsAttribute ATTRIBUTE ::= {
+  TYPE SEQUENCE OF CertificateChoice
+  COUNTS MAX 1
+  IDENTIFIED BY id-aa-evidenceChainCerts
+}
+
+-- For CRMF
+evidenceCertsAttribute EXTENSION ::= {
+  TYPE SEQUENCE OF CertificateChoice
+  COUNTS MAX 1
+  IDENTIFIED BY id-aa-evidenceChainCerts
+}
 
 END
 
