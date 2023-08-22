@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-08-20T00:44:00.990596+00:00",
+  "timestamp": "2023-08-22T00:42:44.619761+00:00",
   "repo": "lamps-wg/csr-attestation",
   "labels": [
     {
@@ -55,15 +55,15 @@
       "id": "I_kwDOJ3IIN85rBFQ2",
       "title": "# of instances of AttestCertsAttribute",
       "url": "https://github.com/lamps-wg/csr-attestation/issues/10",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "> >>\r\n> >>     A CSR MUST contain at most 1 AttestCertsAttribute. In the case where the CSR contains multiple instances of AttestAttribute representing multiple attestations, all necessary certificates MUST be contained in the same instance of AttestCertsAttribute.\r\n> >>\r\n> >>  \r\n> >>\r\n> >> Perhaps to make the wording easier, shall we change the description to \u201cA CSR MUST only contain  exactly one AttestCertsAttribute\u201d?\r\n> >\r\n> > Sounds like a good idea.\r\n> \r\n> It's only a good idea if you ignore:\r\n> \r\n> > [[MO]] But a CSR can also contain zero instances of AttestCertsAttribute, for example if you know that the RP already knows your public key then you have no need to transmit any certs. Alternatively, maybe there exists an Attestation format where the certs are buried inside the AttestStatement.\r\n> > [[MO]] I could change the wording to \u201cA CSR MUST contain 0 or 1 instances of AttestCertsAttribute\u201d if that is clearer?\r\n> \r\n> Given that you can't have less than zero instances of an attribute in a CSR, \"at most one\" is the same as \"zero or one\".   I wouldn't object to a change to zero or one, but I would to \"exactly one\".  If you always require exactly one, you will most likely be duplicating information that's available in the body of the actual attestation statement included in the AttestAttribute (cf Webauthn attestation formats).\r\n> \r\n> Mike",
       "createdAt": "2023-07-09T15:20:42Z",
-      "updatedAt": "2023-07-09T20:34:28Z",
-      "closedAt": null,
+      "updatedAt": "2023-08-21T01:51:41Z",
+      "closedAt": "2023-08-21T01:51:41Z",
       "comments": [
         {
           "author": "ounsworth",
@@ -71,6 +71,13 @@
           "body": "I was coming here to open the same issue.\r\n\r\nTasks:\r\n1. Re-word \"at most one\" to \"zero or one\".\r\n2. Add text making it clear that the AttestCertsAttribute is optional and SHOULD be omitted if there are no certs to be carried, for example if the attestation key is already known to the verifier, or if the attestation statement format being carried already includes the cert chain, as is the case with WebAuthn -- see [WebAuthn-2 s. 8.2](https://www.w3.org/TR/webauthn-2/#sctn-packed-attestation).",
           "createdAt": "2023-07-09T20:32:49Z",
           "updatedAt": "2023-07-09T20:34:28Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This has been addressed.",
+          "createdAt": "2023-08-21T01:51:41Z",
+          "updatedAt": "2023-08-21T01:51:41Z"
         }
       ]
     },
@@ -141,16 +148,24 @@
       "id": "I_kwDOJ3IIN85rOnwr",
       "title": "Start each sentence on a new line",
       "url": "https://github.com/lamps-wg/csr-attestation/issues/14",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ounsworth",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "This improves readability of changes in the .md when looking at diffs.",
       "createdAt": "2023-07-11T13:51:46Z",
-      "updatedAt": "2023-07-11T13:51:46Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2023-08-21T01:51:02Z",
+      "closedAt": "2023-08-21T01:51:02Z",
+      "comments": [
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This was @mcr 's suggestion. While it's a good idea; I don't think I'm gonna do it unless he twists my arm.",
+          "createdAt": "2023-08-21T01:51:02Z",
+          "updatedAt": "2023-08-21T01:51:02Z"
+        }
+      ]
     },
     {
       "number": 15,
@@ -204,15 +219,15 @@
       "id": "I_kwDOJ3IIN85rQ0yG",
       "title": "Change \"CSR\" to \"Certificate Signing Request\"",
       "url": "https://github.com/lamps-wg/csr-attestation/issues/18",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "henkbirkholz",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "In this context, https://www.rfc-editor.org/materials/abbrev.expansion.txt expands CSR to Certificate Signing Request(s) and not Certification Signing Requests. For consistence, I'd also recommend to expand CA to Certificate Authority.",
       "createdAt": "2023-07-11T18:51:42Z",
-      "updatedAt": "2023-07-18T16:42:19Z",
-      "closedAt": null,
+      "updatedAt": "2023-08-21T01:53:08Z",
+      "closedAt": "2023-08-21T01:52:49Z",
       "comments": [
         {
           "author": "henkbirkholz",
@@ -248,6 +263,13 @@
           "body": "See LAMPS thread.\r\nhttps://mailarchive.ietf.org/arch/msg/spasm/4JLNwCBvI-ltjDyMtKb-yq2LWME/",
           "createdAt": "2023-07-18T16:42:19Z",
           "updatedAt": "2023-07-18T16:42:19Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Closing, as per LAMPS thread and corrections made to the text.",
+          "createdAt": "2023-08-21T01:52:49Z",
+          "updatedAt": "2023-08-21T01:53:08Z"
         }
       ]
     },
@@ -290,6 +312,54 @@
       "updatedAt": "2023-07-17T17:12:20Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 23,
+      "id": "I_kwDOJ3IIN85uwUK4",
+      "title": "ATTRIBUTE or EXTENSION to satisfy CRMF",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/23",
+      "state": "OPEN",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Borrow from Carl's draft -- draft-ietf-lamps-key-attestation-ext-00\r\n\r\n```\r\n  IMPORTS\r\n\r\n  EXTENSION, ATTRIBUTE\r\n  FROM PKIX-CommonTypes-2009 -- from [RFC5912]\r\n    { iso(1) identified-organization(3) dod(6) internet(1) security(5)\r\n      mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }\r\n  ;\r\n  \r\n  ext-keyAttestation EXTENSION ::= {\r\n    SYNTAX KeyAttestation IDENTIFIED BY id-pe-keyAttestation }\r\n\r\n  attr-keyAttestation ATTRIBUTE ::= {\r\n    TYPE KeyAttestation IDENTIFIED BY id-pe-keyAttestation }\r\n```",
+      "createdAt": "2023-08-20T15:16:32Z",
+      "updatedAt": "2023-08-20T15:33:32Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Specify in text:\r\n\r\n> This Extension is intended only for use within CRMF CSRs and is NOT RECOMMENDED for use within X.509 certificates because publishing evidence carries privacy implications which are not considered in this document. See {{security-considerations}} for more discussion.\r\n\r\n> # Security Considerations\r\n> ## Publishing evidence in an X.509 extension\r\n> This document specifies how to carry evidence in a PKCS#10 or CRMF Certificate Signing Request (CSR), but it is intentionally NOT RECOMMENDED for a CA to re-use that CRMF extension to publish the evidence in the resulting X.509 certificate. The reason for this is that the evidence might contain detailed information about hardware and patch levels of the device on which the private key resides. Certificates are considered public information. The certificate requester has consented to sharing this detailed device information with the CA but might not consent to having them published.\r\n> These privacy considerations are beyond the scope of this document and may require additional signaling mechanisms in the CSR to prevent unintended publication of sensitive information, so we leave it as \"NOT RECOMMENDED\".",
+          "createdAt": "2023-08-20T15:30:29Z",
+          "updatedAt": "2023-08-20T15:33:32Z"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "id": "I_kwDOJ3IIN85uxIv_",
+      "title": "Document build is failing",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/24",
+      "state": "CLOSED",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Both my local `make` and the compiler in the github action are getting the same error:\r\n\r\n```\r\n*** YAML syntax error: (<unknown>): did not find expected key while parsing a block mapping at line 2 column 1\r\n```\r\n\r\nTo my eyes it looks the same as other documents that do compile, so I don't know what's going on here. Help?\r\n@hannestschofenig , @mcr , @henkbirkholz ",
+      "createdAt": "2023-08-21T01:04:59Z",
+      "updatedAt": "2023-08-21T08:29:54Z",
+      "closedAt": "2023-08-21T08:29:54Z",
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Was just a problem with the references -- even though the error description does not give that impression",
+          "createdAt": "2023-08-21T08:29:54Z",
+          "updatedAt": "2023-08-21T08:29:54Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -799,24 +869,26 @@
       "id": "PR_kwDOJ3IIN85YJ_vM",
       "title": "Switch to Evidence Term",
       "url": "https://github.com/lamps-wg/csr-attestation/pull/21",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-08-17T13:06:02Z",
-      "updatedAt": "2023-08-19T23:33:01Z",
+      "updatedAt": "2023-08-21T01:05:33Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "main",
-      "baseRefOid": "485fc0c144d1b8999e738ce8c4e017557217bf83",
+      "baseRefOid": "5ec639cafdbe629a3a4feb7acf4497bb35f39bd8",
       "headRepository": "lamps-wg/csr-attestation",
       "headRefName": "hannestschofenig-patch-3",
-      "headRefOid": "eb9abfadbad5d31c38f2a8f37df1e66dd79bd124",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "956a9546e4a78602e4c907c2f77f19ad383c5b6c",
+      "closedAt": "2023-08-21T01:05:29Z",
+      "mergedAt": "2023-08-21T01:05:29Z",
+      "mergedBy": "ounsworth",
+      "mergeCommit": {
+        "oid": "3906c8b8dafc1bc2f5e1cf48142a50b0b78145ce"
+      },
       "comments": [
         {
           "author": "henkbirkholz",
@@ -831,6 +903,41 @@
           "body": "> As this PR touches issues #16 and #18, the first question that springs to my mind is:\r\n> \r\n> Is it always Evidence (which from case to case can be very high volume) or also the complementary RATS conceptual message that is the Attestation Result?\r\n\r\nAccording to Fig 1, it is the Evidence from the Attester. Interesting idea that the CSR could also carry an Attestation Result. But I'm struggling to imagine how that would work; for example an RA could not replace the Evidence with an Attestation Result without breaking the signature on the CSR.",
           "createdAt": "2023-08-19T23:33:01Z",
           "updatedAt": "2023-08-19T23:33:01Z"
+        },
+        {
+          "author": "mcr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> As this PR touches issues #16 and #18, the first question that springs to my mind is:\r\n> \r\n> Is it always Evidence (which from case to case can be very high volume) or also the complementary RATS conceptual message that is the Attestation Result?\r\n\r\nI can't see how AR could be inserted by the Verifier into the CSR.\r\nIf the verifier (operated by the HSM manufacturer, or their representative) needs to communicate things other than pass/fail with the RP (the CA), then they need a different protocol.\r\n",
+          "createdAt": "2023-08-20T00:55:57Z",
+          "updatedAt": "2023-08-20T00:55:57Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> I can't see how AR could be inserted by the Verifier into the CSR. If the verifier (operated by the HSM manufacturer, or their representative) needs to communicate things other than pass/fail with the RP (the CA), then they need a different protocol.\r\n\r\nI expect we'll see a lot of \"Pass/Fail for a given evidence verification profile\" (or whatever the right RATS term is for that). Like \"Does this CSR indicate compliance with CA/B BRs?\", or \"Did this CSR come from TPM-backed CAPI on a fully-patched Windows?\". Or maybe even, the CA hands the verifier a list of evidence verification profiles (maybe each with its own trust store), and the Verifier hands back a list of profiles that this CSR complies with, the CA then smacks the corresponding OIDs on the cert.",
+          "createdAt": "2023-08-20T01:41:21Z",
+          "updatedAt": "2023-08-20T01:43:03Z"
+        },
+        {
+          "author": "mcr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> I expect we'll see a lot of \"Pass/Fail for a given evidence verification profile\" (or whatever the right RATS term is for that). Like \"Does this CSR indicate compliance with CA/B BRs?\", or \"Did this CSR come from TPM-backed CAPI on a fully-patched Windows?\". Or maybe even, the CA hands the verifier a list of evidence verification profiles (maybe each with its own trust store), and the Verifier hands back a list of profiles that this CSR complies with, the CA then smacks the corresponding OIDs on the cert.\r\n\r\nSure, but none of those messages can go INTO the CSR. Because it's signed by the Attester, and the Verifier can't modify that.\r\nRATS does not define a protocol between RP and Verifier: we have to pick one or design one.\r\nYour initial proposal that it's a proprietary popen(\"|hsm-manufacturer-module\") is probably a good one for now.\r\n\r\n\r\n",
+          "createdAt": "2023-08-20T03:02:52Z",
+          "updatedAt": "2023-08-20T03:02:52Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Note-to-self: Hannes' changes are good. I manually merged from `main` to pick up the other PRs.\r\nStill TODO before merge: change the ASN.1 in `CSR-ATTESTATION-2023.ASN` to change \"Attestation\" to \"Evidence\".",
+          "createdAt": "2023-08-20T15:27:22Z",
+          "updatedAt": "2023-08-20T15:28:21Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I'm going to merge this even though it doesn't build. See #24 ",
+          "createdAt": "2023-08-21T01:05:19Z",
+          "updatedAt": "2023-08-21T01:05:19Z"
         }
       ],
       "reviews": []
@@ -847,7 +954,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2023-08-17T14:14:50Z",
-      "updatedAt": "2023-08-17T14:35:12Z",
+      "updatedAt": "2023-08-21T08:28:53Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "main",
       "baseRefOid": "485fc0c144d1b8999e738ce8c4e017557217bf83",
@@ -919,8 +1026,106 @@
               "updatedAt": "2023-08-17T14:35:11Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85ej89P",
+          "commit": {
+            "abbreviatedOid": "a98a974"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-21T08:28:52Z",
+          "updatedAt": "2023-08-21T08:28:52Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "Proposal is here: https://github.com/lamps-wg/csr-attestation/pull/27\r\n",
+              "createdAt": "2023-08-21T08:28:52Z",
+              "updatedAt": "2023-08-21T08:28:52Z"
+            }
+          ]
         }
       ]
+    },
+    {
+      "number": 25,
+      "id": "PR_kwDOJ3IIN85YVfh_",
+      "title": "ext-evidence extension for CRMF reqs, not certs",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/25",
+      "state": "OPEN",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-21T01:49:59Z",
+      "updatedAt": "2023-08-21T01:50:00Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "3906c8b8dafc1bc2f5e1cf48142a50b0b78145ce",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "ounsworth-ext",
+      "headRefOid": "2253dcb81e582546303fadb08f5c7abedd3bebf3",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 26,
+      "id": "PR_kwDOJ3IIN85YWnTV",
+      "title": "Title Change",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/26",
+      "state": "CLOSED",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Merge only if relevant",
+      "createdAt": "2023-08-21T07:13:26Z",
+      "updatedAt": "2023-08-21T08:31:42Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "hannestschofenig-patch-4",
+      "baseRefOid": "85e960b7fe239984a16223218eb48eb17e4ebe4d",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "hannestschofenig-patch-2",
+      "headRefOid": "e6a35fbf41e2f6e1babafd30e0c8cc04917e7876",
+      "closedAt": "2023-08-21T08:31:33Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 27,
+      "id": "PR_kwDOJ3IIN85YWpu7",
+      "title": "Explained CSR terminology",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/27",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-21T07:21:07Z",
+      "updatedAt": "2023-08-21T16:07:16Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "hannestschofenig-patch-4",
+      "baseRefOid": "85e960b7fe239984a16223218eb48eb17e4ebe4d",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "hannestschofenig-patch-2-1",
+      "headRefOid": "5eff801b2e1281c9b2ae7b9dc3414cbbbbe50d9f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
