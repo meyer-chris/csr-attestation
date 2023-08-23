@@ -5,8 +5,8 @@
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                           H. Tschofenig
-Expires: 22 February 2024                                        Siemens
-                                                          21 August 2023
+Expires: 24 February 2024                                        Siemens
+                                                          23 August 2023
 
 
          Use of Attestation with Certification Signing Requests
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 February 2024.
+   This Internet-Draft will expire on 24 February 2024.
 
 Copyright Notice
 
@@ -168,14 +168,16 @@ Table of Contents
    with the following terms: evidence, claim, attestation result,
    attester, verifier, and relying party.
 
-   The term Certification Request message is defined in [RFC2986].
+   The term "Certification Request" message is defined in [RFC2986].
    Specifications later introduced the term "Certificate Signing Request
    (CSR)" to refer to Certification Request message.  While the term
    "Certification Signing Request" would have been more appropriate, it
    is not what has been selected.  While the term CSR is often used in
    context of PKCS#10 it is equally applicable to other protocols that
-   use a different syntax and even a different encoding.  We use the
-   terms CSR and Certification Request message interchangeably.
+   use a different syntax and even a different encoding, in particular
+   this document also considers Certificate Request Message Format
+   (CRMF) [RFC4211] to be "CSRs".  We use the terms "CSR" and
+   Certification Request message interchangeably.
 
 3.  Architecture
 
@@ -410,16 +412,16 @@ Table of Contents
 
 6.  Security Considerations
 
-   A PKCS#10 Certification Request message consists of a distinguished
-   name, a public key, and optionally a set of attributes, collectively
-   signed by the entity requesting certification.  The private key used
-   to sign the CSR MUST be different from the key used to sign evidence
-   by the attester.  To demonstrate that the private key used to sign
-   the CSR is generated, stored, and used in a secure environment that
-   has controls to prevent theft or misuse (including being non-
-   exportable / non-recoverable), the attesting environment has to
-   collect claims about this secure environment (or target environment,
-   as shown in Figure 2).
+   A PKCS#10 or CRMF Certification Request message consists of a
+   distinguished name, a public key, and optionally a set of attributes,
+   collectively signed by the entity requesting certification.  The
+   private key used to sign the CSR MUST be different from the key used
+   to sign evidence by the attester.  To demonstrate that the private
+   key used to sign the CSR is generated, stored, and used in a secure
+   environment that has controls to prevent theft or misuse (including
+   being non-exportable / non-recoverable), the attesting environment
+   has to collect claims about this secure environment (or target
+   environment, as shown in Figure 2).
 
    Figure 2 shows the interaction inside an attester.  The attesting
    environment, which is provisioned with an attestation key, retrieves
@@ -545,6 +547,11 @@ Table of Contents
               Request Syntax Specification Version 1.7", RFC 2986,
               DOI 10.17487/RFC2986, November 2000,
               <https://www.rfc-editor.org/rfc/rfc2986>.
+
+   [RFC4211]  Schaad, J., "Internet X.509 Public Key Infrastructure
+              Certificate Request Message Format (CRMF)", RFC 4211,
+              DOI 10.17487/RFC4211, September 2005,
+              <https://www.rfc-editor.org/rfc/rfc4211>.
 
    [TPM20]    Trusted Computing Group, "Trusted Platform Module Library
               Specification, Family 2.0, Level 00, Revision 01.59",
