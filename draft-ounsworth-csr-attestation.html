@@ -1062,7 +1062,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Ounsworth &amp; Tschofenig</td>
-<td class="center">Expires 22 February 2024</td>
+<td class="center">Expires 24 February 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1075,12 +1075,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ounsworth-csr-attestation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-08-21" class="published">21 August 2023</time>
+<time datetime="2023-08-23" class="published">23 August 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-02-22">22 February 2024</time></dd>
+<dd class="expires"><time datetime="2024-02-24">24 February 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1134,7 +1134,7 @@ for inclusion in PKCS#10 or CRMF certificate signing requests: an ASN.1 Attribut
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 22 February 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 February 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1182,10 +1182,10 @@ for inclusion in PKCS#10 or CRMF certificate signing requests: an ASN.1 Attribut
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-attestattribute" class="internal xref">AttestAttribute</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-atteststatement" class="internal xref">AttestStatement</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-evidencestatement" class="internal xref">EvidenceStatement</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-evidencecertsattribute" class="internal xref">EvidenceCertsAttribute</a></p>
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-evidencecerts" class="internal xref">EvidenceCerts</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
                 <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-certificatechoice" class="internal xref">CertificateChoice</a></p>
@@ -1213,6 +1213,11 @@ for inclusion in PKCS#10 or CRMF certificate signing requests: an ASN.1 Attribut
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-publishing-evidence-in-an-x" class="internal xref">Publishing evidence in an X.509 extension</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-references" class="internal xref">References</a></p>
@@ -1397,19 +1402,27 @@ evidence statements of a type "EvidenceStatement".<a href="#section-4.2-1" class
 <pre>
 id-aa-evidenceStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
 
-EvidenceAttribute ATTRIBUTE ::= {
-  TYPE EvidencetStatement
+-- For PKCS#10
+attr-evidence ATTRIBUTE ::= {
+  TYPE EvidenceStatement
+  IDENTIFIED BY id-aa-evidenceStatement
+}
+
+-- For CRMF
+ext-evidence EXTENSION ::= {
+  TYPE EvidenceStatement
   IDENTIFIED BY id-aa-evidenceStatement
 }
 </pre><a href="#section-4.2-2" class="pilcrow">¶</a>
 </div>
 <p id="section-4.2-3">A CSR <span class="bcp14">MAY</span> contain one or more instance of <code>EvidenceAttribute</code>.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-4">The Extension version is intended only for use within CRMF CSRs and is <span class="bcp14">NOT RECOMMENDED</span> for use within X.509 certificates due to the privacy implications of publishing evidence about the end entity's hardware environment. See <a href="#security-considerations" class="auto internal xref">Section 6</a> for more discussion.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="atteststatement">
+<div id="evidencestatement">
 <section id="section-4.3">
-        <h3 id="name-atteststatement">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-atteststatement" class="section-name selfRef">AttestStatement</a>
+        <h3 id="name-evidencestatement">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-evidencestatement" class="section-name selfRef">EvidenceStatement</a>
         </h3>
 <p id="section-4.3-1">An AttestStatement is a simple type-value pair encoded as
 a sequence, of which the type of the "value" field is
@@ -1417,7 +1430,7 @@ controlled by the value of the "type" field, similar to an Attribute
 definition.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3-2">
 <pre>
-AttestStatement ::= SEQUENCE {
+EvidenceStatement ::= SEQUENCE {
   type   OBJECT IDENTIFIER,
   value  ANY
 }
@@ -1425,10 +1438,10 @@ AttestStatement ::= SEQUENCE {
 </div>
 </section>
 </div>
-<div id="evidencecertsattribute">
+<div id="evidencecerts">
 <section id="section-4.4">
-        <h3 id="name-evidencecertsattribute">
-<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-evidencecertsattribute" class="section-name selfRef">EvidenceCertsAttribute</a>
+        <h3 id="name-evidencecerts">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-evidencecerts" class="section-name selfRef">EvidenceCerts</a>
         </h3>
 <p id="section-4.4-1">The "EvidenceCertsAttribute" contains a set of certificates that
 may be needed to validate the contents of an evidence statement
@@ -1447,13 +1460,22 @@ the same instance of <code>EvidenceCertsAttribute</code>.
 <pre>
 id-aa-evidenceChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
 
-EvidenceCertsAttribute ATTRIBUTE ::= {
-  TYPE SET OF CertificateChoice
+-- For PKCS#10
+attr-evidenceCerts ATTRIBUTE ::= {
+  TYPE SEQUENCE OF CertificateChoice
+  COUNTS MAX 1
+  IDENTIFIED BY id-aa-evidenceChainCerts
+}
+
+-- For CRMF
+ext-evidenceCerts EXTENSION ::= {
+  TYPE SEQUENCE OF CertificateChoice
   COUNTS MAX 1
   IDENTIFIED BY id-aa-evidenceChainCerts
 }
 </pre><a href="#section-4.4-3" class="pilcrow">¶</a>
 </div>
+<p id="section-4.4-4">The Extension version is intended only for use within CRMF CSRs and is <span class="bcp14">NOT RECOMMENDED</span> for use within X.509 certificates due to the privacy implications of publishing evidence about the end entity's hardware environment. See <a href="#security-considerations" class="auto internal xref">Section 6</a> for more discussion.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="certificatechoice">
@@ -1655,6 +1677,17 @@ Developers, operators, and designers of protocols which embed
 evidence-carrying-CSRs need to consider what notion of freshness is
 appropriate and available in-context; thus the issue of freshness is
 out-of-scope for this document.<a href="#section-6-6" class="pilcrow">¶</a></p>
+<div id="publishing-evidence-in-an-x509-extension">
+<section id="section-6.1">
+        <h3 id="name-publishing-evidence-in-an-x">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-publishing-evidence-in-an-x" class="section-name selfRef">Publishing evidence in an X.509 extension</a>
+        </h3>
+<p id="section-6.1-1">This document specifies and Extension for carrying evidence in a CRMF Certificate Signing Request (CSR), but it is intentionally <span class="bcp14">NOT RECOMMENDED</span> for a CA to copy the ext-evidence or ext-evidenceCerts extensions into the published certificate.
+The reason for this is that certificates are considered public information and the evidence might contain detailed information about hardware and patch levels of the device on which the private key resides.
+The certificate requester has consented to sharing this detailed device information with the CA but might not consent to having these details published.
+These privacy considerations are beyond the scope of this document and may require additional signaling mechanisms in the CSR to prevent unintended publication of sensitive information, so we leave it as "<span class="bcp14">NOT RECOMMENDED</span>".<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <section id="section-7">
@@ -1966,7 +1999,7 @@ id-aa-evidenceStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
 TODO -- run this through a compiler.
 
 -- For PKCS#10
-ext-evidence ATTRIBUTE ::= {
+attr-evidence ATTRIBUTE ::= {
   TYPE EvidenceStatement
   IDENTIFIED BY id-aa-evidenceStatement
 }
@@ -1988,14 +2021,14 @@ id-aa-evidenceChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
 
 
 -- For PKCS#10
-evidenceCertsAttribute ATTRIBUTE ::= {
+attr-evidenceCerts ATTRIBUTE ::= {
   TYPE SEQUENCE OF CertificateChoice
   COUNTS MAX 1
   IDENTIFIED BY id-aa-evidenceChainCerts
 }
 
 -- For CRMF
-evidenceCertsAttribute EXTENSION ::= {
+ext-evidenceCerts EXTENSION ::= {
   TYPE SEQUENCE OF CertificateChoice
   COUNTS MAX 1
   IDENTIFIED BY id-aa-evidenceChainCerts
