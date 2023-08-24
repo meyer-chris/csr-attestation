@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-08-22T00:42:44.619761+00:00",
+  "timestamp": "2023-08-24T00:41:54.810380+00:00",
   "repo": "lamps-wg/csr-attestation",
   "labels": [
     {
@@ -278,15 +278,15 @@
       "id": "I_kwDOJ3IIN85rwdCb",
       "title": "Change AttestCertsAttribute it to SEQUENCE",
       "url": "https://github.com/lamps-wg/csr-attestation/issues/19",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ounsworth",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Comment from Carl Wallace:\r\n\r\n> Adding an optional field adjacent to attestation type/value looks like it may be a good path forward (vs a sibling attribute as in current text). If you use a bag of certs in that context, SEQUENCE OF may be a better choice than SET OF as in the current attribute.",
       "createdAt": "2023-07-17T14:03:27Z",
-      "updatedAt": "2023-07-17T16:23:11Z",
-      "closedAt": null,
+      "updatedAt": "2023-08-23T16:33:06Z",
+      "closedAt": "2023-08-23T16:33:05Z",
       "comments": [
         {
           "author": "ounsworth",
@@ -294,6 +294,13 @@
           "body": "Counter-argument: a Key Attestation and a Platform attestation will likely share part or all of their cert chain, so having a single cert bag saves on duplication.",
           "createdAt": "2023-07-17T16:22:24Z",
           "updatedAt": "2023-07-17T16:22:24Z"
+        },
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Done. It's now a SEQUENCE:\r\n\r\n```\r\next-evidenceCerts EXTENSION ::= {\r\n  TYPE SEQUENCE OF CertificateChoice\r\n  COUNTS MAX 1\r\n  IDENTIFIED BY id-aa-evidenceChainCerts\r\n}\r\n```\r\n\r\nThe other parts of this issue are covered by #28.",
+          "createdAt": "2023-08-23T16:33:06Z",
+          "updatedAt": "2023-08-23T16:33:06Z"
         }
       ]
     },
@@ -318,15 +325,15 @@
       "id": "I_kwDOJ3IIN85uwUK4",
       "title": "ATTRIBUTE or EXTENSION to satisfy CRMF",
       "url": "https://github.com/lamps-wg/csr-attestation/issues/23",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ounsworth",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Borrow from Carl's draft -- draft-ietf-lamps-key-attestation-ext-00\r\n\r\n```\r\n  IMPORTS\r\n\r\n  EXTENSION, ATTRIBUTE\r\n  FROM PKIX-CommonTypes-2009 -- from [RFC5912]\r\n    { iso(1) identified-organization(3) dod(6) internet(1) security(5)\r\n      mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }\r\n  ;\r\n  \r\n  ext-keyAttestation EXTENSION ::= {\r\n    SYNTAX KeyAttestation IDENTIFIED BY id-pe-keyAttestation }\r\n\r\n  attr-keyAttestation ATTRIBUTE ::= {\r\n    TYPE KeyAttestation IDENTIFIED BY id-pe-keyAttestation }\r\n```",
       "createdAt": "2023-08-20T15:16:32Z",
-      "updatedAt": "2023-08-20T15:33:32Z",
-      "closedAt": null,
+      "updatedAt": "2023-08-23T16:18:42Z",
+      "closedAt": "2023-08-23T16:18:42Z",
       "comments": [
         {
           "author": "ounsworth",
@@ -360,6 +367,22 @@
           "updatedAt": "2023-08-21T08:29:54Z"
         }
       ]
+    },
+    {
+      "number": 28,
+      "id": "I_kwDOJ3IIN85u90Yh",
+      "title": "Remove EvidenceCerts attr/extn ?",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/28",
+      "state": "OPEN",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Hannes is advocating to remove the EvidanceCerts attribute / extension and roll it into the single EvidenceStatement attribute / extension; something like:\r\n\r\n```\r\nEvidenceStatement ::= SEQUENCE\r\n  {\r\n    type   OBJECT IDENTIFIER,\r\n    value  <whatever>,\r\n    certs SEQUENCE OF CertificateChoice OPTIONAL\r\n  }\r\n```\r\n\r\nhttps://mailarchive.ietf.org/arch/msg/spasm/8C0QEGQLn38neLZvpH4rBrOBltc/",
+      "createdAt": "2023-08-22T15:24:34Z",
+      "updatedAt": "2023-08-22T15:24:34Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -954,13 +977,13 @@
       "labels": [],
       "body": "",
       "createdAt": "2023-08-17T14:14:50Z",
-      "updatedAt": "2023-08-21T08:28:53Z",
+      "updatedAt": "2023-08-23T16:44:19Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "main",
       "baseRefOid": "485fc0c144d1b8999e738ce8c4e017557217bf83",
       "headRepository": "lamps-wg/csr-attestation",
       "headRefName": "hannestschofenig-patch-4",
-      "headRefOid": "85e960b7fe239984a16223218eb48eb17e4ebe4d",
+      "headRefOid": "f32b955964ead6bfd2de17c9b574bc4dcc80eea5",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -1054,24 +1077,26 @@
       "id": "PR_kwDOJ3IIN85YVfh_",
       "title": "ext-evidence extension for CRMF reqs, not certs",
       "url": "https://github.com/lamps-wg/csr-attestation/pull/25",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ounsworth",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-08-21T01:49:59Z",
-      "updatedAt": "2023-08-21T01:50:00Z",
+      "updatedAt": "2023-08-23T16:18:45Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "main",
-      "baseRefOid": "3906c8b8dafc1bc2f5e1cf48142a50b0b78145ce",
+      "baseRefOid": "b736b7d101eb4f095bd6992a4a4f59c351100be2",
       "headRepository": "lamps-wg/csr-attestation",
       "headRefName": "ounsworth-ext",
-      "headRefOid": "2253dcb81e582546303fadb08f5c7abedd3bebf3",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "838619d87bf0090c576ca888135b761b30cadcdd",
+      "closedAt": "2023-08-23T16:18:40Z",
+      "mergedAt": "2023-08-23T16:18:40Z",
+      "mergedBy": "ounsworth",
+      "mergeCommit": {
+        "oid": "ecfc756d708ee793b60d1b2040b579e61d679586"
+      },
       "comments": [],
       "reviews": []
     },
@@ -1106,25 +1131,35 @@
       "id": "PR_kwDOJ3IIN85YWpu7",
       "title": "Explained CSR terminology",
       "url": "https://github.com/lamps-wg/csr-attestation/pull/27",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-08-21T07:21:07Z",
-      "updatedAt": "2023-08-21T16:07:16Z",
+      "updatedAt": "2023-08-23T16:28:54Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "hannestschofenig-patch-4",
       "baseRefOid": "85e960b7fe239984a16223218eb48eb17e4ebe4d",
       "headRepository": "lamps-wg/csr-attestation",
       "headRefName": "hannestschofenig-patch-2-1",
-      "headRefOid": "5eff801b2e1281c9b2ae7b9dc3414cbbbbe50d9f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "5a956bd74abdf85cdfa64d106ce70bb101abf218",
+      "closedAt": "2023-08-23T16:28:43Z",
+      "mergedAt": "2023-08-23T16:28:43Z",
+      "mergedBy": "ounsworth",
+      "mergeCommit": {
+        "oid": "f32b955964ead6bfd2de17c9b574bc4dcc80eea5"
+      },
+      "comments": [
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I am going to hold off on merging this because we need to consider both PKCS10 as well as CRMF type CSRs.\r\n\r\n... actually maybe I'll just fix that right now.",
+          "createdAt": "2023-08-23T16:19:54Z",
+          "updatedAt": "2023-08-23T16:20:11Z"
+        }
+      ],
       "reviews": []
     }
   ]
