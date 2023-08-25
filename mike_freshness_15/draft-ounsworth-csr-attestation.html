@@ -1179,7 +1179,7 @@ for inclusion in PKCS#10 or CRMF certificate signing requests: an ASN.1 Attribut
                 <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-object-identifiers" class="internal xref">Object Identifiers</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-attestattribute" class="internal xref">AttestAttribute</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-evidence-attribute-and-exte" class="internal xref">Evidence Attribute and Extension</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
                 <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-evidencestatement" class="internal xref">EvidenceStatement</a></p>
@@ -1377,29 +1377,24 @@ certification request messages.<a href="#section-3-4" class="pilcrow">¶</a></p>
         <h3 id="name-object-identifiers">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-object-identifiers" class="section-name selfRef">Object Identifiers</a>
         </h3>
-<div class="alignLeft art-text artwork" id="section-4.1-1">
+<p id="section-4.1-1">We reference <code>id-pkix</code> and <code>id-aa</code>, both defined in <span>[<a href="#RFC5912" class="cite xref">RFC5912</a>]</span>.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">We define:<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.1-3">
 <pre>
--- Root of IETF's PKIX OID tree
-id-pkix OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
-     dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
-
--- S/Mime attributes - can be used here.
-id-aa OBJECT IDENTIFIER ::= {iso(1) member-body(2) usa(840)
-    rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) attributes(2)}
-
--- Branch for evidence types
+-- Arc for evidence types
 id-ata OBJECT IDENTIFIER ::= { id-pkix (TBD1) }
-</pre><a href="#section-4.1-1" class="pilcrow">¶</a>
+</pre><a href="#section-4.1-3" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="attestattribute">
+<div id="evidence-attribute-and-extension">
 <section id="section-4.2">
-        <h3 id="name-attestattribute">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-attestattribute" class="section-name selfRef">AttestAttribute</a>
+        <h3 id="name-evidence-attribute-and-exte">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-evidence-attribute-and-exte" class="section-name selfRef">Evidence Attribute and Extension</a>
         </h3>
-<p id="section-4.2-1">By definition, Attributes within a Certification Signing Request are
-typed as ATTRIBUTE.  This attribute definition contains one or more
+<p id="section-4.2-1">By definition, Attributes within a PKCS#10 CSR are
+typed as ATTRIBUTE and within a CRMF CSR are typed as EXTENSION.
+This attribute definition contains one or more
 evidence statements of a type "EvidenceStatement".<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.2-2">
 <pre>
@@ -1427,17 +1422,39 @@ ext-evidence EXTENSION ::= {
         <h3 id="name-evidencestatement">
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-evidencestatement" class="section-name selfRef">EvidenceStatement</a>
         </h3>
-<p id="section-4.3-1">An AttestStatement is a simple type-value pair encoded as
+<p id="section-4.3-1">An EvidenceStatement is a simple type-value pair identified by an OID
+<code>type</code> and containing a value <code>stmt</code>.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">encoded as
 a sequence, of which the type of the "value" field is
 controlled by the value of the "type" field, similar to an Attribute
-definition.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.3-2">
+definition.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.3-3">
 <pre>
-EvidenceStatement ::= SEQUENCE {
-  type   OBJECT IDENTIFIER,
-  value  ANY
+EVIDENCE-STATEMENT ::= TYPE-IDENTIFIER
+
+EvidenceStatementSet EVIDENCE-STATEMENT ::= {
+   ... -- Empty for now --
 }
-</pre><a href="#section-4.3-2" class="pilcrow">¶</a>
+
+EvidenceStatement {EVIDENCE-STATEMENT:EvidenceStatementSet} ::= SEQUENCE {
+   type   EVIDENCE-STATEMENT.&amp;id({EvidenceStatementSet}),
+   stmt   EVIDENCE-STATEMENT.&amp;Type({EvidenceStatementSet}{@type})
+}
+
+id-aa-evidenceStatement OBJECT IDENTIFIER ::= { id-aa aa-evidenceStatement(TBDAA2) }
+
+-- For PKCS#10
+attr-evidence ATTRIBUTE ::= {
+  TYPE EvidenceStatement
+  IDENTIFIED BY id-aa-evidenceStatement
+}
+
+-- For CRMF
+ext-evidence EXTENSION ::= {
+  TYPE EvidenceStatement
+  IDENTIFIED BY id-aa-evidenceStatement
+}
+</pre><a href="#section-4.3-3" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1458,7 +1475,7 @@ construction.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 the CSR contains multiple instances of <code>EvidenceAttribute</code> representing
 multiple evidence statements, all necessary certificates <span class="bcp14">MUST</span> be contained in
 the same instance of <code>EvidenceCertsAttribute</code>.
-<code>AttestCertsAttribute</code> <span class="bcp14">MAY</span> be omitted if there are no certificates to convey, for example if they are already known to the verifier, or if they are contained in the evidence statement.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<code>EvidenceCertsAttribute</code> <span class="bcp14">MAY</span> be omitted if there are no certificates to convey, for example if they are already known to the verifier, or if they are contained in the evidence statement.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.4-3">
 <pre>
 id-aa-evidenceChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
@@ -1565,7 +1582,7 @@ S/MIME Attributes" to identify two Attributes defined within.<a href="#section-5
 <ul class="normal">
 <li class="normal" id="section-5.1.1-1.1">Decimal: IANA Assigned - Replace TBDMOD<a href="#section-5.1.1-1.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-5.1.1-1.2">Description: CSR-EVIDENCE-2023 - id-mod-pkix-evidence-01<a href="#section-5.1.1-1.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-5.1.1-1.2">Description: CSR-ATTESTATION-2023 - id-mod-pkix-attest-01<a href="#section-5.1.1-1.2" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-5.1.1-1.3">References: This Document<a href="#section-5.1.1-1.3" class="pilcrow">¶</a>
 </li>
@@ -1646,7 +1663,7 @@ Document must specify an EVIDENCE-STATEMENT definition to which this Object Iden
       </h2>
 <p id="section-6-1">The evidence communicated in the attributes and
 structures defined in this document are meant to be used in
-a PKCS#10 or CRMF Certificate Signing Request (CSR). It is up to the
+a PKCS#10 or Certificate Signing Request (CSR). It is up to the
 verifier and to the relying party (RA/CA) to place as much or
 as little trust in this information as dictated by policies.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <p id="section-6-2">This document defines the transport of evidence of different formats
@@ -1962,24 +1979,20 @@ Certificate
      mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-explicit-02(51)}
 
 
-EXTENSION, ATTRIBUTE
+EXTENSION, ATTRIBUTE, AttributeSet{}, SingleAttribute{}, id-pkix
     FROM PKIX-CommonTypes-2009 -- from [RFC5912]
     { iso(1) identified-organization(3) dod(6) internet(1) security(5)
       mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }
+
+id-aa
+FROM SecureMimeMessageV3dot1
+    { iso(1) member-body(2) us(840) rsadsi(113549)
+        pkcs(1) pkcs-9(9) smime(16) modules(0) msg-v3dot1(21) }
   ;
 
 
-
--- Root of IETF's PKIX OID tree
-id-pkix OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
-     dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
-
--- S/Mime attributes - can be used here.
-id-aa OBJECT IDENTIFIER ::= {iso(1) member-body(2) usa(840)
-     rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) attributes(2)}
-
 -- Branch for attestation statement types
-id-ata OBJECT IDENTIFIER ::= { id-pkix (TBD1) }
+id-ata OBJECT IDENTIFIER ::= { id-pkix ata(TBD1) }
 
 
 CertificateChoice ::=
@@ -1995,24 +2008,31 @@ TYPED-CERT ::= TYPE-IDENTIFIER
 CertType ::= TYPED-CERT.&amp;id
 
 TypedCert ::= SEQUENCE {
-              certType     TYPED-CERT.&amp;id({TypedCertSet}),
-              content     TYPED-CERT.&amp;Type ({TypedCertSet}{@certType})
-          }
+      certType     TYPED-CERT.&amp;id({TypedCertSet}),
+      content     TYPED-CERT.&amp;Type ({TypedCertSet}{@certType})
+  }
 
 TypedCertSet TYPED-CERT ::= {
-             ... -- Empty for now,
-             }
+  ... -- Empty for now,
+  }
 
 TypedFlatCert ::= SEQUENCE {
     certType OBJECT IDENTIFIER,
     certBody OCTET STRING
 }
 
+EVIDENCE-STATEMENT ::= TYPE-IDENTIFIER
 
-id-aa-evidenceStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
+EvidenceStatementSet EVIDENCE-STATEMENT ::= {
+   ... -- Empty for now --
+}
 
+EvidenceStatement {EVIDENCE-STATEMENT:EvidenceStatementSet} ::= SEQUENCE {
+   type   EVIDENCE-STATEMENT.&amp;id({EvidenceStatementSet}),
+   stmt   EVIDENCE-STATEMENT.&amp;Type({EvidenceStatementSet}{@type})
+}
 
-TODO -- run this through a compiler.
+id-aa-evidenceStatement OBJECT IDENTIFIER ::= { id-aa aa-evidenceStatement(TBDAA2) }
 
 -- For PKCS#10
 attr-evidence ATTRIBUTE ::= {
@@ -2026,15 +2046,7 @@ ext-evidence EXTENSION ::= {
   IDENTIFIED BY id-aa-evidenceStatement
 }
 
-EvidenceStatement ::= SEQUENCE
-  {
-    type   OBJECT IDENTIFIER,
-    value  ANY
-  }
-
-
-id-aa-evidenceChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
-
+id-aa-evidenceChainCerts OBJECT IDENTIFIER ::= { id-aa aa-evidenceChainCerts(TBDAA1) }
 
 -- For PKCS#10
 attr-evidenceCerts ATTRIBUTE ::= {
