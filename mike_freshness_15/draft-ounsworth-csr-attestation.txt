@@ -5,8 +5,8 @@
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                           H. Tschofenig
-Expires: 25 February 2024                                        Siemens
-                                                          24 August 2023
+Expires: 26 February 2024                                        Siemens
+                                                          25 August 2023
 
 
       Use of Remote Attestation with Certificate Signing Requests
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 February 2024.
+   This Internet-Draft will expire on 26 February 2024.
 
 Copyright Notice
 
@@ -491,11 +491,11 @@ Table of Contents
    properties; for example if a given key was asserted at time T to have
    been generated inside the hardware boundary and to be non-exportable,
    then it can be assumed that those properties of that key will
-   continue to hold into the future, thus making freshness largely moot.
-   Developers, operators, and designers of protocols which embed
-   evidence-carrying-CSRs need to consider what notion of freshness is
-   appropriate and available in-context; thus the issue of freshness is
-   left up to the discretion of protocol designers and implementors.
+   continue to hold into the future.  Developers, operators, and
+   designers of protocols which embed evidence-carrying-CSRs need to
+   consider what notion of freshness is appropriate and available in-
+   context; thus the issue of freshness is left up to the discretion of
+   protocol designers and implementors.
 
 6.2.  Publishing evidence in an X.509 extension
 
