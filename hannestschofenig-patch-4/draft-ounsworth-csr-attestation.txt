@@ -449,7 +449,7 @@ Table of Contents
     |          |  |         |    Attester| |
     |          v  |         v            | |
     |    .-----------------------.       | |
-    |    | Target Environment    |       | |
+    |    | Target Environment(TE)|       | |
     |    | (with key generation, |       | |
     |    | storage and usage)    |       | |
     |    '--------------+--------'       | |
