@@ -5,8 +5,8 @@
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                           H. Tschofenig
-Expires: 24 February 2024                                        Siemens
-                                                          23 August 2023
+Expires: 26 February 2024                                        Siemens
+                                                          25 August 2023
 
 
       Use of Remote Attestation with Certificate Signing Requests
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 February 2024.
+   This Internet-Draft will expire on 26 February 2024.
 
 Copyright Notice
 
@@ -90,7 +90,7 @@ Table of Contents
    3.  Architecture
    4.  ASN.1 Elements
      4.1.  Object Identifiers
-     4.2.  AttestAttribute
+     4.2.  Evidence Attribute and Extension
      4.3.  EvidenceStatement
      4.4.  EvidenceCerts
      4.5.  CertificateChoice
@@ -235,22 +235,19 @@ Table of Contents
 
 4.1.  Object Identifiers
 
-   -- Root of IETF's PKIX OID tree
-   id-pkix OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
-        dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
+   We reference id-pkix and id-aa, both defined in [RFC5912].
 
-   -- S/Mime attributes - can be used here.
-   id-aa OBJECT IDENTIFIER ::= {iso(1) member-body(2) usa(840)
-       rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) attributes(2)}
+   We define:
 
-   -- Branch for evidence types
+   -- Arc for evidence types
    id-ata OBJECT IDENTIFIER ::= { id-pkix (TBD1) }
 
-4.2.  AttestAttribute
+4.2.  Evidence Attribute and Extension
 
-   By definition, Attributes within a Certification Signing Request are
-   typed as ATTRIBUTE.  This attribute definition contains one or more
-   evidence statements of a type "EvidenceStatement".
+   By definition, Attributes within a PKCS#10 CSR are typed as ATTRIBUTE
+   and within a CRMF CSR are typed as EXTENSION.  This attribute
+   definition contains one or more evidence statements of a type
+   "EvidenceStatement".
 
    id-aa-evidenceStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
 
@@ -275,14 +272,37 @@ Table of Contents
 
 4.3.  EvidenceStatement
 
-   An AttestStatement is a simple type-value pair encoded as a sequence,
-   of which the type of the "value" field is controlled by the value of
-   the "type" field, similar to an Attribute definition.
+   An EvidenceStatement is a simple type-value pair identified by an OID
+   type and containing a value stmt.
 
-   EvidenceStatement ::= SEQUENCE {
-     type   OBJECT IDENTIFIER,
-     value  ANY
-   }
+   encoded as a sequence, of which the type of the "value" field is
+   controlled by the value of the "type" field, similar to an Attribute
+   definition.
+
+EVIDENCE-STATEMENT ::= TYPE-IDENTIFIER
+
+EvidenceStatementSet EVIDENCE-STATEMENT ::= {
+   ... -- Empty for now --
+}
+
+EvidenceStatement {EVIDENCE-STATEMENT:EvidenceStatementSet} ::= SEQUENCE {
+   type   EVIDENCE-STATEMENT.&id({EvidenceStatementSet}),
+   stmt   EVIDENCE-STATEMENT.&Type({EvidenceStatementSet}{@type})
+}
+
+id-aa-evidenceStatement OBJECT IDENTIFIER ::= { id-aa aa-evidenceStatement(TBDAA2) }
+
+-- For PKCS#10
+attr-evidence ATTRIBUTE ::= {
+  TYPE EvidenceStatement
+  IDENTIFIED BY id-aa-evidenceStatement
+}
+
+-- For CRMF
+ext-evidence EXTENSION ::= {
+  TYPE EvidenceStatement
+  IDENTIFIED BY id-aa-evidenceStatement
+}
 
 4.4.  EvidenceCerts
 
@@ -299,7 +319,7 @@ Table of Contents
    case where the CSR contains multiple instances of EvidenceAttribute
    representing multiple evidence statements, all necessary certificates
    MUST be contained in the same instance of EvidenceCertsAttribute.
-   AttestCertsAttribute MAY be omitted if there are no certificates to
+   EvidenceCertsAttribute MAY be omitted if there are no certificates to
    convey, for example if they are already known to the verifier, or if
    they are contained in the evidence statement.
 
@@ -388,7 +408,7 @@ Table of Contents
 
    *  Decimal: IANA Assigned - Replace TBDMOD
 
-   *  Description: CSR-EVIDENCE-2023 - id-mod-pkix-evidence-01
+   *  Description: CSR-ATTESTATION-2023 - id-mod-pkix-attest-01
 
    *  References: This Document
 
@@ -440,7 +460,7 @@ Table of Contents
 6.  Security Considerations
 
    The evidence communicated in the attributes and structures defined in
-   this document are meant to be used in a PKCS#10 or CRMF Certificate
+   this document are meant to be used in a PKCS#10 or Certificate
    Signing Request (CSR).  It is up to the verifier and to the relying
    party (RA/CA) to place as much or as little trust in this information
    as dictated by policies.
@@ -727,28 +747,25 @@ EXPORTS ALL;
 IMPORTS
 
 Certificate
-  FROM PKCS-9
-    { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9)
-      modules(0) pkcs-9(1) }
+ FROM PKIX1Explicit-2009
+     {iso(1) identified-organization(3) dod(6) internet(1) security(5)
+     mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-explicit-02(51)}
 
-EXTENSION, ATTRIBUTE
+
+EXTENSION, ATTRIBUTE, AttributeSet{}, SingleAttribute{}, id-pkix
     FROM PKIX-CommonTypes-2009 -- from [RFC5912]
     { iso(1) identified-organization(3) dod(6) internet(1) security(5)
       mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }
+
+id-aa
+FROM SecureMimeMessageV3dot1
+    { iso(1) member-body(2) us(840) rsadsi(113549)
+        pkcs(1) pkcs-9(9) smime(16) modules(0) msg-v3dot1(21) }
   ;
 
 
-
--- Root of IETF's PKIX OID tree
-id-pkix OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
-     dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
-
--- S/Mime attributes - can be used here.
-id-aa OBJECT IDENTIFIER ::= {iso(1) member-body(2) usa(840)
-     rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) attributes(2)}
-
 -- Branch for attestation statement types
-id-ata OBJECT IDENTIFIER ::= { id-pkix (TBD1) }
+id-ata OBJECT IDENTIFIER ::= { id-pkix ata(TBD1) }
 
 
 CertificateChoice ::=
@@ -764,24 +781,31 @@ TYPED-CERT ::= TYPE-IDENTIFIER
 CertType ::= TYPED-CERT.&id
 
 TypedCert ::= SEQUENCE {
-              certType     TYPED-CERT.&id({TypedCertSet}),
-              content     TYPED-CERT.&Type ({TypedCertSet}{@certType})
-          }
+      certType     TYPED-CERT.&id({TypedCertSet}),
+      content     TYPED-CERT.&Type ({TypedCertSet}{@certType})
+  }
 
 TypedCertSet TYPED-CERT ::= {
-             ... -- Empty for now,
-             }
+  ... -- Empty for now,
+  }
 
 TypedFlatCert ::= SEQUENCE {
     certType OBJECT IDENTIFIER,
     certBody OCTET STRING
 }
 
+EVIDENCE-STATEMENT ::= TYPE-IDENTIFIER
 
-id-aa-evidenceStatement OBJECT IDENTIFIER ::= { id-aa (TBDAA2) }
+EvidenceStatementSet EVIDENCE-STATEMENT ::= {
+   ... -- Empty for now --
+}
 
+EvidenceStatement {EVIDENCE-STATEMENT:EvidenceStatementSet} ::= SEQUENCE {
+   type   EVIDENCE-STATEMENT.&id({EvidenceStatementSet}),
+   stmt   EVIDENCE-STATEMENT.&Type({EvidenceStatementSet}{@type})
+}
 
-TODO -- run this through a compiler.
+id-aa-evidenceStatement OBJECT IDENTIFIER ::= { id-aa aa-evidenceStatement(TBDAA2) }
 
 -- For PKCS#10
 attr-evidence ATTRIBUTE ::= {
@@ -795,15 +819,7 @@ ext-evidence EXTENSION ::= {
   IDENTIFIED BY id-aa-evidenceStatement
 }
 
-EvidenceStatement ::= SEQUENCE
-  {
-    type   OBJECT IDENTIFIER,
-    value  ANY
-  }
-
-
-id-aa-evidenceChainCerts OBJECT IDENTIFIER ::= { id-aa (TBDAA1) }
-
+id-aa-evidenceChainCerts OBJECT IDENTIFIER ::= { id-aa aa-evidenceChainCerts(TBDAA1) }
 
 -- For PKCS#10
 attr-evidenceCerts ATTRIBUTE ::= {
