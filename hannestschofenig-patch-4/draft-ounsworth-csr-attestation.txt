@@ -415,13 +415,14 @@ Table of Contents
    A PKCS#10 or CRMF Certification Request message consists of a
    distinguished name, a public key, and optionally a set of attributes,
    collectively signed by the entity requesting certification.  The
-   private key used to sign the CSR MUST be different from the key used
-   to sign evidence by the attester.  To demonstrate that the private
-   key used to sign the CSR is generated, stored, and used in a secure
-   environment that has controls to prevent theft or misuse (including
-   being non-exportable / non-recoverable), the attesting environment
-   has to collect claims about this secure environment (or target
-   environment, as shown in Figure 2).
+   private key used to sign the CSR MUST be different from the Attesting
+   Environment key used to sign Evidence about the Target Environment,
+   which controls the private key used to sign the CSR.  To demonstrate
+   that the private key used to sign the CSR is generated, stored, and
+   used in a secure environment that has controls to prevent theft or
+   misuse (including being non-exportable / non-recoverable), the
+   attesting environment has to collect claims about this secure
+   environment (or target environment, as shown in Figure 2).
 
    Figure 2 shows the interaction inside an attester.  The attesting
    environment, which is provisioned with an attestation key, retrieves
