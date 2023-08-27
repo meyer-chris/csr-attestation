@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-08-24T00:41:54.810380+00:00",
+  "timestamp": "2023-08-27T00:45:34.253833+00:00",
   "repo": "lamps-wg/csr-attestation",
   "labels": [
     {
@@ -172,15 +172,15 @@
       "id": "I_kwDOJ3IIN85rPVi7",
       "title": "Freshness \"out-of-scope\" vs \"not required\"",
       "url": "https://github.com/lamps-wg/csr-attestation/issues/15",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ounsworth",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Since the document discusses it, it is by definition, in-scope.\r\n\r\nPerhaps change the paragraph to say \"is not required\", or \"is left up to the discretion of protocol designers and implementors\" or something similar.\r\n\r\nThe whole paragraph about freshness probably needs a re-write for consistency since it currently reads like it was written by two authors (which it was).",
       "createdAt": "2023-07-11T15:20:33Z",
-      "updatedAt": "2023-07-17T16:35:32Z",
-      "closedAt": null,
+      "updatedAt": "2023-08-25T02:29:16Z",
+      "closedAt": "2023-08-25T02:29:16Z",
       "comments": [
         {
           "author": "carl-wallace",
@@ -309,15 +309,15 @@
       "id": "I_kwDOJ3IIN85rxyJC",
       "title": "Change ANY in AttestStatement",
       "url": "https://github.com/lamps-wg/csr-attestation/issues/20",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ounsworth",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-07-17T17:12:20Z",
-      "updatedAt": "2023-07-17T17:12:20Z",
-      "closedAt": null,
+      "updatedAt": "2023-08-25T02:13:38Z",
+      "closedAt": "2023-08-25T02:13:38Z",
       "comments": []
     },
     {
@@ -381,6 +381,22 @@
       "body": "Hannes is advocating to remove the EvidanceCerts attribute / extension and roll it into the single EvidenceStatement attribute / extension; something like:\r\n\r\n```\r\nEvidenceStatement ::= SEQUENCE\r\n  {\r\n    type   OBJECT IDENTIFIER,\r\n    value  <whatever>,\r\n    certs SEQUENCE OF CertificateChoice OPTIONAL\r\n  }\r\n```\r\n\r\nhttps://mailarchive.ietf.org/arch/msg/spasm/8C0QEGQLn38neLZvpH4rBrOBltc/",
       "createdAt": "2023-08-22T15:24:34Z",
       "updatedAt": "2023-08-22T15:24:34Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 31,
+      "id": "I_kwDOJ3IIN85vUINr",
+      "title": "attr-evidence is duplicated between s. 4.2 & 4.3",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/31",
+      "state": "OPEN",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-25T18:57:23Z",
+      "updatedAt": "2023-08-25T18:57:23Z",
       "closedAt": null,
       "comments": []
     }
@@ -977,13 +993,13 @@
       "labels": [],
       "body": "",
       "createdAt": "2023-08-17T14:14:50Z",
-      "updatedAt": "2023-08-23T16:44:19Z",
+      "updatedAt": "2023-08-25T15:34:24Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "main",
       "baseRefOid": "485fc0c144d1b8999e738ce8c4e017557217bf83",
       "headRepository": "lamps-wg/csr-attestation",
       "headRefName": "hannestschofenig-patch-4",
-      "headRefOid": "f32b955964ead6bfd2de17c9b574bc4dcc80eea5",
+      "headRefOid": "84b626ac8262fc8aecd0e16d06fdafe377bbe63f",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -1067,6 +1083,186 @@
               "body": "Proposal is here: https://github.com/lamps-wg/csr-attestation/pull/27\r\n",
               "createdAt": "2023-08-21T08:28:52Z",
               "updatedAt": "2023-08-21T08:28:52Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85fCPy8",
+          "commit": {
+            "abbreviatedOid": "f32b955"
+          },
+          "author": "nedmsmith",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "In general, it seems appropriate to follow RATS Arch capitalization for RATS roles and other terms having special meaning.",
+          "createdAt": "2023-08-24T20:41:13Z",
+          "updatedAt": "2023-08-24T21:03:06Z",
+          "comments": [
+            {
+              "originalPosition": 1,
+              "body": "```suggestion\r\nthe following terms: Evidence, Claim, Attestation Results (AR), Attester,\r\n```",
+              "createdAt": "2023-08-24T20:41:13Z",
+              "updatedAt": "2023-08-24T21:03:07Z"
+            },
+            {
+              "originalPosition": 2,
+              "body": "```suggestion\r\nVerifier, and Relying Party (RP).\r\n```",
+              "createdAt": "2023-08-24T20:41:32Z",
+              "updatedAt": "2023-08-24T21:03:07Z"
+            },
+            {
+              "originalPosition": 35,
+              "body": "```suggestion\r\nbe different from the Attesting Environment key used to sign Evidence about the Target Environment, which controls the private key used to sign the CSR. To\r\n```\r\n",
+              "createdAt": "2023-08-24T20:46:46Z",
+              "updatedAt": "2023-08-24T21:03:07Z"
+            },
+            {
+              "originalPosition": 39,
+              "body": "```suggestion\r\nthe Attesting Environment has to collect claims about this secure\r\n```",
+              "createdAt": "2023-08-24T20:52:58Z",
+              "updatedAt": "2023-08-24T21:03:07Z"
+            },
+            {
+              "originalPosition": 65,
+              "body": "Q: shouldn't the CSR Library be inside the Attester if not also inside the Target Environment that the Attesting Env measured as part of Evidence? Alternatively the CSR Library is a second TE that the AE measures.",
+              "createdAt": "2023-08-24T20:57:22Z",
+              "updatedAt": "2023-08-24T21:09:06Z"
+            },
+            {
+              "originalPosition": 81,
+              "body": "```suggestion\r\n |             '-------------' abt. TE|\r\n```",
+              "createdAt": "2023-08-24T21:00:04Z",
+              "updatedAt": "2023-08-24T21:03:07Z"
+            },
+            {
+              "originalPosition": 68,
+              "body": "```suggestion\r\n |    | Target Environment(TE)|       | |\r\n```",
+              "createdAt": "2023-08-24T21:00:47Z",
+              "updatedAt": "2023-08-24T21:03:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85eiPpM",
+          "commit": {
+            "abbreviatedOid": "84b626a"
+          },
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2023-08-21T01:10:24Z",
+          "updatedAt": "2023-08-25T03:11:17Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Equally, a CRMF CSR is all those things with a set of extensions. We should mention both.",
+              "createdAt": "2023-08-21T01:10:24Z",
+              "updatedAt": "2023-08-25T03:11:18Z"
+            },
+            {
+              "originalPosition": 7,
+              "body": "I don't know that that's true.\r\nThis is certainly the intent for the majority use-case, but on the last call, we discussed cases where evidence statement is unsigned and then the endorser would sign the CSR. Or ultra-contrained that can only contain one key and will need to cheat and use it as both the subject key requesting certification, and the attestation key.",
+              "createdAt": "2023-08-21T01:13:25Z",
+              "updatedAt": "2023-08-25T03:11:18Z"
+            },
+            {
+              "originalPosition": 61,
+              "body": "... or CRMF CSR",
+              "createdAt": "2023-08-21T01:21:33Z",
+              "updatedAt": "2023-08-25T03:11:18Z"
+            },
+            {
+              "originalPosition": 5,
+              "body": "Addressed in another PR.",
+              "createdAt": "2023-08-23T16:42:46Z",
+              "updatedAt": "2023-08-25T03:11:18Z"
+            },
+            {
+              "originalPosition": 61,
+              "body": "Addressed in another PR.",
+              "createdAt": "2023-08-23T16:44:19Z",
+              "updatedAt": "2023-08-25T03:11:18Z"
+            },
+            {
+              "originalPosition": 81,
+              "body": "?",
+              "createdAt": "2023-08-25T02:35:25Z",
+              "updatedAt": "2023-08-25T03:11:18Z"
+            },
+            {
+              "originalPosition": 65,
+              "body": "Umm, fair question.\r\nThe way Hannes has drawn this definitely matches my understanding of the world. You want to keep your certified FIPS or CC boundary as small as possible; there's absolutely no reason to have your CSR-generation code inside it. \r\n\r\nMoreover, the CSR is probably constructed by CAPI or openssl or certbot or whatever application, and passed to the HSM over P11 as bytes to be signed. I wouldn't consider openssl or certbot running on a server adjacent to the HSM to be any sort of TE any more than nginx is a TE when it needs to use a TLS key stored on an HSM; I think it's an application making use of the HSM.",
+              "createdAt": "2023-08-25T02:41:19Z",
+              "updatedAt": "2023-08-25T03:11:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85fGeJd",
+          "commit": {
+            "abbreviatedOid": "84b626a"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2023-08-25T11:49:49Z",
+          "updatedAt": "2023-08-25T12:06:14Z",
+          "comments": [
+            {
+              "originalPosition": 2,
+              "body": "```suggestion\r\nThis document re-uses the terms defined in {{RFC9334}} related to remote\r\n```",
+              "createdAt": "2023-08-25T11:49:49Z",
+              "updatedAt": "2023-08-25T12:06:14Z"
+            },
+            {
+              "originalPosition": 11,
+              "body": "```suggestion\r\n(CSR)\" refers to a Certification Request message. While the term\r\n```",
+              "createdAt": "2023-08-25T11:50:29Z",
+              "updatedAt": "2023-08-25T12:10:06Z"
+            },
+            {
+              "originalPosition": 13,
+              "body": "Tad bit lost. Where has \"it not been selected\"? In RFC2986 (true) or in this document (not true). It was very much selected in RFC4949, which I'd add here.",
+              "createdAt": "2023-08-25T11:52:53Z",
+              "updatedAt": "2023-08-25T12:06:14Z"
+            },
+            {
+              "originalPosition": 14,
+              "body": "```suggestion\r\nit is not what has been selected. While the term \"Certification Signing Request\" and its corresponding acronym \"CSR\" are specified by {{?RFC4949}} and quite often used\r\nin context of PKCS#10, it is equally applicable to other protocols\r\n```",
+              "createdAt": "2023-08-25T11:54:53Z",
+              "updatedAt": "2023-08-25T12:06:14Z"
+            },
+            {
+              "originalPosition": 15,
+              "body": "```suggestion\r\nthat use a different syntax and even a different encoding. In particular,\r\n```",
+              "createdAt": "2023-08-25T11:55:10Z",
+              "updatedAt": "2023-08-25T12:06:14Z"
+            },
+            {
+              "originalPosition": 27,
+              "body": "```suggestion\r\nCSR messages.\r\n```",
+              "createdAt": "2023-08-25T11:55:46Z",
+              "updatedAt": "2023-08-25T12:06:14Z"
+            },
+            {
+              "originalPosition": 38,
+              "body": "I really would try to avoid using normative language in the SecConSec. If that is a strong requirement, it must come up earlier in the body of the text.",
+              "createdAt": "2023-08-25T11:58:29Z",
+              "updatedAt": "2023-08-25T12:06:14Z"
+            },
+            {
+              "originalPosition": 39,
+              "body": "Are there cases in DICE where it could end up being the same key material?",
+              "createdAt": "2023-08-25T12:03:35Z",
+              "updatedAt": "2023-08-25T12:06:14Z"
+            },
+            {
+              "originalPosition": 65,
+              "body": "The text above implies that the key-material for signing the CSR is in a target environment. Following that thought it would also imply that the signing code exists next to the key material in the same target environment.",
+              "createdAt": "2023-08-25T12:05:30Z",
+              "updatedAt": "2023-08-25T12:06:14Z"
             }
           ]
         }
@@ -1161,6 +1357,143 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 29,
+      "id": "PR_kwDOJ3IIN85YpfbK",
+      "title": "ASN.1 module update",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/29",
+      "state": "MERGED",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-24T02:35:37Z",
+      "updatedAt": "2023-08-25T02:13:42Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "417dcbcb5231a46ebc748e118c38be7f278f138e",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "mike_fix_asn1_20",
+      "headRefOid": "1780ba7a1aaa4c204af5f822a8548be82172e752",
+      "closedAt": "2023-08-25T02:13:36Z",
+      "mergedAt": "2023-08-25T02:13:36Z",
+      "mergedBy": "ounsworth",
+      "mergeCommit": {
+        "oid": "76694a8c1882cf6adcc55d1f0af12c8ed7ba1744"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ3IIN85fAQJM",
+          "commit": {
+            "abbreviatedOid": "4d15491"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "At the moment I don't have much to contribute regarding the ASN.1. I need to get up to speed on it first.",
+          "createdAt": "2023-08-24T15:37:07Z",
+          "updatedAt": "2023-08-24T15:37:07Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85fB-UF",
+          "commit": {
+            "abbreviatedOid": "1780ba7"
+          },
+          "author": "mcr",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Yup, that sure looks like ASN.1 changes to me. :-) :-)\r\n",
+          "createdAt": "2023-08-24T19:54:28Z",
+          "updatedAt": "2023-08-24T19:54:28Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "id": "PR_kwDOJ3IIN85YpiHT",
+      "title": "Tweaked freshness security consideration. Closes #15",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/30",
+      "state": "MERGED",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-24T02:49:55Z",
+      "updatedAt": "2023-08-25T02:29:18Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "76694a8c1882cf6adcc55d1f0af12c8ed7ba1744",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "mike_freshness_15",
+      "headRefOid": "02955f11edb6a71d603459df00c030e8c5b799f3",
+      "closedAt": "2023-08-25T02:29:14Z",
+      "mergedAt": "2023-08-25T02:29:14Z",
+      "mergedBy": "ounsworth",
+      "mergeCommit": {
+        "oid": "51bb5581c8acb21b65bc2f4739e8b16468694989"
+      },
+      "comments": [
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Oops, I pushed 96aa8ec to the wrong branch. Oh well, I guess it's here now.",
+          "createdAt": "2023-08-24T17:24:50Z",
+          "updatedAt": "2023-08-24T17:24:50Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ3IIN85fAONO",
+          "commit": {
+            "abbreviatedOid": "2344023"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "The text is good. Just have a few minor text suggestions.",
+          "createdAt": "2023-08-24T15:32:58Z",
+          "updatedAt": "2023-08-24T15:36:15Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "```suggestion\r\nto hold into the future.\r\n```",
+              "createdAt": "2023-08-24T15:32:58Z",
+              "updatedAt": "2023-08-24T15:36:16Z"
+            },
+            {
+              "originalPosition": 24,
+              "body": "I see the use of this specification a bit broader and there freshness may be an important aspect, which is why we wrote the document about conveying a nonce in a certificate management protocol",
+              "createdAt": "2023-08-24T15:34:02Z",
+              "updatedAt": "2023-08-24T15:36:16Z"
+            },
+            {
+              "originalPosition": 20,
+              "body": "```suggestion\r\nCertain use cases may have special properties impacting the freshness requirements. For example, HSMs are typically designed to not allow downgrade of private key storage\r\n```",
+              "createdAt": "2023-08-24T15:35:01Z",
+              "updatedAt": "2023-08-24T15:36:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85fB-lm",
+          "commit": {
+            "abbreviatedOid": "96aa8ec"
+          },
+          "author": "mcr",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-08-24T19:55:31Z",
+          "updatedAt": "2023-08-24T19:55:31Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
