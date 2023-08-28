@@ -1322,14 +1322,15 @@ attestation. Readers of this document are assumed to be familiar with
 the following terms: Evidence, Claim, Attestation Results (AR), Attester,
 Verifier, and Relying Party (RP).<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">The term "Certification Request" message is defined in <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>.
-Specifications later introduced the term "Certificate Signing Request
-(CSR)" to refer to Certification Request message. While the term
-"Certification Signing Request" would have been more appropriate,
-it is not what has been selected. While the term CSR is often used
-in context of PKCS#10 it is equally applicable to other protocols
-that use a different syntax and even a different encoding, in particular
-this document also considers Certificate Request Message Format (CRMF)
-<span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span> to be "CSRs". We use the terms "CSR" and Certification Request
+Specifications, such as <span>[<a href="#RFC7030" class="cite xref">RFC7030</a>]</span>, later introduced the term
+"Certificate Signing Request (CSR)" to refer to the Certification
+Request message. While the term "Certification Signing Request"
+would have been correct, the mistake was unnoticed. In the meanwhile
+CSR is an abbreviation used beyond PKCS#10. Hence, it is equally
+applicable to other protocols that use a different syntax and
+even a different encoding, in particular this document also
+considers Certificate Request Message Format (CRMF) <span>[<a href="#RFC4211" class="cite xref">RFC4211</a>]</span>
+to be "CSRs". We use the terms "CSR" and Certificate Request
 message interchangeably.<a href="#section-2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1792,6 +1793,10 @@ out-of-scope for this document.<a href="#section-6-7" class="pilcrow">¶</a></p>
 <dt id="RFC4211">[RFC4211]</dt>
         <dd>
 <span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure Certificate Request Message Format (CRMF)"</span>, <span class="seriesInfo">RFC 4211</span>, <span class="seriesInfo">DOI 10.17487/RFC4211</span>, <time datetime="2005-09" class="refDate">September 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4211">https://www.rfc-editor.org/rfc/rfc4211</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7030">[RFC7030]</dt>
+        <dd>
+<span class="refAuthor">Pritikin, M., Ed.</span>, <span class="refAuthor">Yee, P., Ed.</span>, and <span class="refAuthor">D. Harkins, Ed.</span>, <span class="refTitle">"Enrollment over Secure Transport"</span>, <span class="seriesInfo">RFC 7030</span>, <span class="seriesInfo">DOI 10.17487/RFC7030</span>, <time datetime="2013-10" class="refDate">October 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7030">https://www.rfc-editor.org/rfc/rfc7030</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="TPM20">[TPM20]</dt>
       <dd>

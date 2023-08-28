@@ -169,15 +169,15 @@ Table of Contents
    Results (AR), Attester, Verifier, and Relying Party (RP).
 
    The term "Certification Request" message is defined in [RFC2986].
-   Specifications later introduced the term "Certificate Signing Request
-   (CSR)" to refer to Certification Request message.  While the term
-   "Certification Signing Request" would have been more appropriate, it
-   is not what has been selected.  While the term CSR is often used in
-   context of PKCS#10 it is equally applicable to other protocols that
-   use a different syntax and even a different encoding, in particular
-   this document also considers Certificate Request Message Format
-   (CRMF) [RFC4211] to be "CSRs".  We use the terms "CSR" and
-   Certification Request message interchangeably.
+   Specifications, such as [RFC7030], later introduced the term
+   "Certificate Signing Request (CSR)" to refer to the Certification
+   Request message.  While the term "Certification Signing Request"
+   would have been correct, the mistake was unnoticed.  In the meanwhile
+   CSR is an abbreviation used beyond PKCS#10.  Hence, it is equally
+   applicable to other protocols that use a different syntax and even a
+   different encoding, in particular this document also considers
+   Certificate Request Message Format (CRMF) [RFC4211] to be "CSRs".  We
+   use the terms "CSR" and Certificate Request message interchangeably.
 
 3.  Architecture
 
@@ -553,6 +553,11 @@ Table of Contents
               Certificate Request Message Format (CRMF)", RFC 4211,
               DOI 10.17487/RFC4211, September 2005,
               <https://www.rfc-editor.org/rfc/rfc4211>.
+
+   [RFC7030]  Pritikin, M., Ed., Yee, P., Ed., and D. Harkins, Ed.,
+              "Enrollment over Secure Transport", RFC 7030,
+              DOI 10.17487/RFC7030, October 2013,
+              <https://www.rfc-editor.org/rfc/rfc7030>.
 
    [TPM20]    Trusted Computing Group, "Trusted Platform Module Library
               Specification, Family 2.0, Level 00, Revision 01.59",
