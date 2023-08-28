@@ -449,7 +449,7 @@ Table of Contents
                |  |         |              |
     .----------|--|---------|------------. |
     |          |  |         |    Attester| |
-    |          v  |         v            | |
+    |          v  |         v    (HSM)   | |
     |    .-----------------------.       | |
     |    | Target Environment(TE)|       | |
     |    | (with key generation, |       | |
@@ -463,7 +463,7 @@ Table of Contents
     |             .-------------.        | |
     |Attestation  | Attesting   |        | |
     |   Key ----->| Environment +----------+
-    |             |             |Evidence|
+    |             | (Firmware)  |Evidence|
     |             '-------------'        |
     |                                    |
     '------------------------------------'
