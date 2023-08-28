@@ -5,8 +5,8 @@
 Network Working Group                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                           H. Tschofenig
-Expires: 26 February 2024                                        Siemens
-                                                          25 August 2023
+Expires: 29 February 2024                                        Siemens
+                                                          28 August 2023
 
 
          Use of Attestation with Certification Signing Requests
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 February 2024.
+   This Internet-Draft will expire on 29 February 2024.
 
 Copyright Notice
 
@@ -163,10 +163,10 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-   This document re-uses the terms defined in RFC 9334 related to remote
-   attestation.  Readers of this document are assumed to be familiar
-   with the following terms: Evidence, Claim, Attestation Results (AR),
-   Attester, Verifier, and Relying Party (RP).
+   This document re-uses the terms defined in [RFC9334] related to
+   remote attestation.  Readers of this document are assumed to be
+   familiar with the following terms: Evidence, Claim, Attestation
+   Results (AR), Attester, Verifier, and Relying Party (RP).
 
    The term "Certification Request" message is defined in [RFC2986].
    Specifications later introduced the term "Certificate Signing Request
