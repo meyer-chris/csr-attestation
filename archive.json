@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-08-27T00:45:34.253833+00:00",
+  "timestamp": "2023-08-29T00:43:13.032275+00:00",
   "repo": "lamps-wg/csr-attestation",
   "labels": [
     {
@@ -380,9 +380,17 @@
       "labels": [],
       "body": "Hannes is advocating to remove the EvidanceCerts attribute / extension and roll it into the single EvidenceStatement attribute / extension; something like:\r\n\r\n```\r\nEvidenceStatement ::= SEQUENCE\r\n  {\r\n    type   OBJECT IDENTIFIER,\r\n    value  <whatever>,\r\n    certs SEQUENCE OF CertificateChoice OPTIONAL\r\n  }\r\n```\r\n\r\nhttps://mailarchive.ietf.org/arch/msg/spasm/8C0QEGQLn38neLZvpH4rBrOBltc/",
       "createdAt": "2023-08-22T15:24:34Z",
-      "updatedAt": "2023-08-22T15:24:34Z",
+      "updatedAt": "2023-08-28T16:48:55Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Mike to create a PR with Carl's suggestion.",
+          "createdAt": "2023-08-28T16:48:54Z",
+          "updatedAt": "2023-08-28T16:48:54Z"
+        }
+      ]
     },
     {
       "number": 31,
@@ -397,6 +405,54 @@
       "body": "",
       "createdAt": "2023-08-25T18:57:23Z",
       "updatedAt": "2023-08-25T18:57:23Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 34,
+      "id": "I_kwDOJ3IIN85vd4TC",
+      "title": "Provide an example of embedding a CMW",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/34",
+      "state": "OPEN",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Ned says that TCG has already registered an OID for \"This is CMV\".\r\n\r\nhttps://trustedcomputinggroup.org/wp-content/uploads/DICE-Attestation-Architecture-Version-1.1-Revision-17_1August2023.pdf\r\n\r\ntcg-dice-conceptual-message-wrapper OBJECT IDENTIFIER ::= {tcg-dice 9}",
+      "createdAt": "2023-08-28T16:45:50Z",
+      "updatedAt": "2023-08-28T16:45:50Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 36,
+      "id": "I_kwDOJ3IIN85vd6gh",
+      "title": "Add extension marks to CertificateChoice",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/36",
+      "state": "OPEN",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "CertificateChoice ::=\r\n   CHOICE {\r\n      cert Certificate,\r\n      opaqueCert    [0] IMPLICIT OCTET STRING,\r\n      typedCert     [1] IMPLICIT TypedCert,\r\n      typedFlatCert [2] IMPLICIT TypedFlatCert,\r\n      ...\r\n   }\r\n\r\nTODO: look up the right syntax and run it through a compiler.",
+      "createdAt": "2023-08-28T16:52:26Z",
+      "updatedAt": "2023-08-28T16:53:36Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 37,
+      "id": "I_kwDOJ3IIN85veE40",
+      "title": "Explain in section 3 why the Passport Model is not applicable to CSRs",
+      "url": "https://github.com/lamps-wg/csr-attestation/issues/37",
+      "state": "OPEN",
+      "author": "ounsworth",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "@henkbirkholz has brought this up 3 times now; might as well add a paragraph.",
+      "createdAt": "2023-08-28T17:24:17Z",
+      "updatedAt": "2023-08-28T17:24:30Z",
       "closedAt": null,
       "comments": []
     }
@@ -993,13 +1049,13 @@
       "labels": [],
       "body": "",
       "createdAt": "2023-08-17T14:14:50Z",
-      "updatedAt": "2023-08-25T15:34:24Z",
+      "updatedAt": "2023-08-28T16:29:42Z",
       "baseRepository": "lamps-wg/csr-attestation",
       "baseRefName": "main",
       "baseRefOid": "485fc0c144d1b8999e738ce8c4e017557217bf83",
       "headRepository": "lamps-wg/csr-attestation",
       "headRefName": "hannestschofenig-patch-4",
-      "headRefOid": "84b626ac8262fc8aecd0e16d06fdafe377bbe63f",
+      "headRefOid": "fe8cf7c5b49dff65bdf0b89851e9acd6fc394ebe",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -1265,6 +1321,164 @@
               "updatedAt": "2023-08-25T12:06:14Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85fPdF7",
+          "commit": {
+            "abbreviatedOid": "f32b955"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-28T09:18:16Z",
+          "updatedAt": "2023-08-28T09:18:16Z",
+          "comments": [
+            {
+              "originalPosition": 65,
+              "body": "It is, of course, an implementation decision of where to put what code. In the drawing I assume that the CSR library is outside the attester but the attester performs a software measurement of that code.\r\n\r\nI will add a note to the draft.",
+              "createdAt": "2023-08-28T09:18:16Z",
+              "updatedAt": "2023-08-28T09:18:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85fPiW-",
+          "commit": {
+            "abbreviatedOid": "47cc06b"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-28T09:30:54Z",
+          "updatedAt": "2023-08-28T09:30:54Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "I am not aware of such a requirement. Also, you are co-authors of RFCs, which did the same.",
+              "createdAt": "2023-08-28T09:30:54Z",
+              "updatedAt": "2023-08-28T09:30:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85fPiqT",
+          "commit": {
+            "abbreviatedOid": "47cc06b"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-28T09:31:40Z",
+          "updatedAt": "2023-08-28T09:31:40Z",
+          "comments": [
+            {
+              "originalPosition": 39,
+              "body": "Yes, you could use the same key -- not just in DICE. From a key separation point of view that's not a good idea. ",
+              "createdAt": "2023-08-28T09:31:40Z",
+              "updatedAt": "2023-08-28T09:31:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85fPi31",
+          "commit": {
+            "abbreviatedOid": "47cc06b"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-28T09:32:12Z",
+          "updatedAt": "2023-08-28T09:32:12Z",
+          "comments": [
+            {
+              "originalPosition": 81,
+              "body": "I don't know what \"abt. TE\" means",
+              "createdAt": "2023-08-28T09:32:12Z",
+              "updatedAt": "2023-08-28T09:32:12Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85fPts2",
+          "commit": {
+            "abbreviatedOid": "84b626a"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-28T09:57:03Z",
+          "updatedAt": "2023-08-28T09:57:03Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "Well. RFC 9124 is like the odd one standing out (the SecConSec there is *the* relevant Section containing all the requirements next to the information elements themselves). I'd not use that one as an guideline.",
+              "createdAt": "2023-08-28T09:57:03Z",
+              "updatedAt": "2023-08-28T09:57:03Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85fCYEi",
+          "commit": {
+            "abbreviatedOid": "2c84d7b"
+          },
+          "author": "nedmsmith",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-24T21:06:36Z",
+          "updatedAt": "2023-08-28T15:47:50Z",
+          "comments": [
+            {
+              "originalPosition": 40,
+              "body": "```suggestion\r\nenvironment (a.k.a., Target Environment, as shown in {{fig-attester}}).\r\n```",
+              "createdAt": "2023-08-24T21:06:36Z",
+              "updatedAt": "2023-08-28T15:47:50Z"
+            },
+            {
+              "originalPosition": 39,
+              "body": "> Are there cases in DICE where it could end up being the same key material?\r\n\r\nI don't think so. DICE expects the Attesting Env will be different from the Target Env.",
+              "createdAt": "2023-08-25T15:34:14Z",
+              "updatedAt": "2023-08-28T15:47:50Z"
+            },
+            {
+              "originalPosition": 57,
+              "body": "```suggestion\r\nkeying material. For the Verifier, the provided Evidence must allow\r\n```",
+              "createdAt": "2023-08-28T15:45:14Z",
+              "updatedAt": "2023-08-28T15:47:50Z"
+            },
+            {
+              "originalPosition": 95,
+              "body": "```suggestion\r\nassurance about an Attester. Policies used at the Verifier and the Relying\r\n```",
+              "createdAt": "2023-08-28T15:47:02Z",
+              "updatedAt": "2023-08-28T15:47:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ3IIN85fSVFr",
+          "commit": {
+            "abbreviatedOid": "2c84d7b"
+          },
+          "author": "ounsworth",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-28T16:21:28Z",
+          "updatedAt": "2023-08-28T16:21:28Z",
+          "comments": [
+            {
+              "originalPosition": 81,
+              "body": "\"About Target Environment\"",
+              "createdAt": "2023-08-28T16:21:28Z",
+              "updatedAt": "2023-08-28T16:21:28Z"
+            }
+          ]
         }
       ]
     },
@@ -1494,6 +1708,84 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 32,
+      "id": "PR_kwDOJ3IIN85Y7y-a",
+      "title": "Introduction Update",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/32",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-28T13:15:37Z",
+      "updatedAt": "2023-08-28T13:15:37Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "a94fa67df71f57900ab108f9c4430ee8b2338119",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "hannestschofenig-patch-2",
+      "headRefOid": "51faf599db6154aa1fdab583fd8d95b75efd8cf2",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 33,
+      "id": "PR_kwDOJ3IIN85Y8YHS",
+      "title": "Bugfix: Certification Authority",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/33",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-28T14:49:14Z",
+      "updatedAt": "2023-08-28T14:49:14Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "a94fa67df71f57900ab108f9c4430ee8b2338119",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "hannestschofenig-patch-3",
+      "headRefOid": "46694aeef6e36e8d7538ab0ab1fb10800c11043f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 35,
+      "id": "PR_kwDOJ3IIN85Y9ClM",
+      "title": "Adding Henk as co-author",
+      "url": "https://github.com/lamps-wg/csr-attestation/pull/35",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-08-28T16:51:18Z",
+      "updatedAt": "2023-08-28T16:51:18Z",
+      "baseRepository": "lamps-wg/csr-attestation",
+      "baseRefName": "main",
+      "baseRefOid": "a94fa67df71f57900ab108f9c4430ee8b2338119",
+      "headRepository": "lamps-wg/csr-attestation",
+      "headRefName": "hannestschofenig-patch-5",
+      "headRefOid": "bbcfc3e46b6a68a309d8110a52014a6c8dd3a6b1",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
